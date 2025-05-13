@@ -1,9 +1,12 @@
+"use client";
 export default function MyProfile() {
+  const realName = localStorage.getItem("realName");
+
   return (
     <div className="custom-box w-[25%] max-w-[375px] h-[260px] text-xs flex flex-col justify-around items-start">
       <div className="w-full flex flex-row justify-between items-center">
         <div>
-          <span className="font-bold text-xl">홍길동</span>님 반갑습니다
+          <span className="font-bold text-xl">{realName}</span>님 반갑습니다
         </div>
         <div>
           <a href="/myprofile" className="underline hover:text-black">

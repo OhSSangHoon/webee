@@ -23,6 +23,7 @@ export async function signUp({ username, password, name }: SignUpRequest) {
 export async function signIn({ username, password }: SignInRequest) {
   const response = await authApi.post("/sign-in", { username, password });
 
+  localStorage.setItem("realName", response.data.data.name);
   // 헤더에서 Authorization 추출
   const authorization = response.headers.authorization;
 

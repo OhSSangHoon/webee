@@ -1,10 +1,12 @@
+"use client";
 import Image from "next/image";
 
 export default function QuickProfile() {
+  const realName = localStorage.getItem("realName");
   return (
     <div className="custom-box  basis-[25%] h-60 flex flex-col  justify-around ">
       <div className=" flex flex-row justify-start items-end ml-5">
-        <div className="text-2xl ">홍길동</div>님 반갑습니다.
+        <div className="text-2xl ">{realName}</div>님 반갑습니다.
       </div>
 
       {/*  <div className="custom-box basis-[30%]  h-60 flex flex-col justify-between items-center">
