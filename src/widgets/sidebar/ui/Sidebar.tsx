@@ -8,10 +8,7 @@ export default function Sidebar() {
 
   return (
     <div className="w-full h-20 px-10 flex flex-row justify-around items-center bg-white text-black text-xl border-b border-gray-300 mb-20">
-      <div
-        className="text-4xl cursor-pointer"
-        onClick={() => router.push("/home")}
-      >
+      <div className="text-4xl cursor-pointer" onClick={() => router.push("/")}>
         WeeBee
       </div>
       <div className="flex flex-row gap-14">
