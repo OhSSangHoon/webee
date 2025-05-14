@@ -1,10 +1,9 @@
 @import "tailwindcss";
-
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #ffffff;
+  width: 100%;
 }
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -14,13 +13,116 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ffffff;
     --foreground: #ededed;
   }
 }
 
+@font-face {
+  font-family: "Pretendard";
+  src: url("../../public/font/PretendardVariable.woff2") format("woff2");
+  font-weight: 45 920; /* variable 지원 범위 */
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /*폰트 프리텐다드 기본설정*/
+  font-family: "Pretendard", sans-serif;
+}
+.text-black-custom {
+  /* 기본 텍스트 색상 */
+  color: #333333;
+}
+.text-gray-custom {
+  /* 기본 텍스트 색상 */
+  color: #6b7280;
+}
+
+.custom-Input {
+  /*기본 인풋 박스*/
+  @apply border border-gray-300 placeholder-gray-300  px-4 py-2 w-full h-fit rounded-sm mt-2;
+}
+
+/*
+*버튼 디자인*/
+
+.blue-button {
+  /*기본 블루 버튼*/
+  @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600;
+}
+
+.custom-button {
+  /* 기본 흰색 버튼*/
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #d9d9d9;
+  border-radius: 20rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-weight: 500;
+  width: fit-content;
+  height: fit-content;
+  font-size: 12px;
+}
+
+.custom-button:hover {
+  background-color: #7c86ff;
+  color: #ffffff;
+  border-color: #7c86ff;
+}
+
+/*
+*기본 흰색 박스*/
+.custom-box {
+  @apply bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px];
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+.custom-box-shadow {
+  box-shadow: 0px 10px 4px rgba(0, 0, 0, 0.25);
+}
+
+/*
+* 프로필 수정 페이지용 섹션 박스*/
+.custom-box2 {
+  @apply bg-white border rounded-xl border-gray-200 text-[#333333] text-[14px] w-full;
+}
+
+.custom-box2-title {
+  @apply w-full bg-[#EEF2FF] h-[60px] rounded-t-xl font-semibold text-[16px] flex items-center p-5;
+}
+
+.custom-box2-title2 {
+  @apply w-full bg-[#FCE7F3]
+ h-[60px] rounded-t-xl font-semibold  text-[16px] flex items-center p-5;
+}
+
+.custom-outline-button {
+  /*마이페이지 확인 버튼*/
+  @apply w-fit px-4 py-2 text-[#2B7FFF] border border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
+}
+
+.text-grey-tag {
+  /* 마이페이지 태그 */
+  background-color: #f3f4f6;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 50rem;
+  color: #333333;
+  padding: 3px 10px;
+  font-size: 12px;
+}
+
+/*
+*auth 용 디자인
+*/
+.auth-input {
+  /*auth 인풋 박스*/
+  @apply border border-[#E2E5EB] rounded-md h-8;
+}
+
+.auth-label {
+  /*auth 인풋 라벨*/
+  @appply "mb-1 text-sm font-medium ";
 }
