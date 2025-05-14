@@ -31,7 +31,7 @@ export function useSignInForm() {
   const onSubmit = async (data: SignInFormValues) => {
     try {
       await signIn(data);
-      router.push("/");
+      router.push("/ ");
     } catch (error) {
       setError("password", {
         message: "로그인에 실패했습니다.",
