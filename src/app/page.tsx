@@ -4,7 +4,7 @@ import {
   RecommendBee,
   Weather,
 } from "@/widgets";
-import QuickMenu from "@/widgets/quickMenu/ui/quickMenu";
+import QuickMenu from "@/widgets/home/quickMenu/ui/quickMenu";
 
 export default function Home() {
   return (

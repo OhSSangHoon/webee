@@ -16,7 +16,7 @@ export function useLogout() {
       localStorage.removeItem("username");
 
       console.log("로그아웃 성공");
-      window.location.href = "/home";
+      window.location.href = "/";
     }
   }, []);
 
