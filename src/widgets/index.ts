@@ -1,4 +1,4 @@
-export { default as Sidebar } from "./sidebar/ui/Sidebar";
+export { default as Header } from "./header/ui/header";
 
 export { default as DiagnosisBanner } from "./diagnosisBanner/ui/diagnosisBanner";
 

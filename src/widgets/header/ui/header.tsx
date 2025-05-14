@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Logout } from "@/features";
 
-export default function Sidebar() {
+export default function Header() {
   const router = useRouter();
 
   return (
