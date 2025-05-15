@@ -7,7 +7,7 @@ export default function Header() {
   const router = useRouter();
 
   return (
-    <div className="w-full h-20 px-10 flex flex-row justify-around items-center bg-white text-black text-xl border-b border-gray-300 mb-20">
+    <div className="w-full h-20 px-10 flex flex-row justify-around items-center bg-white text-black text-xl border-b border-gray-300">
       <div className="flex flex-row w-7xl">
         <div className="text-4xl cursor-pointer flex flex-row justify-start" onClick={() => router.push("/")}>
           WeeBee

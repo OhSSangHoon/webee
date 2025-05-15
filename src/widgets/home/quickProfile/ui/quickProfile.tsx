@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function QuickProfile() {
   const realName = localStorage.getItem("realName");
   return (
-    <div className="custom-box flex flex-col">
+    <div className="custom-box flex flex-col mt-10">
       <div className=" flex flex-row justify-start items-end pt-3 pb-7">
           <p className="text-2xl">{realName}</p>
           <p className="ml-1">님 반갑습니다.</p>
