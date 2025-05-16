@@ -28,7 +28,7 @@ export async function signOut() {
   const response = await api.post("/auth/sign-out");
   // 클라이언트 상태 초기화
   localStorage.removeItem("accessToken");
-  document.cookie = "refreshToken=; path=/; max-age=0;";
+  // document.cookie = "refreshToken=; path=/; max-age=0;";
   await useUserStore.getState().logout();
   return response.data;
 }
