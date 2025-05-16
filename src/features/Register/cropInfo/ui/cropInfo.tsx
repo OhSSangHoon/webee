@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useCropInfo } from "../model/useCropInfo";
 
 export default function CropInfo() {
+  const { submitCropInfo, loading, error } = useCropInfo();
   const [form, setForm] = useState({
     crop: "",
     variety: "",
@@ -19,8 +21,25 @@ export default function CropInfo() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const isSuccess = await submitCropInfo(form);
+    if (isSuccess) {
+      setForm({
+        crop: "",
+        variety: "",
+        method: "",
+        location: "",
+        area: "",
+        plantingDate: "",
+      });
+    }
+  };
   return (
-    <form className="space-y-6 max-w-[1000px] w-full  text-black flex flex-col justify-center rounded-2xl items-start custom-box-shadow">
+    <form
+      className="space-y-6 max-w-[1000px] w-full  text-black flex flex-col justify-center rounded-2xl items-start custom-box-shadow"
+      onSubmit={handleSubmit}
+    >
       {/* 제목 및 설명 */}
       <div className="bg-[#EEF2FF] w-full h-[60px] px-4 py-3 rounded-t-2xl">
         <div className="font-semibold text-[16px]">
@@ -144,9 +163,11 @@ export default function CropInfo() {
           <button
             type="submit"
             className="bg-blue-500 text-white px-15 py-2 rounded my-5 "
+            disabled={loading}
           >
-            재배 작물 추가
+            {loading ? "등록 중..." : "재배 작물 추가"}
           </button>
+          {error && <div className="text-red-500 text-sm pb-5">{error}</div>}
         </div>
       </div>
     </form>
