@@ -1,17 +1,16 @@
 "use client";
 
-import { useLogout } from "../model/Logout";
+import { signOut } from "@/shared/auth/api";
+import { useUserStore } from "@/shared/auth/useUserStore";
 import { useRouter } from "next/navigation";
 
 export default function AuthButton() {
-  const refreshToken =
-    typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
-  const { logout } = useLogout();
+  const { userName } = useUserStore();
   const router = useRouter();
 
   const handleClick = () => {
-    if (refreshToken) {
-      logout();
+    if (userName) {
+      signOut();
     } else {
       router.push("/signIn");
     }
@@ -22,7 +21,7 @@ export default function AuthButton() {
       className="text-xs border border-gray-300 border-1.5 rounded-4xl px-4 py-1 cursor-pointer"
       onClick={handleClick}
     >
-      {refreshToken ? "로그아웃" : "로그인"}
+      {userName ? "로그아웃" : "로그인"}
     </div>
   );
 }
