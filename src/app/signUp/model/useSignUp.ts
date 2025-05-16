@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { signUp } from "@/app/auth/api";
+import { signUp } from "@/shared/auth/api";
 import { useState } from "react";
 import { AxiosError } from "axios";
 

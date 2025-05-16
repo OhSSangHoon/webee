@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { signIn } from "@/app/auth/api";
+import { signIn } from "@/shared/auth/api";
 import { useRouter } from "next/navigation";
 
 type SignInFormValues = {
