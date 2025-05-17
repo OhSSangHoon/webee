@@ -1,8 +1,10 @@
 "use client";
+import { useUserStore } from "@/shared/auth/useUserStore";
 import Image from "next/image";
 
 export default function QuickProfile() {
-  const realName = localStorage.getItem("realName");
+  const { realName } = useUserStore();
+
   return (
     <div className="custom-box flex flex-col mt-10">
       <div className=" flex flex-row justify-start items-end pt-3 pb-7">
