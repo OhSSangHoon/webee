@@ -1,46 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useBusinessProfileForm } from "../model/useBusinessProfileForm";
+import { postBusinessProfile } from "../api/postBusinessProfile";
 
-export default function BusinessProfile() {
-  const [form, setForm] = useState({
-    businessNumber: "",
-    ceoName: "",
-    startDate: "",
-    businessCert: null as File | null,
-    farmName: "",
-    farmCeo: "",
-    farmAddress: "",
-    contact: "",
-    onlineStore: "",
-    inquiryMethod: "",
-    kakaoId: "",
-  });
+export default function BusinessProfileForm() {
+  const {
+    form,
+    file,
+    handleChange,
+    handleFileChange,
+    removeFile,
+    handleInquirySelect,
+  } = useBusinessProfileForm();
 
-  const [file, setFile] = useState<File | null>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
-  };
-
-  const removeFile = () => {
-    setFile(null);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleInquirySelect = (method: "phone" | "kakao") => {
-    setForm((prev) => ({ ...prev, inquiryMethod: method }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const payload = {
+      companyName: form.farmName,
+      businessAddress: form.farmAddress,
+      registrationNumber: form.businessNumber,
+      representativeName: form.ceoName,
+      commencementDate: form.startDate,
+      phoneNumber: form.contact,
+      onlineStoreUrl: form.onlineStore || undefined,
+      kakaoChatUrl:
+        form.inquiryMethod === "kakao" && form.kakaoId
+          ? `https://pf.kakao.com/${form.kakaoId}`
+          : undefined,
+      businessCertificateImage: file ?? undefined,
+    };
+
+    try {
+      const res = await postBusinessProfile(payload);
+      console.log("성공:", res);
+      alert("등록 완료되었습니다!");
+    } catch (error) {
+      console.error(error);
+      alert("등록에 실패했습니다.");
+    }
   };
 
   return (
@@ -85,7 +83,7 @@ export default function BusinessProfile() {
                 value={form.ceoName}
                 onChange={handleChange}
                 className="custom-Input"
-                placeholder="사업자등록번호를 입력하세요"
+                placeholder="대표자명을 입력하세요"
                 required
               />
             </div>
@@ -94,11 +92,11 @@ export default function BusinessProfile() {
                 개업일자 <span className="text-red-500">*</span>
               </label>
               <input
+                type="date"
                 name="startDate"
                 value={form.startDate}
-                onChange={handleFileChange}
+                onChange={handleChange}
                 className="custom-Input"
-                placeholder="사업자등록번호를 입력하세요"
                 required
               />
             </div>
@@ -153,20 +151,7 @@ export default function BusinessProfile() {
                 value={form.farmName}
                 onChange={handleChange}
                 className="custom-Input"
-                placeholder="업체명을을 입력하세요"
-                required
-              />
-            </div>
-            <div>
-              <label className="block">
-                대표자명 <span className="text-red-500">*</span>
-              </label>
-              <input
-                name="farmCeo"
-                value={form.farmCeo}
-                onChange={handleChange}
-                className="custom-Input"
-                placeholder="대표자명을을 입력하세요"
+                placeholder="업체명을 입력하세요"
                 required
               />
             </div>
@@ -177,7 +162,7 @@ export default function BusinessProfile() {
             </label>
             <input
               name="farmAddress"
-              placeholder="주소 검색"
+              placeholder="올바른 주소값을 입력 해 주세요"
               value={form.farmAddress}
               onChange={handleChange}
               className="custom-Input"

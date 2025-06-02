@@ -1,4 +1,7 @@
 "use client";
+
+import { BusinessList } from "./myBusinessList";
+
 export default function MyProfile() {
   const realName = localStorage.getItem("realName");
 
@@ -18,9 +21,7 @@ export default function MyProfile() {
         <div className="flex flex-col gap-2">
           <div>나의 업체 정보</div>
           <div className=" flex flex-row gap-1">
-            <div className="custom-button">길동꿀벌</div>
-            <div className="custom-button">사업장 소재지명</div>
-            <div className="custom-button">2007.05.05</div>
+            <BusinessList />
           </div>
         </div>
         <div className=" flex flex-col gap-2">
