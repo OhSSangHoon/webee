@@ -11,7 +11,7 @@ export async function createProduct(productRequest: productData, imageFiles: Fil
 
     // 이미지 첨부
     imageFiles.forEach((file) => {
-        formData.append('imageFiles', file);
+        formData.append('images', file);
     });
 
     // 상품 등록 API 호출
@@ -24,7 +24,6 @@ export async function createProduct(productRequest: productData, imageFiles: Fil
     return response.data;
 }
 
-
 // 상품 목록 조회 API
 export async function getProducts() {
     const response = await api.get<productResponse>('/products');
@@ -36,4 +35,3 @@ export async function getProductDetail(productId: number) {
     const response = await api.get<productDetailResponse>(`/products/${productId}`);
     return response.data;
 }
-

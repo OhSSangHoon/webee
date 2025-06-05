@@ -1,32 +1,45 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useUserStore } from "@/shared/auth/useUserStore";
 import { useRouter } from "next/navigation";
-import { createProduct } from "@/features/products/api/api";
 import { productData, BeeType } from "@/features/products/model/model";
+import { useBusinessStore } from "@/shared/business/model";
+import { createProduct } from "@/features/products/api/api";
 
 
 export default function ProductsPage() {
   const router = useRouter();
-  const { isLoggedIn } = useUserStore();
+  const { isLoggedIn, userName, realName } = useUserStore();
+  const { list: businessList, fetchList: fetchBusinessList } = useBusinessStore();
   const [isLoading, setIsLoading] = useState(true);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [uploadedImages, setUploadedImages] = useState<{url: string}[]>([]);
   
+  // productData
   const [productData, setProductData] = useState<productData>({
     name: "",
-    price: 0, // 숫자 타입으로 초기화
-    beeType: "" as BeeType, // 타입 캐스팅
+    price: 0,
+    beeType: "" as BeeType,
     content: "",
+    origin: "",
+    transactionType: "",
+    transactionMethod: "",
+    businessId: 0,
   });
 
-  // 토큰 확인
+  // 클라이언트 마운트 확인
   useEffect(() => {
-    console.log(isLoggedIn);
+    setIsClient(true);
+  }, []);
+
+  // 토큰 확인 및 업체 정보 로드
+  useEffect(() => {
+    if(!isClient) return;
 
     const token = localStorage.getItem("accessToken");
     setAuthToken(token);
@@ -38,10 +51,27 @@ export default function ProductsPage() {
       router.replace("/signIn");
     }
 
-  }, [isLoggedIn, router]);
+    // 로그인된 상태라면 업체 정보 불러오기
+    if (isLoggedIn && token) {
+      fetchBusinessList();
+    }
+  }, [isLoggedIn, router, fetchBusinessList, userName, realName]);
+
+  // 업체 목록 로드 완료 후 로그 출력
+  useEffect(() => {
+    if (businessList.length > 0) {
+      // 업체가 하나뿐이면 자동 선택
+      if (businessList.length === 1) {
+        setProductData(prev => ({
+          ...prev,
+          businessId: businessList[0].businessId
+        }));
+      }
+    }
+  }, [businessList]);
 
   // 입력값 변경 처리
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
     if (name === 'price') {
@@ -49,39 +79,44 @@ export default function ProductsPage() {
         ...prev,
         [name]: value ? parseInt(value, 10) : 0,
       }));
+    } else if (name === 'businessId') {
+      const businessId = value ? parseInt(value, 10) : 0;
+      setProductData((prev) => ({
+        ...prev,
+        [name]: businessId,
+      }));
     } else {
       setProductData((prev) => ({
         ...prev,
         [name]: value,
       }));
     }
-  };
+  }, []);
 
   // 이미지 업로드 처리
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    
-    // 선택한 파일들을 imageFiles 상태에 추가
+
     const newFiles = Array.from(files);
+    
     setImageFiles((prev) => [...prev, ...newFiles]);
     
-    // imageFiles 상태에 추가된 파일들을 미리보기 URL로 변환하여 uploadedImages 상태에 추가
     newFiles.forEach(file => {
       const imageUrl = URL.createObjectURL(file);
       setUploadedImages(prev => [...prev, { url: imageUrl }]);
     });
-  };
+  }, []);
 
   // 이미지 삭제 처리
-  const handleDeleteImage = (index: number) => {
+  const handleDeleteImage = useCallback((index: number) => {
     setImageFiles(prev => prev.filter((_, i) => i !== index));
     setUploadedImages(prev => prev.filter((_, i) => i !== index));
     
     if (uploadedImages[index]?.url) {
       URL.revokeObjectURL(uploadedImages[index].url);
     }
-  };
+  }, [uploadedImages]);
 
   // 폼 제출 처리
   const handleSubmit = async (e: React.FormEvent) => {
@@ -93,20 +128,26 @@ export default function ProductsPage() {
     }
 
     // 필수 입력값 확인
-    if (!productData.name || !productData.beeType || productData.price <= 0) {
-      alert("상품명, 벌 종류, 가격은 필수 입력사항입니다.");
+    if (!productData.name || !productData.beeType || productData.price <= 0 || 
+        !productData.origin || !productData.transactionType || !productData.transactionMethod ||
+        !productData.businessId) {
+      alert("모든 필수 입력사항을 작성해주세요. (상품명, 벌 종류, 가격, 원산지, 거래 형태, 거래 방법, 판매 업체)");
+      return;
+    }
+
+    // 선택된 업체가 사용자의 업체인지 확인
+    const selectedBusiness = businessList.find(b => b.businessId === productData.businessId);
+    if (!selectedBusiness) {
+      alert("유효하지 않은 업체가 선택되었습니다.");
       return;
     }
 
     try {
       setIsSubmitting(true);
-      
-      // 상품 생성 API 호출 - Swagger 문서에 맞춰 구현
-      await createProduct(productData, imageFiles);
-
+      const result = await createProduct(productData, imageFiles);
       alert("상품이 성공적으로 등록되었습니다.");
 
-      router.push("/"); // 상품 목록 페이지로 이동
+      router.push("/");
       return;
     } catch (error) {
       console.error("상품 등록 오류:", error);
@@ -136,22 +177,23 @@ export default function ProductsPage() {
                           상품 등록 주의사항
                       </p>
                       <ul className="warning-list">
-                          <li>벌 종류, 가격은 필수 입력 항목입니다.</li>
+                          <li>
+                            상품명, 벌 종류, 가격, 원산지, 거래 형태, 거래 방법, 판매 업체는 필수 입력 항목입니다.
+                          </li>
                           <li>부정확한 정보 기재 시 서비스 이용에 제한이 있을 수 있습니다.</li>
                           <li>타인의 지적 재산권을 침해하는 이미지 사용은 금지됩니다.</li>
                       </ul>
                   </div>
               </div>
+
               {/* 상품 이미지 */}
               <div className="product-title">
                   <p className="font-medium text-[#333333]">상품 이미지</p>
                   <p className="text-red-500 mx-2">*</p>
                   <p className="text-[#6B7280] text-xs font-normal">첫 번째 이미지가 썸네일로 사용됩니다.</p>
               </div>
-              {/* 이미지 업로드 영역 */}
               <div>
                   <div className="flex flex-wrap gap-4">
-                      {/* 업로드된 이미지 표시 */}
                       {uploadedImages.map((image, index) => (
                           <div key={index} className="relative w-25 h-25 border border-gray-300 rounded-md overflow-hidden">
                               <img 
@@ -170,7 +212,6 @@ export default function ProductsPage() {
                               </button>
                           </div>
                       ))}
-                      {/* 이미지 업로드 버튼 */}
                       <div 
                           className="upload-button"
                           onClick={() => document.getElementById('fileInput')?.click()}
@@ -188,6 +229,49 @@ export default function ProductsPage() {
                       </div>
                   </div>
               </div>
+
+              {/* 업체 선택 영역 */}
+              <div className="product-title">
+                  <p className="font-medium text-[#333333]">판매 업체</p>
+                  <p className="text-red-500 mx-2">*</p>
+                  <p className="text-[#6B7280] text-xs font-normal">
+                    {businessList.length > 0 
+                      ? `${businessList.length}개의 등록된 업체 중 선택하세요.`
+                      : "등록된 업체가 없습니다."
+                    }
+                  </p>
+              </div>
+              <div className="">
+                  {businessList.length > 0 ? (
+                    <select 
+                        name="businessId" 
+                        id="businessId" 
+                        className="add-input"
+                        value={productData.businessId || ''}
+                        onChange={handleInputChange}
+                        required
+                    >
+                        <option value="">업체를 선택하세요.</option>
+                        {businessList.map((business) => (
+                          <option key={business.businessId} value={business.businessId}>
+                            {business.companyName} - {business.businessAddress}
+                          </option>
+                        ))}
+                    </select>
+                  ) : (
+                    <div className="add-input bg-gray-100 text-gray-500 cursor-not-allowed">
+                      등록된 업체 정보가 없습니다. 먼저 업체를 등록해주세요.
+                      <button 
+                        type="button"
+                        className="ml-2 text-blue-500 underline"
+                        onClick={() => router.push('/business/register')}
+                      >
+                        업체 등록하기
+                      </button>
+                    </div>
+                  )}
+              </div>
+              
               {/* 상품 정보 입력 영역 */}
               <div className="product-title">
                   <p className="font-medium text-[#333333]">상품명</p>
@@ -201,8 +285,10 @@ export default function ProductsPage() {
                       placeholder="상품명을 입력해주세요." 
                       value={productData.name}
                       onChange={handleInputChange}
+                      required
                   />
               </div>
+
               {/* 꿀벌 종류 입력 영역 */}
               <div className="product-title">
                   <p className="font-medium text-[#333333]">벌 종류</p>
@@ -215,6 +301,7 @@ export default function ProductsPage() {
                       className="add-input"
                       value={productData.beeType}
                       onChange={handleInputChange}
+                      required
                   >
                       <option value="">벌 종류를 선택하세요.</option>
                       <option value="HONEYBEE">꿀벌</option>
@@ -223,6 +310,7 @@ export default function ProductsPage() {
                       <option value="MASON_BEE">머리뿔가위벌</option>
                   </select>
               </div>
+
               {/* 가격 입력 영역 */}
               <div className="product-title">
                   <p className="font-medium text-[#333333]">가격</p>
@@ -236,8 +324,70 @@ export default function ProductsPage() {
                       placeholder="가격을 입력해주세요." 
                       value={productData.price === 0 ? "" : productData.price}
                       onChange={handleInputChange}
+                      required
                   />
               </div>
+              
+              {/* 원산지 입력 영역 */}
+              <div className="product-title">
+                  <p className="font-medium text-[#333333]">원산지</p>
+                  <p className="text-red-500 mx-2">*</p>
+              </div>
+              <div className="">
+                  <select 
+                      name="origin" 
+                      id="origin" 
+                      className="add-input"
+                      value={productData.origin}
+                      onChange={handleInputChange}
+                      required
+                  >
+                      <option value="">원산지를 선택하세요.</option>
+                      <option value="국내산">국내산</option>
+                      <option value="해외산">해외산</option>
+                  </select>
+              </div>
+              
+              {/* 거래 형태 입력 영역 */}
+              <div className="product-title">
+                  <p className="font-medium text-[#333333]">거래 형태</p>
+                  <p className="text-red-500 mx-2">*</p>
+              </div>
+              <div className="">
+                  <select 
+                      name="transactionType" 
+                      id="transactionType" 
+                      className="add-input"
+                      value={productData.transactionType}
+                      onChange={handleInputChange}
+                      required
+                  >
+                      <option value="">거래 형태를 선택하세요.</option>
+                      <option value="구매">구매</option>
+                      <option value="임대">임대</option>
+                  </select>
+              </div>
+              
+              {/* 거래 방법 입력 영역 */}
+              <div className="product-title">
+                  <p className="font-medium text-[#333333]">거래 방법</p>
+                  <p className="text-red-500 mx-2">*</p>
+              </div>
+              <div className="">
+                  <select 
+                      name="transactionMethod" 
+                      id="transactionMethod" 
+                      className="add-input"
+                      value={productData.transactionMethod}
+                      onChange={handleInputChange}
+                      required
+                  >
+                      <option value="">거래 방법을 선택하세요.</option>
+                      <option value="온라인">온라인</option>
+                      <option value="오프라인">오프라인</option>
+                  </select>
+              </div>
+              
               {/* 상품 설명 입력 영역 */}
               <div className="product-title">
                   <p className="font-medium text-[#333333]">상세 정보</p>
@@ -248,22 +398,18 @@ export default function ProductsPage() {
                       id="content" 
                       className="w-full h-55 p-5 tracking-wide leading-relaxed
                       border border-[#E2E5EB] rounded-md resize-none" 
-                      placeholder={`상품 소개 양식
-관리 방법:
-거래 형태: (임대 / 구매)
-거래 방법: (온라인 / 오프라인)
-원산지: 국내 / 해외
-                      `}
+                      placeholder="상품에 대한 상세한 정보를 입력해주세요."
                       value={productData.content} 
                       onChange={handleInputChange}
                   />
               </div>
+
               {/* 등록 버튼 */}
               <div className="w-full flex justify-end">
                   <button 
                       type="submit" 
                       className="submit-button"
-                      disabled={isSubmitting || !authToken}
+                      disabled={isSubmitting || !authToken || businessList.length === 0}
                   >
                       {isSubmitting ? '등록 중...' : '등록하기'}
                   </button>
