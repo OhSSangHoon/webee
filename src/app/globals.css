@@ -62,7 +62,7 @@ body {
   transition: all 0.3s ease;
   cursor: pointer;
   font-weight: 500;
-  width: fit-content;
+  width: max-content;
   height: fit-content;
   font-size: 12px;
 }
@@ -125,4 +125,25 @@ body {
 .auth-label {
   /*auth 인풋 라벨*/
   @appply "mb-1 text-sm font-medium ";
+}
+
+/* 기본 상태: 스크롤바 투명 */
+.scrollbar-hide::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  opacity: 0;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* hover 시: 스크롤바 보이게 */
+.group:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+.group:hover::-webkit-scrollbar-thumb {
+  background-color: #3b82f6; /*blue-500*/
+  border-radius: 4px;
 }

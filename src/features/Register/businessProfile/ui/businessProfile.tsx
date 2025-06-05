@@ -2,8 +2,12 @@
 
 import { useBusinessProfileForm } from "../model/useBusinessProfileForm";
 import { postBusinessProfile } from "../api/postBusinessProfile";
+import { PostcodeModal } from "./PostcodeModal";
+import { useState } from "react";
 
 export default function BusinessProfileForm() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState("");
   const {
     form,
     file,
@@ -18,7 +22,7 @@ export default function BusinessProfileForm() {
 
     const payload = {
       companyName: form.farmName,
-      businessAddress: form.farmAddress,
+      businessAddress: selectedAddress,
       registrationNumber: form.businessNumber,
       representativeName: form.ceoName,
       commencementDate: form.startDate,
@@ -160,14 +164,24 @@ export default function BusinessProfileForm() {
             <label className="block">
               양봉장 위치 <span className="text-red-500">*</span>
             </label>
-            <input
-              name="farmAddress"
-              placeholder="올바른 주소값을 입력 해 주세요"
-              value={form.farmAddress}
-              onChange={handleChange}
-              className="custom-Input"
-              required
-            />
+            <div className="flex flex-row justify-center items-center gap-5">
+              <button
+                onClick={() => setIsOpen(true)}
+                className=" px-4 py-2 h-fit rounded-sm  border-blue-500 border-2 text-blue-500 w-30 hover:border-black hover:text-black"
+              >
+                주소 검색
+              </button>
+              <div className="custom-Input"> 주소: {selectedAddress}</div>
+              {isOpen && (
+                <PostcodeModal
+                  setIsOpen={setIsOpen}
+                  onComplete={(address) => {
+                    console.log("선택된 주소:", address);
+                    setSelectedAddress(address); // 필요한 로직 수행
+                  }}
+                />
+              )}
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>

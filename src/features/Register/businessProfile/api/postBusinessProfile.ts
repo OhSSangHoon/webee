@@ -22,8 +22,8 @@ export async function postBusinessProfile(data: BusinessProfilePayload) {
     representativeName: data.representativeName,
     commencementDate: data.commencementDate,
     phoneNumber: data.phoneNumber,
-    onlineStoreUrl: "https://smartstore.naver.com/honeybee",
-    kakaoChatUrl: "https://pf.kakao.com/_abcdef",
+    onlineStoreUrl: data.onlineStoreUrl,
+    kakaoChatUrl: data.kakaoChatUrl,
   };
 
   formData.append(
