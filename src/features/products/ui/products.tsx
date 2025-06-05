@@ -61,7 +61,7 @@ export default function ProductsPage() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-
+    
     // 선택한 파일들을 imageFiles 상태에 추가
     const newFiles = Array.from(files);
     setImageFiles((prev) => [...prev, ...newFiles]);
