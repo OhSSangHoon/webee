@@ -20,7 +20,7 @@ export interface BusinessDetail extends BusinessSummary {
 }
 
 export async function getBusinessList(): Promise<BusinessSummary[]> {
-  const res = await api.get("/profile/business");
+  const res = await api.get("/profile/business/me");
   return res.data.data;
 }
 

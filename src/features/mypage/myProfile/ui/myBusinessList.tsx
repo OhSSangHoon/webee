@@ -24,7 +24,7 @@ export function BusinessList() {
   };
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1 mb-2">
       {businessList.map((b) => (
         <div
           key={b.businessId}

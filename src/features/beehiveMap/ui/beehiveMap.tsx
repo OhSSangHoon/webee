@@ -1,7 +1,7 @@
 export default function BeehiveMap() {
   return (
-    <div className=" custom-box w-[75%] max-w-[1047px] h-[260px] flex flex-row justify-between items-center">
-      <div className="h-full">
+    <div className=" custom-box max-w-[1047px]  flex flex-row justify-between items-center h-full ">
+      <div className="">
         <div className="text-[18px] mb-5">경북 고령군</div>
         <div className="grid grid-cols-2 grid-rows-2 gap-4">
           <div>
@@ -22,7 +22,7 @@ export default function BeehiveMap() {
           </div>
         </div>
       </div>
-      <div className="w-[60%] h-full bg-[#D9D9D9] rounded-md">
+      <div className="w-[60%] h-[90%]  bg-[#D9D9D9] rounded-md">
         벌통 설치 위치 추천 지도
       </div>
     </div>
