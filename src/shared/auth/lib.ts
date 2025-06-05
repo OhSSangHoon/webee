@@ -2,7 +2,7 @@ import axios from "axios";
 import { reissue, signOut } from "./api";
 
 const api = axios.create({
-  baseURL: "https://api.webee.sbs/api/v1/",
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
   withCredentials: true, // 쿠키에 담긴 RT 자동 포함. 쿠키 기반 RT 사용 시 필요
   headers: {
     "Content-Type": "application/json",

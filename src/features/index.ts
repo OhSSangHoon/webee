@@ -15,3 +15,14 @@ export { default as BusinessProfile } from "./Register/businessProfile/ui/busine
 export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
 
 export { default as Logout } from "./Logout/ui/Logout";
+
+
+/* 상품 등록 */
+export { default as Products } from "./products/ui/products";
+
+/* 상품 상세 */
+export { default as ProductDetail } from "./products/ui/productsDetail";
+
+
+/* 업체 검색 */
+export { default as Search } from "./search/ui/search";
