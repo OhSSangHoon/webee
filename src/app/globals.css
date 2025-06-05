@@ -127,6 +127,7 @@ body {
   @appply "mb-1 text-sm font-medium ";
 }
 
+/*투명 스크롤바 디자인*/
 /* 기본 상태: 스크롤바 투명 */
 .scrollbar-hide::-webkit-scrollbar {
   width: 10px;
