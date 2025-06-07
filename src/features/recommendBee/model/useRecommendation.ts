@@ -1,29 +1,25 @@
+// 수정벌 추천 훅 
 import { create } from "zustand";
-import { CropFormDataForRecommend } from "@/shared/types/crop";
+import { CropFormDataForRecommend, BeeResult } from "@/shared/types/crop";
 import { postRecommendation } from "../api";
-
-type BeeResult = {
-  beeType: string;
-  inputStartDate: string;
-  inputEndDate: string;
-  characteristics: string[];
-  caution: string[];
-  usageTip: string[];
-};
 
 type RecommendBeeState = {
   resultData: BeeResult;
   loading: boolean;
   error: string | null;
   isSuccess: boolean;
+  cropName: string;
+  cultivationAddress: string;
+  cultivationType: string;
   submitCropInfo: (formData: CropFormDataForRecommend) => Promise<void>;
 };
 
+// zustand로 추천 내용 관리 
 export const useRecommendBee = create<RecommendBeeState>((set) => ({
   resultData: {
     beeType: "서양 뒤영벌",
-    inputStartDate: "2025.05.11",
-    inputEndDate: "2025.05.15",
+    inputStartDate: "2025-05-11",
+    inputEndDate: "2025-05-15",
     characteristics: [
       "온순한 성질로 관리 용이",
       "질병 저항성이 강함",
@@ -43,9 +39,19 @@ export const useRecommendBee = create<RecommendBeeState>((set) => ({
   loading: false,
   error: null,
   isSuccess: false,
-
+  cropName: "",
+  cultivationAddress: "",
+  cultivationType: "CONTROLLED",
   submitCropInfo: async (formData: CropFormDataForRecommend) => {
-    set({ loading: true, error: null, isSuccess: false });
+    set({
+      loading: true,
+      error: null,
+      isSuccess: false,
+      cropName: formData.name,
+      cultivationAddress: formData.cultivationAddress,
+      cultivationType: formData.cultivationType,
+       // 작물 정보는 formData에서 가져옴. 추후 추천 내용 저장 시 필요한 정보.  
+    });
     try {
       const response = await postRecommendation(formData);
       if (response?.data) {

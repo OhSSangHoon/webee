@@ -26,3 +26,12 @@ export interface Crop {
   cultivationArea?: number;
   plantingDate?: string;
 }
+
+export interface BeeResult {
+  beeType: string;
+  inputStartDate: string;
+  inputEndDate: string;
+  characteristics: string[];
+  caution: string[];
+  usageTip: string[];
+}

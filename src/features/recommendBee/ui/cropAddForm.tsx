@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRecommendBee } from "../model";
+import { useRecommendBee } from "../model/useRecommendation";
 
 export default function CropInfo() {
   const { submitCropInfo, loading, error, isSuccess } = useRecommendBee();
+
+  
+
   const [form, setForm] = useState({
     name: "",
     variety: "",
@@ -13,18 +16,6 @@ export default function CropInfo() {
     cultivationArea: "",
     plantingDate: "",
   });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await submitCropInfo(form);
-  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -38,6 +29,19 @@ export default function CropInfo() {
       });
     }
   }, [isSuccess]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await submitCropInfo(form);
+  };
+
   return (
     <form
       className=" flex flex-col justify-center items-stretch w-full h-full gap-4 card-section"
