@@ -15,3 +15,9 @@ export { default as BusinessProfile } from "./Register/businessProfile/ui/busine
 export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
 
 export { default as Logout } from "./Logout/ui/Logout";
+
+export { default as Crops } from "./crops/ui/cropsUI";
+
+export { default as AiDoctor } from "./AiDoctor/ui/AiDoctUi";
+
+export { default as AiDiagnosis } from "./AiDiagnosis/ui/AiDiagnosisUi";

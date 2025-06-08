@@ -6,7 +6,7 @@ import {
   RecommendedList,
 } from "@/features";
 
-export default function myPage() {
+export default function MyPage() {
   return (
     <div className="max-w-[75%] flex flex-col gap-8 mx-auto mb-20  mt-10">
       <div className="w-full grid grid-cols-[4fr_1fr] gap-7 h-[260px]">
