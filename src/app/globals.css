@@ -1,9 +1,11 @@
 @import "tailwindcss";
+
 :root {
   --background: #ffffff;
   --foreground: #ffffff;
   width: 100%;
 }
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -76,7 +78,7 @@ body {
 /*
 *기본 흰색 박스*/
 .custom-box {
-  @apply bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px];
+  @apply  basis-[30%] bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px] p-5 font-medium;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 .custom-box-shadow {
@@ -136,6 +138,7 @@ body {
   @appply "mb-1 text-sm font-medium ";
 }
 
+
 /*투명 스크롤바 디자인*/
 /* 기본 상태: 스크롤바 투명 */
 .scrollbar-hide::-webkit-scrollbar {
@@ -157,3 +160,57 @@ body {
   background-color: #3b82f6; /*blue-500*/
   border-radius: 4px;
 }
+
+@layer components {
+
+  /* 카드 상단 배경 */
+  .card-top{
+    @apply bg-[#EEF2FF] rounded-t-xl;
+  }
+
+  /* 카드 그림자 */
+  .shadow-custom {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  /* 카드 타이틀 */
+  .card-title {
+    @apply text-lg font-medium text-[#333333];
+  }
+
+  /* 주의사항 박스 */
+  .warning {
+    @apply p-5 bg-[#FFFBEB] rounded-xl h-[134px] flex;
+  }
+
+  /* 주의사항 타이틀 */
+  .warning-title {
+    @apply text-[#92400E] font-normal;
+  }
+
+  /* 주의사항 리스트 */
+  .warning-list {
+    @apply text-[#6B7280] text-sm font-normal mt-2 list-disc list-inside space-y-1;
+  }
+
+  /* 상품 정보 입력 영역 */
+  .product-title {
+    @apply w-full flex flex-row items-center mt-10 mb-2;
+  }
+
+  /* 이미지 업로드 버튼 */
+  .upload-button {
+    @apply w-25 h-25 flex flex-col items-center justify-center rounded-md cursor-pointer border-2 border-dashed border-[#E2E5EB];
+  }
+
+  /* 인풋 박스 */
+  .add-input {
+    @apply w-full h-10 rounded-md border border-[#E2E5EB] px-4 text-[#333333];
+  }
+
+  /* 등록 버튼 */
+  .submit-button {
+    @apply w-1/4 h-10 bg-blue-500 text-white rounded-md mt-5 flex items-center justify-center;
+  }
+}
+
