@@ -116,6 +116,15 @@ body {
   font-size: 12px;
 }
 
+/* 모달 창 */
+.card-section {
+  @apply h-screen max-w-[580px] max-h-[57rem] bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+}
+
+.card-section-2 {
+  @apply h-screen max-w-[580px] bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+}
+
 /*
 *auth 용 디자인
 */

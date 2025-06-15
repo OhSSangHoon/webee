@@ -16,13 +16,20 @@ export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
 
 export { default as Logout } from "./Logout/ui/Logout";
 
+/* 저장된 작물정보 모달*/
+export { default as Crops } from "./crops/ui/cropsUI";
+
+/* AI 닥터 */
+export { default as AiDoctor } from "./AiDoctor/ui/AiDoctUi";
+
+/* AI 진단 */
+export { default as AiDiagnosis } from "./AiDiagnosis/ui/AiDiagnosisUi";
 
 /* 상품 등록 */
 export { default as Products } from "./products/ui/products";
 
 /* 상품 상세 */
 export { default as ProductDetail } from "./products/ui/productsDetail";
-
 
 /* 업체 검색 */
 export { default as Search } from "./search/ui/search";
