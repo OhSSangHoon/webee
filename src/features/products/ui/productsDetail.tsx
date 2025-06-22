@@ -3,29 +3,23 @@
 import { useRouter } from "next/navigation";
 import { ProductDetailProps } from "../model/model";
 import { useProductDetail } from "../hooks/useProductDetail";
-import { getProductDetail } from "../api/api";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getBusinessDetail, BusinessDetail } from "@/shared/business/api";
+import ReviewSection from "@/features/reviews/ui/ReviewsSection";
+import { useEffect, useState } from "react";
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
   const router = useRouter();
   const { product, isLoading, error, getBeeTypeKorean } = useProductDetail(productId);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [businessInfo, setBusinessInfo] = useState<BusinessDetail | null>(null);
   const [businessLoading, setBusinessLoading] = useState(true);
-  const [businessError, setBusinesError] = useState<string | null>(null);
+  const [businessError, setBusinessError] = useState<string | null>(null);
+  const [imagePositions, setImagePositions] = useState([0, 1, 2, 3, 4]);
 
   // 뒤로 가기 버튼 처리
   const handleGoBack = () => {
     router.back();
   };
-
-  // 상품 정보 로드
-  useEffect(() => {
-    console.log("상품 정보 로드 시작 - productId:", productId);
-    getProductDetail(productId);
-  }, [productId]);
 
   // 업체 정보 로드
   useEffect(() => {
@@ -37,21 +31,21 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           console.log("업체 정보 요청 - businessId:", product.businessId);
           
           setBusinessLoading(true);
-          setBusinesError(null);
+          setBusinessError(null);
           
           const businessData = await getBusinessDetail(product.businessId);
           console.log("업체 정보 응답:", businessData);
           setBusinessInfo(businessData);
         } catch (error) {
           console.error("업체 정보 로드 실패:", error);
-          setBusinesError("업체 정보를 불러올 수 없습니다.");
+          setBusinessError("업체 정보를 불러올 수 없습니다.");
         } finally {
           setBusinessLoading(false);
         }
       } else {
         console.log("businessId가 없습니다.");
         setBusinessLoading(false);
-        setBusinesError("업체 정보가 없습니다.");
+        setBusinessError("업체 정보가 없습니다.");
       }
     };
 
@@ -62,7 +56,10 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
   if (isLoading) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <p className="text-lg">상품 정보를 불러오는 중...</p>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+          <p className="text-lg">상품 정보를 불러오는 중...</p>
+        </div>
       </div>
     );
   }
@@ -91,7 +88,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           <div className="flex-1 aspect-square bg-gray-200 rounded-lg overflow-hidden">
             {product.imageUrls && product.imageUrls.length > 0 ? (
               <Image
-                src={product.imageUrls[selectedImageIndex]} 
+                src={product.imageUrls[imagePositions[0]]} 
                 alt={`${product.name} 메인 이미지`}
                 width={400}
                 height={400}
@@ -110,19 +107,39 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           {/* 썸네일 그리드 2x2 */}
           {product.imageUrls && product.imageUrls.length > 1 && (
             <div className="grid gap-2">
-              {product.imageUrls
-                .map((imageUrl, index) => ({ imageUrl, index }))
-                .filter(({ index }) => index !== selectedImageIndex)
-                .slice(0, 4)
-                .map(({ imageUrl, index }) => (
+              {[1, 2, 3, 4].map((thumbnailIndex) => {
+                const displayImageIndex = imagePositions[thumbnailIndex];
+                const displayImageUrl = product.imageUrls[displayImageIndex];
+
+                if (!displayImageUrl) {
+                  return (
+                    <div 
+                      key={`empty-${thumbnailIndex}`}
+                      className="aspect-square bg-gray-300 rounded-lg"
+                    />
+                  );
+                }
+
+                return (
                   <div 
-                    key={index} 
+                    key={thumbnailIndex} 
                     className="aspect-square bg-gray-200 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200 border-transparent opacity-70 hover:opacity-100"
-                    onClick={() => setSelectedImageIndex(index)}
+                    onClick={() => {
+                      // 교환 로직
+                      const newPositions = [...imagePositions];
+                      const currentMain = newPositions[0];
+                      const clickedImage = newPositions[thumbnailIndex];
+                      
+                      // 메인과 클릭한 썸네일 교환
+                      newPositions[0] = clickedImage;
+                      newPositions[thumbnailIndex] = currentMain;
+                      
+                      setImagePositions(newPositions);
+                    }}
                   >
                     <Image
-                      src={imageUrl} 
-                      alt={`${product.name} 썸네일 ${index + 1}`}
+                      src={displayImageUrl} 
+                      alt={`${product.name} 썸네일 ${thumbnailIndex + 1}`}
                       width={76}
                       height={76}
                       style={{ objectFit: 'cover' }}
@@ -130,23 +147,11 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                       loading="eager"
                     />
                   </div>
-                ))}
-              
-              {/* 빈 자리 채우기 */}
-              {product.imageUrls.length > 1 && 
-                Array.from({ 
-                  length: Math.max(0, 4 - (product.imageUrls.length - 1)) 
-                }).map((_, emptyIndex) => (
-                  <div 
-                    key={`empty-${emptyIndex}`}
-                    className="aspect-square bg-gray-300 rounded-lg"
-                  />
-                ))
-              }
+                );
+              })}
             </div>
           )}
         </div>
-
         {/* 상품 정보 섹션 */}
         <div className="flex flex-col justify-between">
           {/* 상품 기본 정보 */}
@@ -206,18 +211,19 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                   <span className="w-15 text-gray-500">전화번호:</span>
                   <span>{businessInfo.phoneNumber}</span>
                 </div>
-                <div className="flex">
-                  <span className="w-20 text-gray-500">온라인스토어:</span>
-                    <a 
-                      href={businessInfo.onlineStoreUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
-                    >
-                      바로가기
-                    </a>
-                </div>
-
+                {businessInfo.onlineStoreUrl && (
+                  <div className="flex">
+                    <span className="w-20 text-gray-500">온라인스토어:</span>
+                      <a 
+                        href={businessInfo.onlineStoreUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline"
+                      >
+                        바로가기
+                      </a>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-sm text-gray-500">
@@ -236,14 +242,16 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         <div className="flex flex-row justify-between items-center mb-4">
           <h2 className="text-xl font-bold">상품 상세정보</h2>
           <div className="flex items-center gap-2">
-            <a 
-              href={businessInfo?.kakaoChatUrl || ""} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              문의하기
-            </a>
+            {businessInfo?.kakaoChatUrl && (
+              <a 
+                href={businessInfo.kakaoChatUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                문의하기
+              </a>
+            )}
           </div>
         </div>
         <div className="bg-gray-50 p-8 rounded-lg">
@@ -253,35 +261,8 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* 댓글/후기 섹션 */}
-      <div className="mt-16">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">후기</h2>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
-            후기작성
-          </button>
-        </div>
-
-        {/* 샘플 후기들 */}
-        <div className="space-y-4">
-          {[1, 2, 3, 4, 5].map((index) => (
-            <div key={index} className="flex space-x-4 p-4 bg-gray-50 rounded-lg">
-              <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium">김**</span>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center space-x-2 mb-1">
-                  <span className="font-medium">김**벌</span>
-                  <span className="text-sm text-gray-500">2023.06.12</span>
-                </div>
-                <p className="text-gray-700">
-                  벌이 이렇게 좋을 줄은 몰랐네요 관리인분도 친절하십니다!
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* 리뷰 섹션 */}
+      <ReviewSection productId={productId} />
     </div>
   );
 }

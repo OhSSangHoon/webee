@@ -5,20 +5,55 @@ import { useRouter } from 'next/navigation';
 import { getProducts } from '@/features/products/api/api';
 import { getBusinessDetail } from '@/shared/business/api';
 import { product } from '@/features/products/model/model';
-
-// 업체 정보를 포함한 상품 타입
-interface ProductWithBusiness extends product {
-  businessAddress?: string;
-  companyName?: string;
-}
+import { BusinessSidebar } from './BusinessSidebar';
+import { getAllProducts } from '../api/api';
+import { ProductWithBusiness } from '@/features/search/model/model';
 
 export default function Search() {
   const router = useRouter();
-  const [, setProducts] = useState<ProductWithBusiness[]>([]);
+  const [allProducts, setAllProducts] = useState<ProductWithBusiness[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<ProductWithBusiness[]>([]);
+  
+  // 사이드바 관련 상태
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedBusinessId, setSelectedBusinessId] = useState<number | null>(null);
+  const [selectedProductName, setSelectedProductName] = useState('');
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
+  // 업체 정보 상태
+  const [businessInfo, setBusinessInfo] = useState<any>(null);
+  const [businessLoading, setBusinessLoading] = useState(false);
+  const [businessError, setBusinessError] = useState<string | null>(null);
+
+  // 선택된 업체 정보 조회
+  useEffect(() => {
+    const fetchBusinessInfo = async () => {
+      if (!selectedBusinessId) {
+        setBusinessInfo(null);
+        return;
+      }
+
+      setBusinessLoading(true);
+      setBusinessError(null);
+      
+      try {
+        const info = await getBusinessDetail(selectedBusinessId);
+        setBusinessInfo(info);
+      } catch (error) {
+        console.error('업체 정보 조회 실패:', error);
+        setBusinessError('업체 정보를 불러올 수 없습니다.');
+        setBusinessInfo(null);
+      } finally {
+        setBusinessLoading(false);
+      }
+    };
+
+    fetchBusinessInfo();
+  }, [selectedBusinessId]);
+
+  // 초기 데이터 로딩
   useEffect(() => {
     const fetchProductsWithBusinessInfo = async () => {
       try {
@@ -52,7 +87,7 @@ export default function Search() {
           )
           .map(result => result.value);
 
-        setProducts(successfulProducts);
+        setAllProducts(successfulProducts);
         setFilteredProducts(successfulProducts);
       } catch (error) {
         console.error('상품 데이터 가져오기 실패:', error);
@@ -64,17 +99,44 @@ export default function Search() {
     fetchProductsWithBusinessInfo();
   }, []);
 
-  // 상품 클릭 시 상세 페이지로 이동
-  const handleProductClick = (productId: number) => {
-    console.log('상품 클릭:', productId);
-    router.push(`/products/${productId}`);
+  // 검색 기능
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredProducts(allProducts);
+      return;
+    }
+
+    const filtered = allProducts.filter(product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (product.companyName && product.companyName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (product.businessAddress && product.businessAddress.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    setFilteredProducts(filtered);
+  }, [searchTerm, allProducts]);
+
+  // 상품 클릭 시 사이드바 열기
+  const handleProductClick = (product: ProductWithBusiness) => {
+    console.log('상품 클릭:', product.name, 'businessId:', product.businessId);
+    setSelectedBusinessId(product.businessId);
+    setSelectedProductName(product.name);
+    setSelectedProductId(product.id);
+    setSidebarOpen(true);
+  };
+
+  // 사이드바 닫기
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+    setSelectedBusinessId(null);
+    setSelectedProductName('');
+    setSelectedProductId(null);
+    setBusinessInfo(null);
+    setBusinessError(null);
   };
 
   // 주소 축약 함수
   const getShortAddress = (address?: string) => {
     if (!address) return '주소 정보 없음';
     
-    // "경상북도 경산시 압량읍 김유신로11" → "경북 경산시 압량읍"
     const parts = address.split(' ');
     if (parts.length >= 3) {
       return `${parts[0]} ${parts[1]} ${parts[2]}`;
@@ -94,9 +156,9 @@ export default function Search() {
   }
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row relative">
       {/* 검색 영역 */}
-      <div className="w-[20%] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB]">
+      <div className="w-[20%] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
         {/* 검색 입력 */}
         <div className="w-full flex flex-col">
           <div className="relative my-10 px-10">
@@ -119,6 +181,7 @@ export default function Search() {
             </button>
           </div>
         </div>
+        
         {/* 상품 리스트 */}
         <div className="w-full flex-1 overflow-y-auto">
           {filteredProducts.length === 0 ? (
@@ -130,7 +193,7 @@ export default function Search() {
               <div 
                 key={product.id} 
                 className="w-full min-h-[110px] border-b border-[#EEF2FF] flex flex-col justify-between px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={() => handleProductClick(product.id)}
+                onClick={() => handleProductClick(product)}
               >
                 <div className="flex flex-row justify-between items-center flex-1">
                   <p className="text-[#333333] font-medium text-base leading-tight mb-1">
@@ -142,11 +205,11 @@ export default function Search() {
                   <div className="flex flex-row items-center">
                     <img src="/Location.svg" alt="location" className="w-3 h-3 mr-1"/>
                     <p className="text-[#6B7280] text-xs">
-                      {getShortAddress(product.businessAddress) || '주소 미기재'}
+                      {getShortAddress(product.businessAddress)}
                     </p>
                   </div>
                   <p className="text-[#6B7280] text-xs">
-                    리뷰
+                    업체정보
                   </p>
                 </div>
               </div>
@@ -159,12 +222,24 @@ export default function Search() {
       <div className="w-[80%] h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-blue-500">
         <p className="text-white text-2xl">지도 영역</p>
         <p className="text-white text-sm mt-2">
-          왼쪽 상품 리스트를 클릭하면 상세 페이지로 이동합니다
+          왼쪽 상품 리스트를 클릭하면 업체 정보 사이드바가 나타납니다
         </p>
         <p className="text-white text-xs mt-1">
           각 상품의 실제 업체 주소가 표시됩니다
         </p>
       </div>
+
+      {/* 업체 정보 사이드바 */}
+      <BusinessSidebar
+        isOpen={sidebarOpen}
+        onClose={handleCloseSidebar}
+        businessInfo={businessInfo}
+        isLoading={businessLoading}
+        error={businessError}
+        productName={selectedProductName}
+        productId={selectedProductId}
+        selectedBusinessId={selectedBusinessId}
+      />
     </div>
   );
 }
