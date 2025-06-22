@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ReviewListProps } from '../model/model';
+import { Review, ReviewListProps } from '../model/model';
 import { updateReview, deleteReview } from '../api/api';
 import { useUserStore } from '@/shared/auth/useUserStore';
 
@@ -56,7 +56,7 @@ export default function ReviewList({
   };
 
   // 현재 사용자가 리뷰 작성자인지 확인 (userName 비교)
-  const isAuthor = (review: any) => {
+  const isAuthor = (review: Review) => {
     if (!isLoggedIn || !userName) return false;
     
     // 리뷰 작성자의 nickname과 현재 사용자의 userName 비교

@@ -1,12 +1,28 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { getAllProducts } from '@/features/search/api/api';
-import { getBusinessDetail } from '@/shared/business/api';
+import { BusinessDetail, getBusinessDetail } from '@/shared/business/api';
 import { product } from '@/features/products/model/model';
 import { BusinessSidebar } from './BusinessSidebar';
 import { ProductWithBusiness } from '@/features/search/model/model';
 import { Maps } from './Map';
+
+// 업체 정보 타입 정의
+interface BusinessInfo {
+  businessId: number;
+  companyName: string;
+  businessAddress: string;
+  phoneNumber?: string;
+  businessType?: string;
+  description?: string;
+  registrationNumber?: string;
+  representativeName?: string;
+  commencementDate?: string;
+  latitude?: number;
+  longitude?: number;
+}
 
 export default function Search() {
   const [loading, setLoading] = useState(true);
@@ -21,8 +37,8 @@ export default function Search() {
   // 선택된 물품 전체 정보 저장
   const [selectedProduct, setSelectedProduct] = useState<ProductWithBusiness | null>(null);
 
-  // 업체 정보 상태
-  const [businessInfo, setBusinessInfo] = useState<any>(null);
+  // 업체 정보 상태 (any 타입 제거)
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(null);
   const [businessLoading, setBusinessLoading] = useState(false);
   const [businessError, setBusinessError] = useState<string | null>(null);
 
@@ -40,7 +56,8 @@ export default function Search() {
       try {
         const info = await getBusinessDetail(selectedBusinessId);
         setBusinessInfo(info);
-      } catch (error) {
+      } catch (fetchError) {
+        console.error('업체 정보 조회 실패:', fetchError);
         setBusinessError('업체 정보를 불러올 수 없습니다.');
         setBusinessInfo(null);
       } finally {
@@ -70,8 +87,8 @@ export default function Search() {
                 };
               }
               return product;
-            } catch (error) {
-              console.error(`업체 정보 조회 실패 (businessId: ${product.businessId}):`, error);
+            } catch (productError) {
+              console.error(`업체 정보 조회 실패 (businessId: ${product.businessId}):`, productError);
               return product;
             }
           })
@@ -84,8 +101,8 @@ export default function Search() {
           .map(result => result.value);
 
         setFilteredProducts(successfulProducts);
-      } catch (error) {
-        console.error('상품 데이터 가져오기 실패:', error);
+      } catch (generalError) {
+        console.error('상품 데이터 가져오기 실패:', generalError);
       } finally {
         setLoading(false);
       }
@@ -93,7 +110,6 @@ export default function Search() {
 
     fetchProductsWithBusinessInfo();
   }, []);
-
 
   // 상품 클릭 시 즉시 지도 이동을 위한 데이터 설정
   const handleProductClick = (product: ProductWithBusiness) => {
@@ -195,7 +211,14 @@ export default function Search() {
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <div className="flex flex-row items-center">
-                    <img src="/Location.svg" alt="location" className="w-3 h-3 mr-1"/>
+                    {/* img 태그를 Next.js Image로 변경 */}
+                    <Image 
+                      src="/Location.svg" 
+                      alt="location" 
+                      width={12}
+                      height={12}
+                      className="mr-1"
+                    />
                     <p className="text-[#6B7280] text-xs">
                       {getShortAddress(product.businessAddress)}
                     </p>
@@ -224,7 +247,7 @@ export default function Search() {
       <BusinessSidebar
         isOpen={sidebarOpen}
         onClose={handleCloseSidebar}
-        businessInfo={businessInfo}
+        businessInfo={businessInfo as BusinessDetail | null}
         isLoading={businessLoading}
         error={businessError}
         productName={selectedProductName}

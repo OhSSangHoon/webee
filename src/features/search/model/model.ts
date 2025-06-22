@@ -1,5 +1,25 @@
 import { product } from '@/features/products/model/model';
 
+// 좌표 정보
+export interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
+// 카카오맵 지오코딩 관련 타입
+export interface KakaoGeocodeResult {
+  x: string; // 경도
+  y: string; // 위도
+  address_name?: string;
+  road_address_name?: string;
+}
+
+export interface KakaoGeocodeStatus {
+  OK: string;
+  ZERO_RESULT: string;
+  ERROR: string;
+}
+
 // 업체 정보를 포함한 상품 타입
 export interface ProductWithBusiness extends product {
   businessAddress?: string;
@@ -14,14 +34,13 @@ export interface SidebarState {
   selectedProductId: number | null;
 }
 
-
 // 업체별 그룹화된 데이터 타입
 export interface BusinessGroup {
   businessId: number;
   businessAddress: string;
   companyName: string;
   products: ProductWithBusiness[];
-  coordinates?: { lat: number; lng: number };
+  coordinates?: Coordinates;
 }
 
 // KakaoMap 컴포넌트의 Props
@@ -30,12 +49,6 @@ export interface KakaoMapProps {
   selectedProductId?: number | null;
   selectedProduct?: ProductWithBusiness | null;
   onMarkerClick?: (product: ProductWithBusiness) => void;
-}
-
-// 좌표 정보
-export interface Coordinates {
-  lat: number;
-  lng: number;
 }
 
 // 맵 초기화 옵션
@@ -54,10 +67,10 @@ export interface MarkerOptions {
   title: string;
 }
 
-// 맵 상태 관리
+// 맵 상태 관리 (외부 라이브러리 객체들은 unknown으로 처리)
 export interface MapState {
-  map: any | null;
-  markers: any[];
+  map: unknown | null;
+  markers: unknown[];
   businessGroups: BusinessGroup[];
   businessCoordinates: Map<number, Coordinates>;
   isKakaoLoaded: boolean;
@@ -101,9 +114,54 @@ export const LOADING_MESSAGES = {
   MAP_LOADING: '지도를 로딩 중입니다...'
 } as const;
 
-// Global Window 타입 확장
+// Window 객체에 카카오 API 타입 확장 (완전한 타입 정의)
 declare global {
   interface Window {
-    kakao: any;
+    kakao: {
+      maps: {
+        load: (callback: () => void) => void;
+        LatLng: new (lat: number, lng: number) => unknown;
+        Map: new (container: HTMLDivElement, options: unknown) => unknown;
+        Marker: new (options: unknown) => unknown;
+        MarkerImage: new (src: string, size: unknown, options?: unknown) => unknown;
+        Size: new (width: number, height: number) => unknown;
+        Point: new (x: number, y: number) => unknown;
+        CustomOverlay: new (options: unknown) => unknown;
+        event: {
+          addListener: (target: unknown, type: string, handler: () => void) => void;
+          removeListener: (target: unknown, type: string, handler: () => void) => void;
+        };
+        services: {
+          Status: KakaoGeocodeStatus;
+          Geocoder: new () => {
+            addressSearch: (
+              address: string,
+              callback: (result: KakaoGeocodeResult[], status: string) => void
+            ) => void;
+          };
+        };
+      };
+    };
   }
+}
+
+// 타입 가드 함수들
+export function isKakaoMapLoaded(): boolean {
+  return !!(window.kakao && window.kakao.maps && window.kakao.maps.services);
+}
+
+export function isValidCoordinates(coords: unknown): coords is Coordinates {
+  return (
+    typeof coords === 'object' &&
+    coords !== null &&
+    'lat' in coords &&
+    'lng' in coords &&
+    typeof (coords as Coordinates).lat === 'number' &&
+    typeof (coords as Coordinates).lng === 'number'
+  );
+}
+
+// 카카오맵 객체 타입 가드
+export function hasMethod(obj: unknown, method: string): boolean {
+  return obj !== null && typeof obj === 'object' && method in (obj as object);
 }

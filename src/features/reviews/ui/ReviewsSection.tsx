@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Review } from '../model/model';
 import { useInfiniteReviewsAdapter } from '../model/useInfiniteReviews';
 import ReviewForm from './ReviewsForm';
 import ReviewList from './ReviewsList';
@@ -30,7 +29,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
   } = useInfiniteReviewsAdapter(productId); // SSR 관련 모든 코드 제거
 
   // 새 리뷰 작성 완료 후 처리
-  const handleReviewCreated = async (newReview: Review) => {
+  const handleReviewCreated = async () => {
     console.log('새 리뷰 작성 완료, 강력한 새로고침 시작');
     setShowForm(false);
     invalidateReviews();

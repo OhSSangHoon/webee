@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { BusinessGroup, KakaoMapProps, Coordinates, MapState, MAP_CONFIG, ERROR_MESSAGES, LOADING_MESSAGES } from '../model/model';
 import { loadKakaoMapScript, geocodeAddress, initializeKakaoMap, isKakaoMapLoaded } from '../api/api';
 
@@ -77,7 +77,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
   }, [mapState.isKakaoLoaded]);
 
   // 업체별 통합 마커 생성 함수
-  const createBusinessMarker = (businessGroup: BusinessGroup, coordinates: Coordinates) => {
+  const createBusinessMarker = useCallback((businessGroup: BusinessGroup, coordinates: Coordinates): unknown => {
     const markerPosition = new window.kakao.maps.LatLng(coordinates.lat, coordinates.lng);
     
     // 선택된 물품이 이 업체에 있는지 확인
@@ -118,17 +118,24 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     });
 
     return marker;
-  };
+  }, [selectedProductId, onMarkerClick]);
 
   // 업체별 마커 생성 및 업데이트
   useEffect(() => {
     if (!mapState.map || !mapState.businessGroups.length) return;
 
-    // 기존 마커 제거
-    mapState.markers.forEach(marker => marker.setMap(null));
-
     const createBusinessMarkers = async () => {
-      const newMarkers: any[] = [];
+      // 기존 마커 제거 (현재 상태에서 가져오기)
+      setMapState(prev => {
+        prev.markers.forEach(marker => {
+          if (marker && typeof marker === 'object' && 'setMap' in marker) {
+            (marker as { setMap: (map: unknown | null) => void }).setMap(null);
+          }
+        });
+        return prev;
+      });
+
+      const newMarkers: unknown[] = [];
       const newCoordinatesMap = new Map<number, Coordinates>();
 
       for (const businessGroup of mapState.businessGroups) {
@@ -151,7 +158,9 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
 
           // 업체 마커 생성
           const marker = createBusinessMarker(businessGroup, coordinates);
-          marker.setMap(mapState.map);
+          if (marker && typeof marker === 'object' && 'setMap' in marker) {
+            (marker as { setMap: (map: unknown) => void }).setMap(mapState.map);
+          }
 
           newMarkers.push(marker);
 
@@ -168,7 +177,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     };
 
     createBusinessMarkers();
-  }, [mapState.map, mapState.businessGroups, selectedProductId]);
+  }, [mapState.map, mapState.businessGroups, createBusinessMarker]);
 
   // 선택된 물품의 업체 위치로 지도 이동
   useEffect(() => {
@@ -178,21 +187,31 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     const businessCoords = mapState.businessCoordinates.get(selectedProduct.businessId);
     if (businessCoords) {
       const moveLatLon = new window.kakao.maps.LatLng(businessCoords.lat, businessCoords.lng);
-      mapState.map.panTo(moveLatLon);
-      setTimeout(() => {
-        mapState.map.setLevel(MAP_CONFIG.SELECTED_LEVEL);
-      }, 500);
+      
+      // 타입 가드를 사용한 안전한 메서드 호출
+      if (mapState.map && typeof mapState.map === 'object' && 'panTo' in mapState.map) {
+        (mapState.map as { panTo: (latlng: unknown) => void }).panTo(moveLatLon);
+        
+        setTimeout(() => {
+          if (mapState.map && typeof mapState.map === 'object' && 'setLevel' in mapState.map) {
+            (mapState.map as { setLevel: (level: number) => void }).setLevel(MAP_CONFIG.SELECTED_LEVEL);
+          }
+        }, 500);
+      }
       return;
     }
 
     // 저장된 좌표가 없으면 새로 변환
     if (selectedProduct.businessAddress) {
       geocodeAddress(selectedProduct.businessAddress).then(coordinates => {
-        if (coordinates) {
+        if (coordinates && mapState.map && typeof mapState.map === 'object' && 'panTo' in mapState.map) {
           const moveLatLon = new window.kakao.maps.LatLng(coordinates.lat, coordinates.lng);
-          mapState.map.panTo(moveLatLon);
+          (mapState.map as { panTo: (latlng: unknown) => void }).panTo(moveLatLon);
+          
           setTimeout(() => {
-            mapState.map.setLevel(MAP_CONFIG.SELECTED_LEVEL);
+            if (mapState.map && typeof mapState.map === 'object' && 'setLevel' in mapState.map) {
+              (mapState.map as { setLevel: (level: number) => void }).setLevel(MAP_CONFIG.SELECTED_LEVEL);
+            }
           }, 500);
           
           // 변환된 좌표 저장
@@ -237,14 +256,24 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       {/* 지도 컨트롤 버튼들 */}
       <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-2 z-[1000]">
         <button
-          onClick={() => mapState.map?.setLevel(mapState.map.getLevel() - 1)}
+          onClick={() => {
+            if (mapState.map && typeof mapState.map === 'object' && 'getLevel' in mapState.map && 'setLevel' in mapState.map) {
+              const currentLevel = (mapState.map as { getLevel: () => number }).getLevel();
+              (mapState.map as { setLevel: (level: number) => void }).setLevel(currentLevel - 1);
+            }
+          }}
           className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
           title="확대"
         >
           +
         </button>
         <button
-          onClick={() => mapState.map?.setLevel(mapState.map.getLevel() + 1)}
+          onClick={() => {
+            if (mapState.map && typeof mapState.map === 'object' && 'getLevel' in mapState.map && 'setLevel' in mapState.map) {
+              const currentLevel = (mapState.map as { getLevel: () => number }).getLevel();
+              (mapState.map as { setLevel: (level: number) => void }).setLevel(currentLevel + 1);
+            }
+          }}
           className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
           title="축소"
         >

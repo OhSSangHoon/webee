@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { productData, BeeType } from "@/features/products/model/model";
 import { useBusinessStore } from "@/shared/business/model";
 import { createProduct } from "@/features/products/api/api";
-
+import Image from "next/image";
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -20,7 +20,6 @@ export default function ProductsPage() {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [uploadedImages, setUploadedImages] = useState<{url: string}[]>([]);
   
-  // productData
   const [productData, setProductData] = useState<productData>({
     name: "",
     price: 0,
@@ -55,7 +54,7 @@ export default function ProductsPage() {
     if (isLoggedIn && token) {
       fetchBusinessList();
     }
-  }, [isLoggedIn, router, fetchBusinessList, userName, realName]);
+  }, [isClient, isLoading, isLoggedIn, router, fetchBusinessList, userName, realName]);
 
   // 업체 목록 로드 완료 후 로그 출력
   useEffect(() => {
@@ -144,7 +143,8 @@ export default function ProductsPage() {
 
     try {
       setIsSubmitting(true);
-      const result = await createProduct(productData, imageFiles);
+      // 147번째 줄: 사용되지 않는 'result' 변수 제거
+      await createProduct(productData, imageFiles);
       alert("상품이 성공적으로 등록되었습니다.");
 
       router.push("/");
@@ -171,7 +171,7 @@ export default function ProductsPage() {
         <form onSubmit={handleSubmit}>
           <div className="p-10">
               <div className="warning">
-                  <img src="/warning.svg" alt="warning" className="w-5 h-5" />
+                  <Image src="/warning.svg" alt="warning" width={20} height={20} />
                   <div className="flex flex-col ml-3">
                       <p className="warning-title">
                           상품 등록 주의사항
@@ -196,10 +196,14 @@ export default function ProductsPage() {
                   <div className="flex flex-wrap gap-4">
                       {uploadedImages.map((image, index) => (
                           <div key={index} className="relative w-25 h-25 border border-gray-300 rounded-md overflow-hidden">
-                              <img 
+                              {/* 174번째 줄: img 태그를 Image 컴포넌트로 변경 */}
+                              <Image 
                                   src={image.url} 
                                   alt={`상품 이미지 ${index + 1}`} 
+                                  width={100}
+                                  height={100}
                                   className="w-full h-full object-cover"
+                                  unoptimized // blob URL이므로 최적화 비활성화
                               />
                               <button 
                                   type="button"
@@ -216,7 +220,7 @@ export default function ProductsPage() {
                           className="upload-button"
                           onClick={() => document.getElementById('fileInput')?.click()}
                       >
-                          <img src="/camera.svg" alt="upload" className="w-6 h-6" />
+                          <Image src="/camera.svg" alt="upload" width={24} height={24} />
                           <p className="text-sm text-[#6B7280] font-normal mt-2">사진 추가</p>
                           <input 
                               id="fileInput"
