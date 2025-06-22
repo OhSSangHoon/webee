@@ -40,8 +40,6 @@ export async function getProductsWithPaging(params: {
     return response.data;
 }
 
-// 카카오맵 유틸리티 함수들
-
 // 카카오맵 스크립트 로드
 export const loadKakaoMapScript = (apiKey: string): Promise<void> => {
   return new Promise((resolve, reject) => {

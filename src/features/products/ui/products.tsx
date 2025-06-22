@@ -309,7 +309,6 @@ export default function ProductsPage() {
                   >
                       <option value="">벌 종류를 선택하세요.</option>
                       <option value="HONEYBEE">꿀벌</option>
-                      <option value="ASIAN_BUMBLEBEE">호박벌</option>
                       <option value="EUROPEAN_BUMBLEBEE">서양뒤영벌</option>
                       <option value="MASON_BEE">머리뿔가위벌</option>
                   </select>
