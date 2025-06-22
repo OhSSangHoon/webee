@@ -1,19 +1,31 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getProducts } from '@/features/products/api/api';
-import { getBusinessDetail } from '@/shared/business/api';
+import Image from 'next/image';
+import { getAllProducts } from '@/features/search/api/api';
+import { BusinessDetail, getBusinessDetail } from '@/shared/business/api';
 import { product } from '@/features/products/model/model';
 import { BusinessSidebar } from './BusinessSidebar';
-import { getAllProducts } from '../api/api';
 import { ProductWithBusiness } from '@/features/search/model/model';
+import { Maps } from './Map';
+
+// 업체 정보 타입 정의
+interface BusinessInfo {
+  businessId: number;
+  companyName: string;
+  businessAddress: string;
+  phoneNumber?: string;
+  businessType?: string;
+  description?: string;
+  registrationNumber?: string;
+  representativeName?: string;
+  commencementDate?: string;
+  latitude?: number;
+  longitude?: number;
+}
 
 export default function Search() {
-  const router = useRouter();
-  const [allProducts, setAllProducts] = useState<ProductWithBusiness[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<ProductWithBusiness[]>([]);
   
   // 사이드바 관련 상태
@@ -21,9 +33,12 @@ export default function Search() {
   const [selectedBusinessId, setSelectedBusinessId] = useState<number | null>(null);
   const [selectedProductName, setSelectedProductName] = useState('');
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  
+  // 선택된 물품 전체 정보 저장
+  const [selectedProduct, setSelectedProduct] = useState<ProductWithBusiness | null>(null);
 
-  // 업체 정보 상태
-  const [businessInfo, setBusinessInfo] = useState<any>(null);
+  // 업체 정보 상태 (any 타입 제거)
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(null);
   const [businessLoading, setBusinessLoading] = useState(false);
   const [businessError, setBusinessError] = useState<string | null>(null);
 
@@ -41,8 +56,8 @@ export default function Search() {
       try {
         const info = await getBusinessDetail(selectedBusinessId);
         setBusinessInfo(info);
-      } catch (error) {
-        console.error('업체 정보 조회 실패:', error);
+      } catch (fetchError) {
+        console.error('업체 정보 조회 실패:', fetchError);
         setBusinessError('업체 정보를 불러올 수 없습니다.');
         setBusinessInfo(null);
       } finally {
@@ -57,8 +72,7 @@ export default function Search() {
   useEffect(() => {
     const fetchProductsWithBusinessInfo = async () => {
       try {
-        const response = await getProducts();
-        console.log('상품 데이터:', response.data.content);
+        const response = await getAllProducts();
         
         // 각 상품의 업체 정보를 병렬로 조회
         const productsWithBusiness = await Promise.allSettled(
@@ -73,24 +87,22 @@ export default function Search() {
                 };
               }
               return product;
-            } catch (error) {
-              console.error(`업체 정보 조회 실패 (businessId: ${product.businessId}):`, error);
-              return product; // 업체 정보 조회 실패 시 원본 상품 정보만 반환
+            } catch (productError) {
+              console.error(`업체 정보 조회 실패 (businessId: ${product.businessId}):`, productError);
+              return product;
             }
           })
         );
 
-        // Promise.allSettled 결과에서 성공한 것들만 추출
         const successfulProducts = productsWithBusiness
           .filter((result): result is PromiseFulfilledResult<ProductWithBusiness> => 
             result.status === 'fulfilled'
           )
           .map(result => result.value);
 
-        setAllProducts(successfulProducts);
         setFilteredProducts(successfulProducts);
-      } catch (error) {
-        console.error('상품 데이터 가져오기 실패:', error);
+      } catch (generalError) {
+        console.error('상품 데이터 가져오기 실패:', generalError);
       } finally {
         setLoading(false);
       }
@@ -99,36 +111,30 @@ export default function Search() {
     fetchProductsWithBusinessInfo();
   }, []);
 
-  // 검색 기능
-  useEffect(() => {
-    if (!searchTerm.trim()) {
-      setFilteredProducts(allProducts);
-      return;
-    }
-
-    const filtered = allProducts.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (product.companyName && product.companyName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (product.businessAddress && product.businessAddress.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-    setFilteredProducts(filtered);
-  }, [searchTerm, allProducts]);
-
-  // 상품 클릭 시 사이드바 열기
+  // 상품 클릭 시 즉시 지도 이동을 위한 데이터 설정
   const handleProductClick = (product: ProductWithBusiness) => {
-    console.log('상품 클릭:', product.name, 'businessId:', product.businessId);
+    // 선택된 물품 정보 저장
+    setSelectedProduct(product);
+    
+    // 기존 사이드바 관련 상태들
     setSelectedBusinessId(product.businessId);
     setSelectedProductName(product.name);
     setSelectedProductId(product.id);
     setSidebarOpen(true);
   };
 
-  // 사이드바 닫기
+  // 지도 마커 클릭 핸들러
+  const handleMarkerClick = (product: ProductWithBusiness) => {
+    handleProductClick(product);
+  };
+
+  // 사이드바 닫기 시 선택된 물품도 초기화
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
     setSelectedBusinessId(null);
     setSelectedProductName('');
     setSelectedProductId(null);
+    setSelectedProduct(null);
     setBusinessInfo(null);
     setBusinessError(null);
   };
@@ -171,8 +177,6 @@ export default function Search() {
               type="text" 
               className="w-full h-10 border-2 border-[#E5E7EB] rounded-md text-[#333333] pl-10 pr-16"
               placeholder="상품명, 업체명, 주소 검색"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button 
               className="absolute right-12 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600 transition-colors"
@@ -192,7 +196,11 @@ export default function Search() {
             filteredProducts.map(product => (
               <div 
                 key={product.id} 
-                className="w-full min-h-[110px] border-b border-[#EEF2FF] flex flex-col justify-between px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                className={`w-full min-h-[110px] border-b border-[#EEF2FF] flex flex-col justify-between px-5 py-3 cursor-pointer transition-colors ${
+                  selectedProductId === product.id 
+                    ? 'bg-blue-50 border-l-4 border-l-blue-500' 
+                    : 'hover:bg-gray-50'
+                }`}
                 onClick={() => handleProductClick(product)}
               >
                 <div className="flex flex-row justify-between items-center flex-1">
@@ -203,7 +211,14 @@ export default function Search() {
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <div className="flex flex-row items-center">
-                    <img src="/Location.svg" alt="location" className="w-3 h-3 mr-1"/>
+                    {/* img 태그를 Next.js Image로 변경 */}
+                    <Image 
+                      src="/Location.svg" 
+                      alt="location" 
+                      width={12}
+                      height={12}
+                      className="mr-1"
+                    />
                     <p className="text-[#6B7280] text-xs">
                       {getShortAddress(product.businessAddress)}
                     </p>
@@ -219,21 +234,20 @@ export default function Search() {
       </div>
       
       {/* 지도 영역 */}
-      <div className="w-[80%] h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-blue-500">
-        <p className="text-white text-2xl">지도 영역</p>
-        <p className="text-white text-sm mt-2">
-          왼쪽 상품 리스트를 클릭하면 업체 정보 사이드바가 나타납니다
-        </p>
-        <p className="text-white text-xs mt-1">
-          각 상품의 실제 업체 주소가 표시됩니다
-        </p>
+      <div className="w-[80%] h-[calc(100vh-80px)]">
+        <Maps
+          products={filteredProducts}
+          selectedProductId={selectedProductId}
+          selectedProduct={selectedProduct}
+          onMarkerClick={handleMarkerClick}
+        />
       </div>
 
       {/* 업체 정보 사이드바 */}
       <BusinessSidebar
         isOpen={sidebarOpen}
         onClose={handleCloseSidebar}
-        businessInfo={businessInfo}
+        businessInfo={businessInfo as BusinessDetail | null}
         isLoading={businessLoading}
         error={businessError}
         productName={selectedProductName}

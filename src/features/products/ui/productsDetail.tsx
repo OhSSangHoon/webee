@@ -50,7 +50,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
     };
 
     fetchBusinessInfo();
-  }, [product?.businessId]);
+  }, [product]);
 
   // 상품 정보 불러오는 중
   if (isLoading) {

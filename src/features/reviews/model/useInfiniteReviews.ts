@@ -2,8 +2,38 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { getProductReviews } from '../api/api';
 import { Review } from './model';
 
+// API 응답 타입 정의
+interface ApiResponse<T> {
+  code: string;
+  message: string;
+  data: T;
+}
+
+// 페이지네이션 응답 타입 정의
+interface PageData<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+
+// 페이지네이션된 API 응답 타입
+type PaginatedApiResponse = ApiResponse<PageData<Review>>;
+
+// 원본 API 응답 타입 (리뷰 배열)
+type OriginalApiResponse = ApiResponse<Review[]>;
+
 // 현재 API 응답을 페이징 구조로 변환하는 어댑터
-function adaptApiResponseToPagination(apiResponse: any, page: number, size: number = 10) {
+function adaptApiResponseToPagination(
+  apiResponse: OriginalApiResponse, 
+  page: number, 
+  size: number = 10
+): PaginatedApiResponse {
   const reviews: Review[] = apiResponse.data || [];
   
   // 페이지별로 데이터 분할
@@ -36,12 +66,11 @@ export function useInfiniteReviewsAdapter(productId: number) {
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
     queryKey: ['reviews-infinite', productId],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async ({ pageParam = 0 }): Promise<PaginatedApiResponse> => {
       console.log(`리뷰 무한스크롤 조회: productId=${productId}, page=${pageParam}`);
       
       // 전체 데이터를 한 번만 가져오기 (첫 페이지에서만)
@@ -55,7 +84,7 @@ export function useInfiniteReviewsAdapter(productId: number) {
         return adaptApiResponseToPagination(apiResponse, pageParam, 10);
       } else {
         // 이후 페이지는 캐시된 데이터에서 분할
-        const cachedData = queryClient.getQueryData(['reviews-full', productId]);
+        const cachedData = queryClient.getQueryData<OriginalApiResponse>(['reviews-full', productId]);
         if (cachedData) {
           return adaptApiResponseToPagination(cachedData, pageParam, 10);
         } else {
@@ -67,7 +96,7 @@ export function useInfiniteReviewsAdapter(productId: number) {
       }
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: (lastPage: PaginatedApiResponse) => {
       const pageData = lastPage.data;
       console.log('다음 페이지 확인:', { 
         current: pageData.number, 
@@ -97,7 +126,7 @@ export function useInfiniteReviewsAdapter(productId: number) {
   // 리뷰 수정 (캐시 업데이트)
   const updateReviewInCache = (reviewId: number, newContent: string) => {
     // 캐시된 전체 데이터 업데이트
-    queryClient.setQueryData(['reviews-full', productId], (oldData: any) => {
+    queryClient.setQueryData<OriginalApiResponse>(['reviews-full', productId], (oldData) => {
       if (!oldData || !oldData.data) return oldData;
       
       return {
@@ -111,32 +140,35 @@ export function useInfiniteReviewsAdapter(productId: number) {
     });
     
     // 무한스크롤 데이터도 업데이트
-    queryClient.setQueryData(['reviews-infinite', productId], (oldData: any) => {
-      if (!oldData || !oldData.pages) return oldData;
-      
-      const newPages = oldData.pages.map((page: any) => ({
-        ...page,
-        data: {
-          ...page.data,
-          content: page.data.content.map((review: Review) => 
-            review.id === reviewId 
-              ? { ...review, content: newContent }
-              : review
-          )
-        }
-      }));
-      
-      return {
-        ...oldData,
-        pages: newPages
-      };
-    });
+    queryClient.setQueryData<{ pages: PaginatedApiResponse[]; pageParams: unknown[] }>(
+      ['reviews-infinite', productId], 
+      (oldData) => {
+        if (!oldData || !oldData.pages) return oldData;
+        
+        const newPages = oldData.pages.map((page: PaginatedApiResponse) => ({
+          ...page,
+          data: {
+            ...page.data,
+            content: page.data.content.map((review: Review) => 
+              review.id === reviewId 
+                ? { ...review, content: newContent }
+                : review
+            )
+          }
+        }));
+        
+        return {
+          ...oldData,
+          pages: newPages
+        };
+      }
+    );
   };
 
   // 리뷰 삭제 (캐시에서 제거)
   const removeReviewFromCache = (reviewId: number) => {
     // 캐시된 전체 데이터 업데이트
-    queryClient.setQueryData(['reviews-full', productId], (oldData: any) => {
+    queryClient.setQueryData<OriginalApiResponse>(['reviews-full', productId], (oldData) => {
       if (!oldData || !oldData.data) return oldData;
       
       return {
@@ -146,23 +178,26 @@ export function useInfiniteReviewsAdapter(productId: number) {
     });
     
     // 무한스크롤 데이터도 업데이트
-    queryClient.setQueryData(['reviews-infinite', productId], (oldData: any) => {
-      if (!oldData || !oldData.pages) return oldData;
-      
-      const newPages = oldData.pages.map((page: any) => ({
-        ...page,
-        data: {
-          ...page.data,
-          content: page.data.content.filter((review: Review) => review.id !== reviewId),
-          totalElements: Math.max(0, page.data.totalElements - 1)
-        }
-      }));
-      
-      return {
-        ...oldData,
-        pages: newPages
-      };
-    });
+    queryClient.setQueryData<{ pages: PaginatedApiResponse[]; pageParams: unknown[] }>(
+      ['reviews-infinite', productId], 
+      (oldData) => {
+        if (!oldData || !oldData.pages) return oldData;
+        
+        const newPages = oldData.pages.map((page: PaginatedApiResponse) => ({
+          ...page,
+          data: {
+            ...page.data,
+            content: page.data.content.filter((review: Review) => review.id !== reviewId),
+            totalElements: Math.max(0, page.data.totalElements - 1)
+          }
+        }));
+        
+        return {
+          ...oldData,
+          pages: newPages
+        };
+      }
+    );
   };
 
   // 리뷰 수정 핸들러
