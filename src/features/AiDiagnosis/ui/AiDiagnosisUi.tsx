@@ -42,6 +42,17 @@ export default function AiDiagnosisUI() {
           진단 요청
         </button>
       </div>
+      <div className="border-4 border-gray-400 rounded-2xl w-full h-50 flex flex-col justify-center items-center gap-2">
+        <div>꿀벌이 잘 보이도록 확대해서 찍어주세요.</div>
+        <div className="flex flex-row justify-around w-full h-[60%]">
+          <div className="border bg-amber-950 w-[30%] h-full ">ㅇ</div>
+          <div className="border bg-amber-950 w-[1/3] h-full "></div>
+          <div className="border bg-amber-950 w-[1/3] h-full "></div>
+        </div>
+        <div className="flex justify-end items-end">
+          ※위의 예시 이미지를 참고해주세요.
+        </div>
+      </div>
     </div>
   );
 }
