@@ -122,6 +122,28 @@ export default function Home() {
     }
   };
 
+  const getWeatherKorean = (weatherMain: string) => {
+    switch (weatherMain.toLowerCase()) {
+      case "clear":
+        return "맑음";
+      case "clouds":
+        return "구름 많음";
+      case "rain":
+        return "비";
+      case "drizzle":
+        return "이슬비";
+      case "thunderstorm":
+        return "뇌우";
+      case "snow":
+        return "눈";
+      case "mist":
+      case "fog":
+      case "haze":
+        return "안개";
+      default:
+        return "흐림";
+    }
+  };
   const formatDateShort = (unix: number) => {
     const date = new Date(unix * 1000);
     const today = new Date();
@@ -198,21 +220,21 @@ export default function Home() {
     const isClearWeather = ["clear", "clouds"].includes(weatherMain);
 
     if (!isDaytime) {
-      return "🌙 벌들이 자러 갈 시간이에요!";
+      return "🌝벌들이 자러 갈 시간이에요!";
     }
 
     if (isClearWeather) {
-      return "🐝 벌들이 활동하기 좋은 날이에요.\n벌통을 활짝 열어주세요!";
+      return "🐝벌들이 활동하기 좋은 날이에요. 벌통을 활짝 열어주세요!";
     }
 
-    return "☁️ 날씨가 나빠요! 벌통을 닫아주세요 >-<";
+    return "⛈️날씨가 나빠요! 벌통을 닫아주세요 >-<";
   };
 
   return (
     <div
-      className="w-full h-80 shadow-xl rounded-2xl flex flex-col items-center justify-center"
+      className="w-full h-80 shadow-xl rounded-2xl flex flex-col items-center justify-center "
       style={{
-        background: "linear-gradient(to bottom, #B8E6FE 70%, #F6F6F6 100%)",
+        background: "linear-gradient(to bottom, #78d0ff90 70%, #f6f6f661 100%)",
       }}
     >
       {loading && (
@@ -259,7 +281,7 @@ export default function Home() {
 
           {forecastData && (
             /* 7일 예보 */
-            <div className=" flex flex-col items-center justify-center  bg-[#a1d7f689] rounded-2xl w-3/5 py-10">
+            <div className=" flex flex-col items-center justify-around w-3/5 ">
               <div className="flex flex-row items-center justify-around w-full">
                 {getDailyForecast().map((day, index) => {
                   const temp = Math.round((day.temp_max + day.temp_min) / 2);
@@ -307,14 +329,13 @@ export default function Home() {
                 })}
               </div>
               {/* 하단 메시지 */}
-
-              <div className="flex flex-row items-center justify-center text-blue-400 text-lg font-extrabold">
-                지금은
-                <div className="text-4xl">
-                  {getWeatherIcon(weatherData.weather[0].main)}
+              <div className=" flex flex-row items-center justify-around w-full translate-y-4">
+                <div className="text-lg font-bold text-blue-700/50">
+                  {getWeatherKorean(weatherData.weather[0].main)}
                 </div>
-                !
-                <div className="ml-2">{getBeeMessage()}</div>
+                <div className="text-blue-500 text-2xl font-extrabold  bg-white/30 rounded-2xl p-2 px-5">
+                  {getBeeMessage()}
+                </div>
               </div>
             </div>
           )}

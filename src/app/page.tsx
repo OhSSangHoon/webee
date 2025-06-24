@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Weather2 } from "@/features";
-import { DiagnosisBanner, QuickProfile } from "@/widgets";
-import QuickMenu from "@/widgets/home/quickMenu/ui/quickMenu";
+import { QuickProfile } from "@/widgets";
 
 export default function Home() {
   const [currentTemp, setCurrentTemp] = useState("25°C");
@@ -34,7 +33,8 @@ export default function Home() {
                 <span className="text-yellow-300">webee</span>와 함께
               </h1>
               <p className="text-xl text-gray-100 mb-10 opacity-90">
-                정확하고 직관적인 날씨 정보로 당신의 하루를 계획하세요
+                수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다. 
+            
               </p>
               <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl shadow-yellow-400/30">
                 지금 시작하기
@@ -42,40 +42,8 @@ export default function Home() {
             </section>
 
             {/* 날씨 위젯 */}
-            <section className="max-w-4xl mx-auto">
-              <article className="bg-white/10 backdrop-blur-xl rounded-3xl p-10 border border-white/20 shadow-2xl">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
-                  <div className="text-6xl md:text-7xl font-light text-white transition-all duration-500">
-                    {currentTemp}
-                  </div>
-                  <div className="text-left">
-                    <h2 className="text-2xl text-white mb-2">경산시, 경북</h2>
-                    <p className="text-lg text-gray-200 opacity-80">맑음</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-5">
-                  {[
-                    { day: "오늘", temp: "25°" },
-                    { day: "내일", temp: "28°" },
-                    { day: "목요일", temp: "24°" },
-                    { day: "금요일", temp: "26°" },
-                    { day: "토요일", temp: "23°" },
-                  ].map((forecast, index) => (
-                    <div
-                      key={forecast.day}
-                      className="bg-white/10 rounded-2xl p-5 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-white/20"
-                    >
-                      <h3 className="text-white font-semibold mb-3">
-                        {forecast.day}
-                      </h3>
-                      <p className="text-2xl text-yellow-300 font-bold">
-                        {forecast.temp}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </article>
+            <section className="max-w-5xl mx-auto ">
+              <Weather2 />
             </section>
           </div>
         </main>
@@ -149,16 +117,6 @@ export default function Home() {
           </div>
         </article>
       </section>
-      <div className="flex flex-col gap-4 max-w-screen-xl mx-auto px-4">
-        <div className="flex flex-row gap-4">
-          <Weather2 /> <QuickProfile />
-        </div>
-
-        <div className="flex flex-row gap-4">
-          <QuickMenu />
-          <DiagnosisBanner />
-        </div>
-      </div>
     </div>
   );
 }
