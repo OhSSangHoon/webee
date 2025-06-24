@@ -7,10 +7,11 @@ import { getProductDetail } from "../api/api";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getBusinessDetail, BusinessDetail } from "@/shared/business/api";
+import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
   const router = useRouter();
-  const { product, isLoading, error, getBeeTypeKorean } = useProductDetail(productId);
+  const { product, isLoading, error } = useProductDetail(productId);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [businessInfo, setBusinessInfo] = useState<BusinessDetail | null>(null);
   const [businessLoading, setBusinessLoading] = useState(true);
@@ -35,10 +36,10 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           console.log("=== 업체 정보 로드 ===");
           console.log("상품 정보:", product);
           console.log("업체 정보 요청 - businessId:", product.businessId);
-          
+
           setBusinessLoading(true);
           setBusinesError(null);
-          
+
           const businessData = await getBusinessDetail(product.businessId);
           console.log("업체 정보 응답:", businessData);
           setBusinessInfo(businessData);
@@ -71,9 +72,11 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
   if (error || !product) {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center">
-        <p className="text-lg text-red-500">{error || "상품 정보를 찾을 수 없습니다."}</p>
-        <button 
-          onClick={handleGoBack} 
+        <p className="text-lg text-red-500">
+          {error || "상품 정보를 찾을 수 없습니다."}
+        </p>
+        <button
+          onClick={handleGoBack}
           className="mt-4 px-6 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
         >
           뒤로 가기
@@ -91,11 +94,11 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           <div className="flex-1 aspect-square bg-gray-200 rounded-lg overflow-hidden">
             {product.imageUrls && product.imageUrls.length > 0 ? (
               <Image
-                src={product.imageUrls[selectedImageIndex]} 
+                src={product.imageUrls[selectedImageIndex]}
                 alt={`${product.name} 메인 이미지`}
                 width={400}
                 height={400}
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: "cover" }}
                 className="w-full h-full cursor-pointer"
                 priority
                 loading="eager"
@@ -115,34 +118,33 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 .filter(({ index }) => index !== selectedImageIndex)
                 .slice(0, 4)
                 .map(({ imageUrl, index }) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="aspect-square bg-gray-200 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200 border-transparent opacity-70 hover:opacity-100"
                     onClick={() => setSelectedImageIndex(index)}
                   >
                     <Image
-                      src={imageUrl} 
+                      src={imageUrl}
                       alt={`${product.name} 썸네일 ${index + 1}`}
                       width={76}
                       height={76}
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: "cover" }}
                       className="w-full h-full"
                       loading="eager"
                     />
                   </div>
                 ))}
-              
+
               {/* 빈 자리 채우기 */}
-              {product.imageUrls.length > 1 && 
-                Array.from({ 
-                  length: Math.max(0, 4 - (product.imageUrls.length - 1)) 
+              {product.imageUrls.length > 1 &&
+                Array.from({
+                  length: Math.max(0, 4 - (product.imageUrls.length - 1)),
                 }).map((_, emptyIndex) => (
-                  <div 
+                  <div
                     key={`empty-${emptyIndex}`}
                     className="aspect-square bg-gray-300 rounded-lg"
                   />
-                ))
-              }
+                ))}
             </div>
           )}
         </div>
@@ -171,7 +173,9 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
               </div>
               <div className="flex items-center">
                 <span className="w-20 text-gray-500">가격:</span>
-                <span className="font-bold text-xl">{product.price.toLocaleString()}원</span>
+                <span className="font-bold text-xl">
+                  {product.price.toLocaleString()}원
+                </span>
               </div>
             </div>
           </div>
@@ -180,7 +184,9 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           <div className="border-1 border-[#E2E5EB] rounded-xl p-4 mt-4">
             <h3 className="font-bold mb-3">판매자 정보</h3>
             {businessLoading ? (
-              <div className="text-sm text-gray-500">업체 정보를 불러오는 중...</div>
+              <div className="text-sm text-gray-500">
+                업체 정보를 불러오는 중...
+              </div>
             ) : businessError ? (
               <div className="text-sm text-red-500">
                 {businessError}
@@ -208,16 +214,15 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 </div>
                 <div className="flex">
                   <span className="w-20 text-gray-500">온라인스토어:</span>
-                    <a 
-                      href={businessInfo.onlineStoreUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
-                    >
-                      바로가기
-                    </a>
+                  <a
+                    href={businessInfo.onlineStoreUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    바로가기
+                  </a>
                 </div>
-
               </div>
             ) : (
               <div className="text-sm text-gray-500">
@@ -236,9 +241,9 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         <div className="flex flex-row justify-between items-center mb-4">
           <h2 className="text-xl font-bold">상품 상세정보</h2>
           <div className="flex items-center gap-2">
-            <a 
-              href={businessInfo?.kakaoChatUrl || ""} 
-              target="_blank" 
+            <a
+              href={businessInfo?.kakaoChatUrl || ""}
+              target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline"
             >
@@ -265,7 +270,10 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         {/* 샘플 후기들 */}
         <div className="space-y-4">
           {[1, 2, 3, 4, 5].map((index) => (
-            <div key={index} className="flex space-x-4 p-4 bg-gray-50 rounded-lg">
+            <div
+              key={index}
+              className="flex space-x-4 p-4 bg-gray-50 rounded-lg"
+            >
               <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
                 <span className="text-sm font-medium">김**</span>
               </div>
