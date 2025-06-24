@@ -158,7 +158,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center mt-10">
+    <div className="w-full h-full flex flex-col items-center justify-center pt-20">
       <div className="w-5xl h-full rounded-2xl shadow-custom mb-10">
         <div className="w-full h-[90px] flex flex-col card-top">
             <div className="w-full h-[60px] flex flex-col m-5">
@@ -196,14 +196,13 @@ export default function ProductsPage() {
                   <div className="flex flex-wrap gap-4">
                       {uploadedImages.map((image, index) => (
                           <div key={index} className="relative w-25 h-25 border border-gray-300 rounded-md overflow-hidden">
-                              {/* 174번째 줄: img 태그를 Image 컴포넌트로 변경 */}
                               <Image 
                                   src={image.url} 
                                   alt={`상품 이미지 ${index + 1}`} 
                                   width={100}
                                   height={100}
                                   className="w-full h-full object-cover"
-                                  unoptimized // blob URL이므로 최적화 비활성화
+                                  unoptimized
                               />
                               <button 
                                   type="button"
