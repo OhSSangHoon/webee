@@ -30,6 +30,12 @@ export default function Header() {
           >
             질병진단
           </div>
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/recommendbee")}
+          >
+            수정벌 추천
+          </div>
           <div className="cursor-pointer" onClick={() => router.push("/guide")}>
             수정벌 가이드
           </div>
