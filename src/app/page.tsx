@@ -57,7 +57,7 @@ export default function Home() {
                     { day: '목요일', temp: '24°' },
                     { day: '금요일', temp: '26°' },
                     { day: '토요일', temp: '23°' }
-                  ].map((forecast, index) => (
+                  ].map((forecast) => (
                     <div 
                       key={forecast.day}
                       className="bg-white/10 rounded-2xl p-5 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-white/20"
@@ -115,7 +115,7 @@ export default function Home() {
                   title: '전문가 상담 서비스',
                   description: '경험 많은 양봉 전문가들과의 실시간 상담으로 문제를 해결해드립니다'
                 }
-              ].map((feature, index) => (
+              ].map((feature) => (
                 <article 
                   key={feature.title}
                   className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 transition-all duration-500 hover:transform hover:-translate-y-3 hover:shadow-2xl group"
