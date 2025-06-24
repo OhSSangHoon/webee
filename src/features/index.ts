@@ -34,7 +34,6 @@ export { default as ProductDetail } from "./products/ui/productsDetail";
 
 /* 업체 검색 */
 export { default as Search } from "./search/ui/ProductsSearch";
-export { default as Search } from "./search/ui/search";
 
 export { default as StoreRecommendBee } from "./mypage/storeRecommendBee/ui/module";
 
