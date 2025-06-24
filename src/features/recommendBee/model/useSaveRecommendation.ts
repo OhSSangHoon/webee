@@ -19,7 +19,7 @@ const beeTypeMap: Record<string, string> = {
   "서양 뒤영벌": "EUROPEAN_BUMBLEBEE",
   "국산 뒤영벌": "ASIAN_BUMBLEBEE",
   꿀벌: "HONEYBEE",
-  호박벌: "MASON_BEE",
+  머리뿔가위벌: "MASON_BEE",
 };
 
 //  줄바꿈 문자열 처리를 통한 string[] -> string.

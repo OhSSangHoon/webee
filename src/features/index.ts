@@ -4,9 +4,6 @@ export { default as BeehiveMap } from "./beehiveMap/ui/beehiveMap";
 /*마이프로필*/
 export { default as MyProfile } from "./mypage/myProfile/ui/myProfile";
 
-/*추천 이력*/
-export { default as RecommendedList } from "./mypage/recommendedList/ui/recommendedList";
-
 /*질병진단 이력 */
 export { default as DiagnosisHistory } from "./mypage/diagnosisHistory/ui/diagnosisHistory";
 
@@ -37,3 +34,7 @@ export { default as ProductDetail } from "./products/ui/productsDetail";
 
 /* 업체 검색 */
 export { default as Search } from "./search/ui/search";
+
+export { default as StoreRecommendBee } from "./mypage/storeRecommendBee/ui/module";
+
+export { default as Weather2 } from "./weather/ui";
