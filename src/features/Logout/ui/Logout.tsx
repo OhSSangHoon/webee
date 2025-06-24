@@ -19,7 +19,7 @@ export default function AuthButton() {
 
   return (
     <div
-      className="text-xs border border-gray-300 border-1.5 rounded-4xl px-4 py-1 cursor-pointer"
+      className=""
       onClick={handleClick}
     >
       {userName ? "로그아웃" : "로그인"}

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { productData, BeeType } from "@/features/products/model/model";
 import { useBusinessStore } from "@/shared/business/model";
 import { createProduct } from "@/features/products/api/api";
+import Image from "next/image";
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -18,9 +19,8 @@ export default function ProductsPage() {
   const [isClient, setIsClient] = useState(false);
 
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [uploadedImages, setUploadedImages] = useState<{ url: string }[]>([]);
-
-  // productData
+  const [uploadedImages, setUploadedImages] = useState<{url: string}[]>([]);
+  
   const [productData, setProductData] = useState<productData>({
     name: "",
     price: 0,
@@ -55,7 +55,7 @@ export default function ProductsPage() {
     if (isLoggedIn && token) {
       fetchBusinessList();
     }
-  }, [isLoggedIn, router, fetchBusinessList, userName, realName]);
+  }, [isClient, isLoading, isLoggedIn, router, fetchBusinessList, userName, realName]);
 
   // 업체 목록 로드 완료 후 로그 출력
   useEffect(() => {
@@ -167,7 +167,8 @@ export default function ProductsPage() {
 
     try {
       setIsSubmitting(true);
-      const result = await createProduct(productData, imageFiles);
+      // 147번째 줄: 사용되지 않는 'result' 변수 제거
+      await createProduct(productData, imageFiles);
       alert("상품이 성공적으로 등록되었습니다.");
       console.log("등록된 상품 정보:", result);
 
@@ -182,7 +183,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center mt-10">
+    <div className="w-full h-full flex flex-col items-center justify-center pt-20">
       <div className="w-5xl h-full rounded-2xl shadow-custom mb-10">
         <div className="w-full h-[90px] flex flex-col card-top">
           <div className="w-full h-[60px] flex flex-col m-5">
@@ -194,86 +195,68 @@ export default function ProductsPage() {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="p-10">
-            <div className="warning">
-              <img src="/warning.svg" alt="warning" className="w-5 h-5" />
-              <div className="flex flex-col ml-3">
-                <p className="warning-title">상품 등록 주의사항</p>
-                <ul className="warning-list">
-                  <li>
-                    상품명, 벌 종류, 가격, 원산지, 거래 형태, 거래 방법, 판매
-                    업체는 필수 입력 항목입니다.
-                  </li>
-                  <li>
-                    부정확한 정보 기재 시 서비스 이용에 제한이 있을 수 있습니다.
-                  </li>
-                  <li>
-                    타인의 지적 재산권을 침해하는 이미지 사용은 금지됩니다.
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* 상품 이미지 */}
-            <div className="product-title">
-              <p className="font-medium text-[#333333]">상품 이미지</p>
-              <p className="text-red-500 mx-2">*</p>
-              <p className="text-[#6B7280] text-xs font-normal">
-                첫 번째 이미지가 썸네일로 사용됩니다.
-              </p>
-            </div>
-            <div>
-              <div className="flex flex-wrap gap-4">
-                {uploadedImages.map((image, index) => (
-                  <div
-                    key={index}
-                    className="relative w-25 h-25 border border-gray-300 rounded-md overflow-hidden"
-                  >
-                    <img
-                      src={image.url}
-                      alt={`상품 이미지 ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      type="button"
-                      className="absolute top-1 right-1 bg-gray-800 bg-opacity-50 rounded-full p-1"
-                      onClick={() => handleDeleteImage(index)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
+              <div className="warning">
+                  <Image src="/warning.svg" alt="warning" width={20} height={20} />
+                  <div className="flex flex-col ml-3">
+                      <p className="warning-title">
+                          상품 등록 주의사항
+                      </p>
+                      <ul className="warning-list">
+                          <li>
+                            상품명, 벌 종류, 가격, 원산지, 거래 형태, 거래 방법, 판매 업체는 필수 입력 항목입니다.
+                          </li>
+                          <li>부정확한 정보 기재 시 서비스 이용에 제한이 있을 수 있습니다.</li>
+                          <li>타인의 지적 재산권을 침해하는 이미지 사용은 금지됩니다.</li>
+                      </ul>
                   </div>
-                ))}
-                <div
-                  className="upload-button"
-                  onClick={() => document.getElementById("fileInput")?.click()}
-                >
-                  <img src="/camera.svg" alt="upload" className="w-6 h-6" />
-                  <p className="text-sm text-[#6B7280] font-normal mt-2">
-                    사진 추가
-                  </p>
-                  <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="text-sm hidden"
-                    onChange={handleImageUpload}
-                  />
-                </div>
               </div>
-            </div>
+
+              {/* 상품 이미지 */}
+              <div className="product-title">
+                  <p className="font-medium text-[#333333]">상품 이미지</p>
+                  <p className="text-red-500 mx-2">*</p>
+                  <p className="text-[#6B7280] text-xs font-normal">첫 번째 이미지가 썸네일로 사용됩니다.</p>
+              </div>
+              <div>
+                  <div className="flex flex-wrap gap-4">
+                      {uploadedImages.map((image, index) => (
+                          <div key={index} className="relative w-25 h-25 border border-gray-300 rounded-md overflow-hidden">
+                              <Image 
+                                  src={image.url} 
+                                  alt={`상품 이미지 ${index + 1}`} 
+                                  width={100}
+                                  height={100}
+                                  className="w-full h-full object-cover"
+                                  unoptimized
+                              />
+                              <button 
+                                  type="button"
+                                  className="absolute top-1 right-1 bg-gray-800 bg-opacity-50 rounded-full p-1"
+                                  onClick={() => handleDeleteImage(index)}
+                              >
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
+                              </button>
+                          </div>
+                      ))}
+                      <div 
+                          className="upload-button"
+                          onClick={() => document.getElementById('fileInput')?.click()}
+                      >
+                          <Image src="/photo.svg" alt="upload" width={24} height={24} />
+                          <p className="text-sm text-[#6B7280] font-normal mt-2">사진 추가</p>
+                          <input 
+                              id="fileInput"
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              className="text-sm hidden"
+                              onChange={handleImageUpload}
+                          />
+                      </div>
+                  </div>
+              </div>
 
             {/* 업체 선택 영역 */}
             <div className="product-title">
@@ -336,27 +319,26 @@ export default function ProductsPage() {
               />
             </div>
 
-            {/* 꿀벌 종류 입력 영역 */}
-            <div className="product-title">
-              <p className="font-medium text-[#333333]">벌 종류</p>
-              <p className="text-red-500 mx-2">*</p>
-            </div>
-            <div className="">
-              <select
-                name="beeType"
-                id="beeType"
-                className="add-input"
-                value={productData.beeType}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">벌 종류를 선택하세요.</option>
-                <option value="HONEYBEE">꿀벌</option>
-                <option value="ASIAN_BUMBLEBEE">국산호박벌</option>
-                <option value="EUROPEAN_BUMBLEBEE">서양뒤영벌</option>
-                <option value="MASON_BEE">머리뿔가위벌</option>
-              </select>
-            </div>
+              {/* 꿀벌 종류 입력 영역 */}
+              <div className="product-title">
+                  <p className="font-medium text-[#333333]">벌 종류</p>
+                  <p className="text-red-500 mx-2">*</p>
+              </div>
+              <div className="">
+                  <select 
+                      name="beeType" 
+                      id="beeType" 
+                      className="add-input"
+                      value={productData.beeType}
+                      onChange={handleInputChange}
+                      required
+                  >
+                      <option value="">벌 종류를 선택하세요.</option>
+                      <option value="HONEYBEE">꿀벌</option>
+                      <option value="EUROPEAN_BUMBLEBEE">서양뒤영벌</option>
+                      <option value="MASON_BEE">머리뿔가위벌</option>
+                  </select>
+              </div>
 
             {/* 가격 입력 영역 */}
             <div className="product-title">
