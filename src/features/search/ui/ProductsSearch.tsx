@@ -162,7 +162,7 @@ export default function Search() {
   }
 
   return (
-    <div className="flex flex-row relative">
+    <div className="flex flex-row relative pt-20">
       {/* 검색 영역 */}
       <div className="w-[20%] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
         {/* 검색 입력 */}
