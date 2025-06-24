@@ -220,7 +220,7 @@ export default function ProductsPage() {
                           className="upload-button"
                           onClick={() => document.getElementById('fileInput')?.click()}
                       >
-                          <Image src="/camera.svg" alt="upload" width={24} height={24} />
+                          <Image src="/photo.svg" alt="upload" width={24} height={24} />
                           <p className="text-sm text-[#6B7280] font-normal mt-2">사진 추가</p>
                           <input 
                               id="fileInput"
