@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useRecommendBee } from "../model/useRecommendation";
+import Crops from "@/features/crops/ui/cropsUI";
+import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {
   const { submitCropInfo, loading, error, isSuccess } = useRecommendBee();
 
-  
-
   const [form, setForm] = useState({
     name: "",
     variety: "",
-    cultivationType: "",
+    cultivationType: "OPEN_FILED",
     cultivationAddress: "",
     cultivationArea: "",
     plantingDate: "",
@@ -22,7 +22,7 @@ export default function CropInfo() {
       setForm({
         name: "",
         variety: "",
-        cultivationType: "",
+        cultivationType: "OPEN_FILED",
         cultivationAddress: "",
         cultivationArea: "",
         plantingDate: "",
@@ -40,6 +40,17 @@ export default function CropInfo() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await submitCropInfo(form);
+  };
+
+  const handleCropSelect = (crop: Crop) => {
+    setForm({
+      cultivationType: crop.cultivationType || "",
+      name: crop.name,
+      variety: crop.variety || "",
+      cultivationAddress: crop.cultivationAddress || "",
+      cultivationArea: crop.cultivationArea?.toString() || "",
+      plantingDate: crop.plantingDate || "",
+    });
   };
 
   return (
@@ -90,7 +101,7 @@ export default function CropInfo() {
           required
         >
           <option value="">선택해주세요</option>
-          <option value="OPEN_FIELD">노지</option>
+          <option value="OPEN_FIELD">노지(기본)</option>
           <option value="CONTROLLED">비닐하우스</option>
         </select>
       </div>
@@ -142,12 +153,10 @@ export default function CropInfo() {
         />
       </div>
       <div className="flex flex-row w-full gap-2">
-        <button className="w-full border rounded border-blue-500 text-blue-500 my-5 py-2 ">
-          기존 환경 정보 불러오기
-        </button>
+        <Crops onSelect={handleCropSelect} />
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white  rounded my-5 "
+          className="w-full bg-blue-500 text-white  rounded m-0 hover:bg-blue-600 transition duration-200 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "분석 중..." : "대처 방안 요청"}

@@ -3,7 +3,7 @@ import {
   DiagnosisHistory,
   MyProfile,
   MySaleList,
-  RecommendedList,
+  StoreRecommendBee,
 } from "@/features";
 
 export default function MyPage() {
@@ -18,8 +18,7 @@ export default function MyPage() {
           <MyProfile />
         </div>
       </div>
-
-      <RecommendedList />
+      <StoreRecommendBee />
       <DiagnosisHistory />
       <MySaleList />
     </div>

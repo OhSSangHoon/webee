@@ -29,7 +29,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           console.log("=== 업체 정보 로드 ===");
           console.log("상품 정보:", product);
           console.log("업체 정보 요청 - businessId:", product.businessId);
-          
+
           setBusinessLoading(true);
           setBusinessError(null);
           
@@ -68,9 +68,11 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
   if (error || !product) {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center">
-        <p className="text-lg text-red-500">{error || "상품 정보를 찾을 수 없습니다."}</p>
-        <button 
-          onClick={handleGoBack} 
+        <p className="text-lg text-red-500">
+          {error || "상품 정보를 찾을 수 없습니다."}
+        </p>
+        <button
+          onClick={handleGoBack}
           className="mt-4 px-6 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
         >
           뒤로 가기
@@ -92,7 +94,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 alt={`${product.name} 메인 이미지`}
                 width={400}
                 height={400}
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: "cover" }}
                 className="w-full h-full cursor-pointer"
                 priority
                 loading="eager"
@@ -142,7 +144,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                       alt={`${product.name} 썸네일 ${thumbnailIndex + 1}`}
                       width={76}
                       height={76}
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: "cover" }}
                       className="w-full h-full"
                       loading="eager"
                     />
@@ -176,7 +178,9 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
               </div>
               <div className="flex items-center">
                 <span className="w-20 text-gray-500">가격:</span>
-                <span className="font-bold text-xl">{product.price.toLocaleString()}원</span>
+                <span className="font-bold text-xl">
+                  {product.price.toLocaleString()}원
+                </span>
               </div>
             </div>
           </div>
@@ -185,7 +189,9 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           <div className="border-1 border-[#E2E5EB] rounded-xl p-4 mt-4">
             <h3 className="font-bold mb-3">판매자 정보</h3>
             {businessLoading ? (
-              <div className="text-sm text-gray-500">업체 정보를 불러오는 중...</div>
+              <div className="text-sm text-gray-500">
+                업체 정보를 불러오는 중...
+              </div>
             ) : businessError ? (
               <div className="text-sm text-red-500">
                 {businessError}

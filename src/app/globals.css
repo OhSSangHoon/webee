@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+@layer utilities {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #ffffff;
@@ -78,7 +95,7 @@ body {
 /*
 *기본 흰색 박스*/
 .custom-box {
-  @apply  basis-[30%] bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px] p-5 font-medium;
+  @apply basis-[30%] bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px] p-5 font-medium;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 .custom-box-shadow {
@@ -138,7 +155,6 @@ body {
   @appply "mb-1 text-sm font-medium ";
 }
 
-
 /*투명 스크롤바 디자인*/
 /* 기본 상태: 스크롤바 투명 */
 .scrollbar-hide::-webkit-scrollbar {
@@ -162,9 +178,8 @@ body {
 }
 
 @layer components {
-
   /* 카드 상단 배경 */
-  .card-top{
+  .card-top {
     @apply bg-[#EEF2FF] rounded-t-xl;
   }
 
@@ -214,3 +229,16 @@ body {
   }
 }
 
+.inner-shadow-svg {
+  filter: url(#inner-shadow);
+  color: white;
+  font-weight: bold;
+}
+
+.inner-shadow-fake {
+  background: white;
+  color: transparent;
+  text-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  -webkit-background-clip: text;
+  background-clip: text;
+}

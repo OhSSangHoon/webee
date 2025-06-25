@@ -11,48 +11,70 @@ export default function Header() {
 
   // 경로별 테마 정의
   const getThemeByPath = (path: string) => {
-    if (path === '/') {
+    if (path === "/") {
       return {
         text: "text-white hover:text-yellow-300",
         logo: "text-white",
-        background: ""
+        background: "",
       };
     }
-    
+
     return {
       text: "text-gray-800 hover:text-blue-600",
       logo: "text-gray-800",
-      background: "bg-white/90 backdrop-blur-sm"
+      background: "backdrop-blur-sm",
     };
   };
 
   const currentTheme = getThemeByPath(pathname);
-  const NAV_ITEMS = `${currentTheme.text} font-medium transition-colors cursor-pointer`;
+  const NAV_ITEMS = `${currentTheme.text} font-medium transition-colors  `;
 
   return (
     <header className={`absolute z-20 pt-5 w-full ${currentTheme.background}`}>
       <div className="container mx-auto px-5">
-        <nav className="flex justify-between items-center">
-          <div 
-            onClick={() => router.push("/")} 
+        <nav className="flex justify-between items-center ">
+          <div
+            onClick={() => router.push("/")}
             className={`flex items-center gap-3 ${currentTheme.logo} text-3xl font-bold cursor-pointer transition-colors`}
           >
             webee
           </div>
-          <ul className="hidden md:flex gap-8">
+          <ul className="hidden md:flex gap-8 cursor-pointer">
             <li>
               <div onClick={() => router.push("/search")} className={NAV_ITEMS}>
                 업체검색
               </div>
             </li>
             <li>
-              <div onClick={() => router.push("/diagnosis")} className={NAV_ITEMS}>
+              <div
+                onClick={() => router.push("/diagnosis")}
+                className={NAV_ITEMS}
+              >
                 질병진단
+              </div>
+            </li>
+            <li>
+              <div
+                onClick={() => router.push("/recommendbee")}
+                className={NAV_ITEMS}
+              >
+                수정벌추천
+              </div>
+            </li>
+            <li>
+              <div
+                onClick={() => router.push("/beenews")}
+                className={NAV_ITEMS}
+              >
+                꿀벌뉴스
               </div>
             </li>
             {userName && (
               <li>
-                <div onClick={() => router.push("/mypage")} className={NAV_ITEMS}>
+                <div
+                  onClick={() => router.push("/mypage")}
+                  className={NAV_ITEMS}
+                >
                   마이페이지
                 </div>
               </li>

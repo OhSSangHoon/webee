@@ -1,7 +1,7 @@
 export interface CropFormData {
   crop: string;
   variety: string;
-  method: string;
+  cultivationType: string;
   location: string;
   area: string;
   plantingDate: string;

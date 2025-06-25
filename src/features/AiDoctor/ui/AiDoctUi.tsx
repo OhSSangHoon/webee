@@ -7,7 +7,7 @@ import { Crop } from "@/shared/types/crop";
 export default function AiDoctorUi() {
   const [form, setForm] = useState({
     disease: "",
-    cultivationType: "CONTROLLED",
+    cultivationType: "OPEN_FIELD", //기본값: 노지
     cropName: "",
     cultivationAddress: "",
     details: "",
@@ -72,7 +72,7 @@ export default function AiDoctorUi() {
           className="w-full border p-2 rounded-md"
         >
           <option value="CONTROLLED">시설</option>
-          <option value="OPEN">노지</option>
+          <option value="OPEN_FIELD">노지(기본)</option>
         </select>
         <input
           name="cropName"
@@ -106,7 +106,7 @@ export default function AiDoctorUi() {
         </div>
       </div>
       {result && (
-        <div className="bg-gray-50 p-6 rounded-2xl shadow-lg space-y-10 border border-gray-200">
+        <div className="bg-gray-50 p-6 rounded-2xl shadow-lg space-y-10 border border-gray-200 overflow-auto">
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
               🧠 상황 분석
@@ -140,6 +140,10 @@ export default function AiDoctorUi() {
           </div>
         </div>
       )}
+      <div className=" rounded-2xl bg-amber-200 p-5 ">
+        ⚠️ 진단 결과는 인공지능이 제공한 참고용 방안입니다. 심각한 질병의 경우
+        전문가와 상담하는 것을 권장합니다.
+      </div>
     </div>
   );
 }

@@ -28,12 +28,16 @@ export async function signOut() {
   const response = await api.post("/auth/sign-out");
   // 클라이언트 상태 초기화
   localStorage.removeItem("accessToken");
-  // document.cookie = "refreshToken=; path=/; max-age=0;";
+  document.cookie = "refreshToken=; path=/; max-age=0;";
   await useUserStore.getState().logout();
   return response.data;
 }
 
 export async function reissue() {
-  const response = await api.post("/auth/reissue");
+  const response = await api.post(
+    "/auth/reissue",
+    {}, // POST body가 비어있을 경우
+    { withCredentials: true } // 쿠키 자동 포함
+  );
   return response.data;
 }

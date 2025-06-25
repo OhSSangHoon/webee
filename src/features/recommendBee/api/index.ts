@@ -17,7 +17,7 @@ export async function postRecommendation(data: CropFormDataForRecommend) {
 export async function saveRecommendation(data: BeeResultForServer) {
   try {
     await api.post("/bee/recommendations", data);
-    return "저장 완료!";
+    return "저장 완료! 마이페이지 > 수정벌 추천 리스트에서 확인 가능합니다.";
   } catch (error) {
     console.error("API 오류:", error);
     return "오류가 발생했어요. 다시 시도해보세요.";
