@@ -8,12 +8,12 @@ type NewsItem = {
   pubDate: string;
   description: string;
 };
+
 const fetchGoogleNews = async (query: string): Promise<NewsItem[]> => {
   const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(
     query
   )}&hl=ko&gl=KR&ceid=KR:ko`;
 
-  // ✅ CORS 우회 프록시 주소 변경 (corsproxy.io)
   const res = await fetch(`https://corsproxy.io/?${rssUrl}`);
   const xmlText = await res.text();
 
@@ -33,14 +33,17 @@ const fetchGoogleNews = async (query: string): Promise<NewsItem[]> => {
 
   return newsList;
 };
+
 export default function BeeNews() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [keyword, setKeyword] = useState("꿀벌"); // ✅ 현재 검색어 상태
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetchGoogleNews("꿀벌").then(setNews).catch(console.error);
-  }, []);
+    fetchGoogleNews(keyword).then(setNews).catch(console.error);
+    setCurrentPage(1); // ✅ 키워드 바뀌면 첫 페이지로 초기화
+  }, [keyword]);
 
   const totalPages = Math.ceil(news.length / itemsPerPage);
   const currentItems = news.slice(
@@ -53,15 +56,39 @@ export default function BeeNews() {
       <main className=" py-5 flex flex-col lg:flex-row lg:mr-60 gap-6 items-start justify-center">
         <section className="w-full lg:w-1/5 lg:translate-x-[-50px]">
           <h2 className=" text-4xl font-extrabold  text-white drop-shadow">
-            꿀벌 소식을 들고왔어요!
+            {keyword} 소식을 들고왔어요!
           </h2>
-          <h3>
-            꿀벌에 관한 국내외 최신 뉴스를 한눈에 확인하세요. 양봉과 생태 환경,
-            정책 변화, 기술 동향까지 꿀벌과 관련된 실시간 이슈를 빠르게
-            전달해드립니다.
+          <h3 className="text-white text-sm mt-2">
+            {keyword}에 관한 국내외 최신 뉴스를 한눈에 확인하세요. 양봉과 생태
+            환경, 정책 변화, 기술 동향까지 관련 이슈를 빠르게 전달해드립니다.
           </h3>
+
+          {/* ✅ 주제 선택 버튼 */}
+          <div className="flex gap-2 mt-4">
+            <button
+              onClick={() => setKeyword("꿀벌")}
+              className={`px-4 py-2 rounded-full font-semibold text-sm ${
+                keyword === "꿀벌"
+                  ? "bg-white text-purple-700"
+                  : "bg-purple-300 text-white"
+              }`}
+            >
+              꿀벌 뉴스
+            </button>
+            <button
+              onClick={() => setKeyword("수정벌")}
+              className={`px-4 py-2 rounded-full font-semibold text-sm ${
+                keyword === "수정벌"
+                  ? "bg-white text-purple-700"
+                  : "bg-purple-300 text-white"
+              }`}
+            >
+              수정벌 뉴스
+            </button>
+          </div>
         </section>
-        <section className="">
+
+        <section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
             {currentItems.map((item, index) => (
               <div
