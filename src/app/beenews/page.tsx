@@ -8,19 +8,17 @@ type NewsItem = {
   pubDate: string;
   description: string;
 };
-
 const fetchGoogleNews = async (query: string): Promise<NewsItem[]> => {
   const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(
     query
   )}&hl=ko&gl=KR&ceid=KR:ko`;
 
-  const res = await fetch(
-    `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`
-  );
-  const data = await res.json();
+  // ✅ CORS 우회 프록시 주소 변경 (corsproxy.io)
+  const res = await fetch(`https://corsproxy.io/?${rssUrl}`);
+  const xmlText = await res.text();
 
   const parser = new DOMParser();
-  const xml = parser.parseFromString(data.contents, "text/xml");
+  const xml = parser.parseFromString(xmlText, "text/xml");
   const items = xml.querySelectorAll("item");
 
   const newsList: NewsItem[] = [];
@@ -35,7 +33,6 @@ const fetchGoogleNews = async (query: string): Promise<NewsItem[]> => {
 
   return newsList;
 };
-
 export default function BeeNews() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
