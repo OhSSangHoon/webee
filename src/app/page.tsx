@@ -42,8 +42,10 @@ export default function Home() {
             </section>
 
             {/* 날씨 위젯 */}
+
             <section className="max-w-5xl mx-auto ">
               <Weather2 />
+
             </section>
           </div>
         </main>
@@ -92,13 +94,14 @@ export default function Home() {
                     "꿀벌 활동에 최적화된 기상 정보와 양봉 작업 가이드를 제공합니다",
                 },
                 {
-                  icon: "👨‍🌾",
-                  title: "전문가 상담 서비스",
-                  description:
-                    "경험 많은 양봉 전문가들과의 실시간 상담으로 문제를 해결해드립니다",
-                },
-              ].map((feature, index) => (
-                <article
+
+                  icon: '👨‍🌾',
+                  title: '전문가 상담 서비스',
+                  description: '경험 많은 양봉 전문가들과의 실시간 상담으로 문제를 해결해드립니다'
+                }
+              ].map((feature) => (
+                <article 
+
                   key={feature.title}
                   className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 transition-all duration-500 hover:transform hover:-translate-y-3 hover:shadow-2xl group"
                 >
