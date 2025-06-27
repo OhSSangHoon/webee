@@ -8,7 +8,7 @@ import {
   deleteCropInfo,
 } from "@/features/crops/api/cropApi";
 
-export function useCrops() {
+export function useCrops(lazy = false) {
   const [crops, setCrops] = useState<Crop[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null);
@@ -22,9 +22,12 @@ export function useCrops() {
   };
 
   useEffect(() => {
-    fetchCrops();
-  }, []);
+    if (!lazy) {
+      fetchCrops();
+    }
+  }, [lazy]);
 
+  //selectedId가 바뀌면 selectedCrop 갱신
   useEffect(() => {
     if (selectedId !== null) {
       const crop = crops.find((c) => c.id === selectedId) || null;
@@ -35,6 +38,7 @@ export function useCrops() {
     }
   }, [selectedId, crops]);
 
+  //selectedCrop이 바뀌면 formData 초기화
   useEffect(() => {
     if (selectedCrop) {
       setFormData({ ...selectedCrop });
@@ -85,5 +89,6 @@ export function useCrops() {
     deleteCrop,
     validate,
     setError,
+    fetchCrops,
   };
 }
