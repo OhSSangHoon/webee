@@ -12,8 +12,12 @@ export default function ResultBox() {
   const [canSave, setCanSave] = useState(false); // 버튼 활성화용
 
   const save = useSaveRecommendation(resultData, setIsSave);
+
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = typeof window !== "undefined" 
+      ? localStorage.getItem("accessToken") 
+      : null;
+      
     if (token) {
       setCanSave(true);
     } else {
