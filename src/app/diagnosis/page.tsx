@@ -1,3 +1,5 @@
+"use client";
+
 import { AiDiagnosis, AiDoctor } from "@/features";
 
 export default function Diagnosis() {
