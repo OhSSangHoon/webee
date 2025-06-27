@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useSignInForm } from "./model/useSignIn";
 
 export default function SignIn() {

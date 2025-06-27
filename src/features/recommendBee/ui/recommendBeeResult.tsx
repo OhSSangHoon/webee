@@ -4,20 +4,18 @@ import { CalendarDays, Sparkles, AlertCircle, Lightbulb } from "lucide-react";
 import clsx from "clsx";
 import { useRecommendBee } from "../model/useRecommendation";
 import { useSaveRecommendation } from "../model/useSaveRecommendation";
+import { safeLocalStorage } from "@/shared/utils/localStorage";
 
 export default function ResultBox() {
   const { resultData, isSuccess, loading } = useRecommendBee();
   const [tab, setTab] = useState<"info" | "products">("info");
-  const [isSave, setIsSave] = useState(""); // 메시지용
-  const [canSave, setCanSave] = useState(false); // 버튼 활성화용
+  const [isSave, setIsSave] = useState("");
+  const [canSave, setCanSave] = useState(false);
 
   const save = useSaveRecommendation(resultData, setIsSave);
-
+  
   useEffect(() => {
-    const token = typeof window !== "undefined" 
-      ? localStorage.getItem("accessToken") 
-      : null;
-      
+    const token = safeLocalStorage.getItem("accessToken");
     if (token) {
       setCanSave(true);
     } else {

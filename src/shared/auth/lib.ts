@@ -1,5 +1,6 @@
 import axios from "axios";
 import { reissue, signOut } from "./api";
+import { safeLocalStorage } from "@/shared/utils/localStorage";
 
 const api = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
@@ -11,8 +12,7 @@ const api = axios.create({
 
 // Axios 요청 인터셉터 (AT header에 추가)
 api.interceptors.request.use((config) => {
-  const accessToken =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const accessToken = safeLocalStorage.getItem("accessToken");
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -30,11 +30,7 @@ api.interceptors.response.use(
 
       try {
         const { accessToken } = await reissue();
-        
-        // 클라이언트에서만 localStorage 접근
-        if (typeof window !== "undefined") {
-          localStorage.setItem("accessToken", accessToken);
-        }
+        safeLocalStorage.setItem("accessToken", accessToken);
 
         api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
         originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;

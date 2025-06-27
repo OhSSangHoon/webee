@@ -18,18 +18,19 @@ export const useUserStore = create<UserState>()(
       login: (userName, realName) =>
         set({ userName, realName, isLoggedIn: true }),
       logout: async () => {
-        set({ userName: null, realName: null, isLoggedIn: false }); // zustand 상태 초기화
+        set({ userName: null, realName: null, isLoggedIn: false });
       },
     }),
     {
-      name: "userStorage", // zustand 상태를 localStorage에 저장
-      skipHydration: true, // 클라이언트에서만 저장
+      name: "userStorage",
+      skipHydration: true, // SSR 안전성을 위해 추가
     }
   )
 );
 
+// 클라이언트에서만 hydrate하는 함수
 export const hydrateUserStore = () => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     useUserStore.persist.rehydrate();
   }
 };
