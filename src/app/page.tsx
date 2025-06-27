@@ -1,24 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import { Weather2 } from "@/features";
-import { QuickProfile } from "@/widgets";
 
 export default function Home() {
-  const [currentTemp, setCurrentTemp] = useState("25°C");
-
-  useEffect(() => {
-    // 온도 애니메이션
-    const temps = ["25°C", "26°C", "24°C", "25°C"];
-    let index = 0;
-
-    const interval = setInterval(() => {
-      index = (index + 1) % temps.length;
-      setCurrentTemp(temps[index]);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="">
@@ -45,7 +29,6 @@ export default function Home() {
 
             <section className="max-w-5xl mx-auto ">
               <Weather2 />
-
             </section>
           </div>
         </main>

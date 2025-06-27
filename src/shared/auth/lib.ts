@@ -1,5 +1,5 @@
 import axios from "axios";
-import { reissue, signOut } from "./api";
+import { reissue } from "./api";
 
 const api = axios.create({
   baseURL: `https://api.webee.sbs/api/v1/`,

@@ -13,7 +13,7 @@ export const BeeRecommendationList = ({
 
   useEffect(() => {
     loadList();
-  }, []);
+  }, [loadList]);
 
   if (!list) return <p className="text-center py-4">불러오는 중...</p>;
 
