@@ -13,6 +13,7 @@ const api = axios.create({
 // Axios 요청 인터셉터 (AT header에 추가)
 api.interceptors.request.use((config) => {
   const accessToken = safeLocalStorage.getItem("accessToken");
+  
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -21,7 +22,9 @@ api.interceptors.request.use((config) => {
 
 // Axios 응답 인터셉터 (AT 만료 401 에러시, RT로 AT 재발급)
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
