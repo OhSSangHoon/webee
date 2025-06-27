@@ -23,6 +23,13 @@ export const useUserStore = create<UserState>()(
     }),
     {
       name: "userStorage", // zustand 상태를 localStorage에 저장
+      skipHydration: true, // 클라이언트에서만 저장
     }
   )
 );
+
+export const hydrateUserStore = () => {
+  if (typeof window !== "undefined") {
+    useUserStore.persist.rehydrate();
+  }
+};
