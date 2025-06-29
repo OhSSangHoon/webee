@@ -14,7 +14,7 @@ export default function BeeRecommendationPanel() {
     if (selectedId !== null) {
       loadDetail(selectedId);
     }
-  }, [selectedId]);
+  }, [selectedId, loadDetail]);
 
   const selectedDetail = selectedId !== null ? detailMap[selectedId] : null;
 

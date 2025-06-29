@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/widgets";
 import Providers from "./providers";
-import { ChatBot } from "@/features";
+import HydrationProvider from "@/app/HydrationProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <Providers>{children}</Providers>
-        <ChatBot />
+        <HydrationProvider>
+          <Header />
+          <Providers>
+            {children}
+          </Providers>
+        </HydrationProvider>
       </body>
     </html>
   );

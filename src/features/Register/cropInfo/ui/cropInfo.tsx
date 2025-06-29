@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useCropInfo } from "../model/useCropInfo";
+import { CultivationMethod, CropFormData } from "@/shared/types/crop";
 
 export default function CropInfo() {
   const { submitCropInfo, loading, error } = useCropInfo();
   const [form, setForm] = useState({
     crop: "",
     variety: "",
-    cultivationType: "OPEN_FIELD", // 노지 재배 기본
+    method: "" as CultivationMethod,
     location: "",
     area: "",
     plantingDate: "",
@@ -23,12 +24,12 @@ export default function CropInfo() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const isSuccess = await submitCropInfo(form);
+    const isSuccess = await submitCropInfo(form as CropFormData);
     if (isSuccess) {
       setForm({
         crop: "",
         variety: "",
-        cultivationType: "OPEN_FIELD",
+        method: "" as CultivationMethod,
         location: "",
         area: "",
         plantingDate: "",
@@ -98,8 +99,8 @@ export default function CropInfo() {
                 재배 방식 <span className="text-red-500">*</span>
               </label>
               <select
-                name="cultivationType"
-                value={form.cultivationType}
+                name="method"
+                value={form.method}
                 onChange={handleChange}
                 className="custom-Input"
                 required
