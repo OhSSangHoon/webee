@@ -55,17 +55,14 @@ export default function Header() {
             </li>
             <li>
               <div
-                onClick={() => router.push("/recommendbee")}
+                onClick={() => router.push("/recommend")}
                 className={NAV_ITEMS}
               >
                 수정벌추천
               </div>
             </li>
             <li>
-              <div
-                onClick={() => router.push("/beenews")}
-                className={NAV_ITEMS}
-              >
+              <div onClick={() => router.push("/news")} className={NAV_ITEMS}>
                 꿀벌뉴스
               </div>
             </li>
