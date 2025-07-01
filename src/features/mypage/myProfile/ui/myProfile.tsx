@@ -9,13 +9,21 @@ export default function MyProfile() {
 
   useEffect(() => {
     setIsClient(true);
+
     // 클라이언트에서만 localStorage 접근
-    const storedRealName = localStorage.getItem("realName");
-    if (storedRealName) {
-      setRealName(storedRealName);
+    const storedData = localStorage.getItem("userStorage");
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+        const realName = parsed.state?.realName;
+        if (realName) {
+          setRealName(realName);
+        }
+      } catch (error) {
+        console.error("userStorage 파싱 오류:", error);
+      }
     }
   }, []);
-
   // 클라이언트 마운트 전에는 로딩 상태 표시
   if (!isClient) {
     return (
@@ -30,9 +38,8 @@ export default function MyProfile() {
     <div className="custom-box h-full max-w-90 min-w-10 text-xs flex flex-col justify-around items-start p-4 gap-4">
       <div className="w-full flex flex-row justify-between items-center">
         <div>
-          <span className="font-bold text-xl">
-            {realName || "사용자"}
-          </span>님 반갑습니다
+          <span className="font-bold text-xl">{realName || "사용자"}</span>님
+          반갑습니다
         </div>
         <div>
           <a href="/myprofile" className="underline hover:text-black">
