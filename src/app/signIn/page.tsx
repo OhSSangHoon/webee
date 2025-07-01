@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter } from "next/router";
+
+import { useRouter } from "next/navigation"; //app 디렉토리에선 next/router 사용 금지 
 import { useSignInForm } from "./model/useSignIn";
 
 export default function SignIn() {
