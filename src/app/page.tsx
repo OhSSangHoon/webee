@@ -33,8 +33,7 @@ export default function Home() {
                 <span className="text-yellow-300">webee</span>와 함께
               </h1>
               <p className="text-xl text-gray-100 mb-10 opacity-90">
-                수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다. 
-            
+                수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다.
               </p>
               <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl shadow-yellow-400/30">
                 지금 시작하기
@@ -43,9 +42,8 @@ export default function Home() {
 
             {/* 날씨 위젯 */}
 
-            <section className="max-w-5xl mx-auto ">
+            <section className="max-w-7xl mx-auto ">
               <Weather2 />
-
             </section>
           </div>
         </main>
@@ -94,14 +92,13 @@ export default function Home() {
                     "꿀벌 활동에 최적화된 기상 정보와 양봉 작업 가이드를 제공합니다",
                 },
                 {
-
-                  icon: '👨‍🌾',
-                  title: '전문가 상담 서비스',
-                  description: '경험 많은 양봉 전문가들과의 실시간 상담으로 문제를 해결해드립니다'
-                }
+                  icon: "👨‍🌾",
+                  title: "전문가 상담 서비스",
+                  description:
+                    "경험 많은 양봉 전문가들과의 실시간 상담으로 문제를 해결해드립니다",
+                },
               ].map((feature) => (
-                <article 
-
+                <article
                   key={feature.title}
                   className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 transition-all duration-500 hover:transform hover:-translate-y-3 hover:shadow-2xl group"
                 >
