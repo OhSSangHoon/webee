@@ -8,7 +8,7 @@ export default function CropInfo() {
   const [form, setForm] = useState({
     crop: "",
     variety: "",
-    method: "",
+    cultivationType: "OPEN_FIELD", // 노지 재배 기본
     location: "",
     area: "",
     plantingDate: "",
@@ -28,7 +28,7 @@ export default function CropInfo() {
       setForm({
         crop: "",
         variety: "",
-        method: "",
+        cultivationType: "OPEN_FIELD",
         location: "",
         area: "",
         plantingDate: "",
@@ -98,14 +98,14 @@ export default function CropInfo() {
                 재배 방식 <span className="text-red-500">*</span>
               </label>
               <select
-                name="method"
-                value={form.method}
+                name="cultivationType"
+                value={form.cultivationType}
                 onChange={handleChange}
                 className="custom-Input"
                 required
               >
                 <option value="">선택해주세요</option>
-                <option value="노지">노지</option>
+                <option value="노지">노지(기본)</option>
                 <option value="비닐하우스">비닐하우스</option>
               </select>
             </div>

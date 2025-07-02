@@ -1,12 +1,45 @@
 "use client";
+
+import { useState, useEffect } from "react";
+import { BusinessList } from "./myBusinessList";
+
 export default function MyProfile() {
-  const realName = localStorage.getItem("realName");
+  const [realName, setRealName] = useState<string>("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+
+    // 클라이언트에서만 localStorage 접근
+    const storedData = localStorage.getItem("userStorage");
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+        const realName = parsed.state?.realName;
+        if (realName) {
+          setRealName(realName);
+        }
+      } catch (error) {
+        console.error("userStorage 파싱 오류:", error);
+      }
+    }
+  }, []);
+  // 클라이언트 마운트 전에는 로딩 상태 표시
+  if (!isClient) {
+    return (
+      <div className="custom-box h-full max-w-90 min-w-10 text-xs flex flex-col justify-center items-center p-4">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <p className="mt-2 text-gray-500">로딩 중...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="custom-box w-[25%] max-w-[375px] h-[260px] text-xs flex flex-col justify-around items-start">
+    <div className="custom-box h-full max-w-90 min-w-10 text-xs flex flex-col justify-around items-start p-4 gap-4">
       <div className="w-full flex flex-row justify-between items-center">
         <div>
-          <span className="font-bold text-xl">{realName}</span>님 반갑습니다
+          <span className="font-bold text-xl">{realName || "사용자"}</span>님
+          반갑습니다
         </div>
         <div>
           <a href="/myprofile" className="underline hover:text-black">
@@ -14,21 +47,23 @@ export default function MyProfile() {
           </a>
         </div>
       </div>
-      <div className=" flex flex-col justify-around items-center gap-5">
-        <div className="flex flex-col gap-2">
+
+      <div className="flex flex-col justify-around items-center gap-5 w-full">
+        {/* 나의 업체 정보 */}
+        <div className="flex flex-col gap-2 w-full">
           <div>나의 업체 정보</div>
-          <div className=" flex flex-row gap-1">
-            <div className="custom-button">길동꿀벌</div>
-            <div className="custom-button">사업장 소재지명</div>
-            <div className="custom-button">2007.05.05</div>
+          <div className="flex flex-row gap-1 overflow-x-auto scrollbar-hide hover:scrollbar-show group">
+            <BusinessList />
           </div>
         </div>
-        <div className=" flex flex-col gap-2">
+
+        {/* 나의 농지 정보 */}
+        <div className="flex flex-col gap-2 w-full">
           <div>나의 농지 정보</div>
-          <div className=" flex flex-row gap-1">
-            <div className="custom-button">경북 고령군</div>
-            <div className="custom-button">경북 예천군</div>
-            <div className="custom-button">제주시 애월읍</div>
+          <div className="flex flex-row gap-1 overflow-x-auto scrollbar-thin">
+            <div className="custom-button whitespace-nowrap">경북 고령군</div>
+            <div className="custom-button whitespace-nowrap">경북 예천군</div>
+            <div className="custom-button whitespace-nowrap">제주시 애월읍</div>
           </div>
         </div>
       </div>

@@ -1,9 +1,28 @@
 @import "tailwindcss";
+
+@layer utilities {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #ffffff;
   width: 100%;
 }
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -41,7 +60,7 @@ body {
 
 .custom-Input {
   /*기본 인풋 박스*/
-  @apply border border-gray-300 placeholder-gray-300  px-4 py-2 w-full h-fit rounded-sm mt-2;
+  @apply border border-gray-300 placeholder-gray-300  px-4 py-2 lg:w-full h-fit rounded-sm mt-2;
 }
 
 /*
@@ -52,8 +71,13 @@ body {
   @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600;
 }
 
+.white-button {
+  /*기본 흰색 버튼*/
+  @apply px-4 py-2 text-[#2B7FFF] border bg-white border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
+}
+
 .custom-button {
-  /* 기본 흰색 버튼*/
+  /* 작은 흰색 버튼*/
   background-color: #ffffff;
   color: #333333;
   border: 1px solid #d9d9d9;
@@ -62,7 +86,7 @@ body {
   transition: all 0.3s ease;
   cursor: pointer;
   font-weight: 500;
-  width: fit-content;
+  width: max-content;
   height: fit-content;
   font-size: 12px;
 }
@@ -76,7 +100,7 @@ body {
 /*
 *기본 흰색 박스*/
 .custom-box {
-  @apply bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px];
+  @apply basis-[30%] bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px] p-5 font-medium;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 .custom-box-shadow {
@@ -114,6 +138,16 @@ body {
   font-size: 12px;
 }
 
+/* 수정벌 추천 페이지 */
+.card-section {
+  @apply h-screen w-full  bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+}
+
+/*질병진단 페이지*/
+.card-section-2 {
+  @apply min-h-screen w-full bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+}
+
 /*
 *auth 용 디자인
 */
@@ -125,4 +159,108 @@ body {
 .auth-label {
   /*auth 인풋 라벨*/
   @appply "mb-1 text-sm font-medium ";
+}
+
+/*투명 스크롤바 디자인*/
+/* 기본 상태: 스크롤바 투명 */
+.scrollbar-hide::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  opacity: 0;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* hover 시: 스크롤바 보이게 */
+.group:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+.group:hover::-webkit-scrollbar-thumb {
+  background-color: #3b82f6; /*blue-500*/
+  border-radius: 4px;
+}
+
+@layer components {
+  /* 카드 상단 배경 */
+  .card-top {
+    @apply bg-[#EEF2FF] rounded-t-xl;
+  }
+
+  /* 카드 그림자 */
+  .shadow-custom {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  /* 카드 타이틀 */
+  .card-title {
+    @apply text-lg font-medium text-[#333333];
+  }
+
+  /* 주의사항 박스 */
+  .warning {
+    @apply p-5 bg-[#FFFBEB] rounded-xl h-[134px] flex;
+  }
+
+  /* 주의사항 타이틀 */
+  .warning-title {
+    @apply text-[#92400E] font-normal;
+  }
+
+  /* 주의사항 리스트 */
+  .warning-list {
+    @apply text-[#6B7280] text-sm font-normal mt-2 list-disc list-inside space-y-1;
+  }
+
+  /* 상품 정보 입력 영역 */
+  .product-title {
+    @apply w-full flex flex-row items-center mt-10 mb-2;
+  }
+
+  /* 이미지 업로드 버튼 */
+  .upload-button {
+    @apply w-25 h-25 flex flex-col items-center justify-center rounded-md cursor-pointer border-2 border-dashed border-[#E2E5EB];
+  }
+
+  /* 인풋 박스 */
+  .add-input {
+    @apply w-full h-10 rounded-md border border-[#E2E5EB] px-4 text-[#333333];
+  }
+
+  /* 등록 버튼 */
+  .submit-button {
+    @apply w-1/4 h-10 bg-blue-500 text-white rounded-md mt-5 flex items-center justify-center;
+  }
+}
+
+.inner-shadow-svg {
+  filter: url(#inner-shadow);
+  color: white;
+  font-weight: bold;
+}
+
+.inner-shadow-fake {
+  background: white;
+  color: transparent;
+  text-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/*챗봇 열기 모션*/
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
 }

@@ -1,10 +1,13 @@
 "use client";
 
+
+import { useRouter } from "next/navigation"; //app 디렉토리에선 next/router 사용 금지 
 import { useSignInForm } from "./model/useSignIn";
 
 export default function SignIn() {
   const { register, handleSubmit, errors, isSubmitting, onSubmit } =
     useSignInForm();
+  const router = useRouter();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-550px)] w-full ">
@@ -50,6 +53,7 @@ export default function SignIn() {
             <button
               type="button"
               className="basis-[30%] h-[38px] bg-white text-gray-800 rounded-md border border-[#d8d8d8] hover:bg-gray-100"
+              onClick={() => router.push("/signUp")}
             >
               회원가입
             </button>

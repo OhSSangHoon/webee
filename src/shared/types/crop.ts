@@ -1,9 +1,18 @@
 export interface CropFormData {
   crop: string;
   variety: string;
-  method: string;
+  cultivationType: string;
   location: string;
   area: string;
+  plantingDate: string;
+}
+
+export interface CropFormDataForRecommend {
+  name: string;
+  variety: string;
+  cultivationType: string;
+  cultivationAddress: string;
+  cultivationArea: string;
   plantingDate: string;
 }
 
@@ -16,4 +25,13 @@ export interface Crop {
   cultivationAddress?: string;
   cultivationArea?: number;
   plantingDate?: string;
+}
+
+export interface BeeResult {
+  beeType: string;
+  inputStartDate: string;
+  inputEndDate: string;
+  characteristics: string[];
+  caution: string[];
+  usageTip: string[];
 }
