@@ -3,7 +3,6 @@ import api from "@/shared/auth/lib";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Camera } from "lucide-react";
-import { RefObject } from "react";
 
 type DiagnosisResult = {
   name: string;
@@ -14,22 +13,12 @@ type DiagnosisResult = {
   severity: string;
 };
 
-type AiDiagnosisUIProps = {
-  fileInputRef: RefObject<HTMLInputElement | null>;
-  imageFile: File | null;
-  setImageFile: (file: File | null) => void;
-  result: DiagnosisResult | null;
-  setResult: (res: DiagnosisResult | null) => void;
-};
-
-export default function AiDiagnosisUI({
-  fileInputRef,
-  setImageFile,
-  result,
-  setResult,
-}: AiDiagnosisUIProps) {
+export default function AiDiagnosisUI() {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [result, setResult] = useState<DiagnosisResult | null>(null);
 
   const apifunc = async () => {
     const file = fileInputRef.current?.files?.[0];
@@ -118,7 +107,7 @@ export default function AiDiagnosisUI({
       <div className="p-4  bg-[#ffdf8e] rounded-2xl w-full min-h-[40rem] flex flex-col justify-center items-center">
         <div>꿀벌이 잘 보이도록 확대해서 찍어주세요. </div>
         <div className="flex flex-col justify-center items-center w-full  h-full gap-10">
-          <div className="w-2/3 h-full relative">
+          <div className="w-2/3 h-40 relative">
             <Image
               src="/images/bee1.jpg"
               alt="예시 꿀벌1"
@@ -128,7 +117,7 @@ export default function AiDiagnosisUI({
               className="object-cover rounded-lg border"
             />
           </div>
-          <div className="w-2/3 h-full relative">
+          <div className="w-2/3 h-40 relative">
             <Image
               src="/images/bee2.jpg"
               alt="예시 꿀벌2"
@@ -137,7 +126,7 @@ export default function AiDiagnosisUI({
               className="object-cover rounded-lg border"
             />
           </div>
-          <div className="w-2/3 h-full relative">
+          <div className="w-2/3 h-40 relative">
             <Image
               src="/images/bee3.jpg"
               alt="예시 꿀벌3"

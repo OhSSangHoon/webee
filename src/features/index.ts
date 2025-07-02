@@ -37,5 +37,5 @@ export { default as Search } from "./search/ui/ProductsSearch";
 
 export { default as StoreRecommendBee } from "./mypage/storeRecommendBee/ui/module";
 
-export { default as Weather2 } from "./weather/ui";
+export { default as Weather2 } from "./weather/WeahterUi";
 export { default as ChatBot } from "./chatBot/ui";
