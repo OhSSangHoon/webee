@@ -17,7 +17,6 @@ export default function AiDiagnosisUI() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [result, setResult] = useState<DiagnosisResult | null>(null);
 
   const apifunc = async () => {
@@ -51,7 +50,6 @@ export default function AiDiagnosisUI() {
     const file = e.target.files?.[0];
     if (file) {
       setPreviewImage(URL.createObjectURL(file));
-      setImageFile(file);
     }
   };
 
@@ -75,7 +73,7 @@ export default function AiDiagnosisUI() {
           onClick={() => fileInputRef.current?.click()}
         >
           {previewImage ? (
-            <img
+            <Image
               src={previewImage}
               alt="선택한 이미지"
               className="object-contain h-full w-full"
