@@ -7,10 +7,11 @@ import Image from "next/image";
 import { getBusinessDetail, BusinessDetail } from "@/shared/business/api";
 import ReviewSection from "@/features/reviews/ui/ReviewsSection";
 import { useEffect, useState } from "react";
+import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
   const router = useRouter();
-  const { product, isLoading, error, getBeeTypeKorean } = useProductDetail(productId);
+  const { product, isLoading, error } = useProductDetail(productId);
   const [businessInfo, setBusinessInfo] = useState<BusinessDetail | null>(null);
   const [businessLoading, setBusinessLoading] = useState(true);
   const [businessError, setBusinessError] = useState<string | null>(null);

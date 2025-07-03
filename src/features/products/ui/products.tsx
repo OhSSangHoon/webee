@@ -167,11 +167,8 @@ export default function ProductsPage() {
 
     try {
       setIsSubmitting(true);
-      // 147번째 줄: 사용되지 않는 'result' 변수 제거
       await createProduct(productData, imageFiles);
       alert("상품이 성공적으로 등록되었습니다.");
-      console.log("등록된 상품 정보:", result);
-
       router.push("/");
       return;
     } catch (error) {

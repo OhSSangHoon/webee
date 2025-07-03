@@ -1,5 +1,5 @@
 // 벌 종류
-export type BeeType = 'HONEYBEE' | 'EUROPEAN_BUMBLEBEE' | 'MASON_BEE';
+export type BeeType = 'HONEYBEE' | 'ASIAN_BUMBLEBEE' | 'EUROPEAN_BUMBLEBEE' | 'MASON_BEE';
 
 /**
  * 상품 등록 요청 데이터

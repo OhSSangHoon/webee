@@ -1,10 +1,13 @@
+import ClientOnly from "@/shared/components/ClientOnly";
 import { AiDiagnosis, AiDoctor } from "@/features";
 
 export default function Diagnosis() {
   return (
-    <div className="flex flex-row justify-center items-center min-h-screen w-full max-w-7xl mx-auto gap-10 px-4 py-20">
-      <AiDiagnosis />
-      <AiDoctor />
+    <div className="flex flex-row justify-center items-center min-h-screen gap-10 my-10">
+      <ClientOnly fallback={<div>Loading...</div>}>
+        <AiDiagnosis />
+        <AiDoctor />
+      </ClientOnly>
     </div>
   );
 }
