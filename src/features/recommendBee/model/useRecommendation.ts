@@ -17,7 +17,7 @@ type RecommendBeeState = {
 // zustand로 추천 내용 관리 
 export const useRecommendBee = create<RecommendBeeState>((set) => ({
   resultData: {
-    beeType: "서양 뒤영벌",
+    beeType: "뒤영벌",
     inputStartDate: "2025-05-11",
     inputEndDate: "2025-05-15",
     characteristics: [
@@ -56,11 +56,11 @@ export const useRecommendBee = create<RecommendBeeState>((set) => ({
       const response = await postRecommendation(formData);
       if (response?.data) {
         set({ resultData: response.data, isSuccess: true });
-        console.log("API 결과 수신:", response.data);
+        console.log("수정벌 추천 성공:", response.data);
       }
-    } catch (err) {
-      console.error("추천 실패:", err);
-      set({ error: "추천에 실패했습니다." });
+    } catch (error) {
+      console.log("수정벌 추천 실패:", error);
+      set({ error: "수정벌 추천에 실패했습니다." });
     } finally {
       set({ loading: false });
     }

@@ -1,9 +1,24 @@
 "use client";
 import api from "@/shared/auth/lib";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Image from "next/image";
+import { Camera } from "lucide-react";
+
+type DiagnosisResult = {
+  name: string;
+  confidence: string;
+  description: string;
+  symptoms: string[];
+  cause: string;
+  severity: string;
+};
 
 export default function AiDiagnosisUI() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [result, setResult] = useState<DiagnosisResult | null>(null);
 
   const apifunc = async () => {
     const file = fileInputRef.current?.files?.[0];
@@ -13,46 +28,158 @@ export default function AiDiagnosisUI() {
     }
 
     const formData = new FormData();
-    formData.append("beeImage", file); // ✅ 서버가 요구하는 이름
-
+    formData.append("beeImage", file);
+    setLoading(true);
+    setResult(null);
     try {
-      const response = await api.post("/bee/diagnosis", formData);
+      const response = await api.post("/bee/diagnosis", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log(response.data);
+      setResult(response.data.data);
     } catch (error) {
       console.error("진단 요청 실패:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreviewImage(URL.createObjectURL(file));
+      setImageFile(file);
+    }
+  };
+
   return (
-    <div className=" flex flex-col justify-start items-stretch w-full h-full gap-4 card-section-2">
+    <div className=" flex flex-col justify-start items-start w-full gap-4 card-section-2">
       <div>
         <h2 className="text-2xl font-bold">
-          <span className="text-blue-500 text-3xl">Step 1</span> AI 꿀벌
-          질병진단
+          <span className="text-blue-500 text-3xl">Step 1</span> 꿀벌 사진
+          업로드
         </h2>
-        <div>꿀벌 이미지 질병 판단을 통해 6가지 병을 판단합니다.</div>
-      </div>{" "}
-      <div>
+        <div>
+          꿀벌 사진을 업로드하여 응애, 부저병, 날개불구바이러스감염증, 석고병
+          질병 여부를 진단받을 수 있어요!
+        </div>
+      </div>
+
+      {/*커스텀 파일 업로드 박스 */}
+      <div className="flex flex-col gap-3 w-full">
+        <div
+          className="border-2 border-dashed border-[#d9d9d9] rounded-xl h-[120px] flex flex-col justify-center items-center cursor-pointer hover:bg-gray-50 transition relative overflow-hidden"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          {previewImage ? (
+            <img
+              src={previewImage}
+              alt="선택한 이미지"
+              className="object-contain h-full w-full"
+            />
+          ) : (
+            <>
+              <Camera className="w-8 h-8 text-gray-500" />
+              <p className="text-gray-500 text-sm mt-2">사진을 선택해주세요</p>
+            </>
+          )}
+        </div>
+
+        {/* 실제 input은 숨김 */}
         <input
           type="file"
-          ref={fileInputRef}
           accept="image/*"
-          className="border"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
         />
-        <button className="border" onClick={apifunc}>
-          진단 요청
+
+        {/* 버튼 */}
+        <button className=" white-button" onClick={apifunc}>
+          {loading ? "진단 중..." : "진단 요청"}
         </button>
       </div>
-      <div className="border-4 border-gray-400 rounded-2xl w-full h-50 flex flex-col justify-center items-center gap-2">
-        <div>꿀벌이 잘 보이도록 확대해서 찍어주세요.</div>
-        <div className="flex flex-row justify-around w-full h-[60%]">
-          <div className="border bg-amber-950 w-[30%] h-full ">ㅇ</div>
-          <div className="border bg-amber-950 w-[1/3] h-full "></div>
-          <div className="border bg-amber-950 w-[1/3] h-full "></div>
+
+      {/* 예시이미지 안내 영역 */}
+      <div className="p-4  bg-[#ffdf8e] rounded-2xl w-full min-h-[40rem] flex flex-col justify-center items-center">
+        <div>꿀벌이 잘 보이도록 확대해서 찍어주세요. </div>
+        <div className="flex flex-col justify-center items-center w-full  h-full gap-10">
+          <div className="w-2/3 h-40 relative">
+            <Image
+              src="/images/bee1.jpg"
+              alt="예시 꿀벌1"
+              priority
+              sizes="(max-width: 768px) 100vw, 66vw"
+              fill
+              className="object-cover rounded-lg border"
+            />
+          </div>
+          <div className="w-2/3 h-40 relative">
+            <Image
+              src="/images/bee2.jpg"
+              alt="예시 꿀벌2"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              fill
+              className="object-cover rounded-lg border"
+            />
+          </div>
+          <div className="w-2/3 h-40 relative">
+            <Image
+              src="/images/bee3.jpg"
+              alt="예시 꿀벌3"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              fill
+              className="object-cover rounded-lg border"
+            />
+          </div>
         </div>
-        <div className="flex justify-end items-end">
+        <div className="flex justify-end items-end text-sm text-gray-600">
           ※위의 예시 이미지를 참고해주세요.
         </div>
       </div>
+
+      {result && (
+        <div className="p-6 bg-[#FCE7F3]  rounded-xl shadow-md space-y-4 ">
+          <div className=" flex flex-col gap-5">
+            <h3 className="text-xl font-bold text-black">
+              {result.name}{" "}
+              <p className="text-sm text-pink-500">
+                정확도: {result.confidence}
+              </p>
+            </h3>
+
+            <p className=" text-pink-600">{result.description}</p>
+
+            {Array.isArray(result.symptoms) && (
+              <div className="flex flex-col">
+                <strong>주요 증상</strong>
+
+                <ul className=" list-inside text-sm text-gray-700">
+                  {result.symptoms.map((s, idx) => (
+                    <li key={idx}>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {result.cause && (
+              <div>
+                <strong>전파 요인 </strong>
+                <div> {result.cause}</div>
+              </div>
+            )}
+
+            {result.severity && (
+              <div>
+                <strong>심각도</strong> <div> {result.severity}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

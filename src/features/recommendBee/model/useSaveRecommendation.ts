@@ -16,10 +16,9 @@ export type BeeResultForServer = Omit<
 
 // 벌 타입 변환.
 const beeTypeMap: Record<string, string> = {
-  "서양 뒤영벌": "EUROPEAN_BUMBLEBEE",
-  "호박벌": "ASIAN_BUMBLEBEE",
-  "꿀벌": "HONEYBEE",
-  "머리뿔가위벌": "MASON_BEE",
+  뒤영벌: "BUMBLEBEE",
+  꿀벌: "HONEYBEE",
+  머리뿔가위벌: "MASON_BEE",
 };
 
 //  줄바꿈 문자열 처리를 통한 string[] -> string.
@@ -41,6 +40,8 @@ export const transformDataForServer = (
   cultivationType,
 });
 
+
+// 추천 결과 저장 
 export const useSaveRecommendation = (
   resultData: BeeResult,
   setIsSave: React.Dispatch<React.SetStateAction<string>>

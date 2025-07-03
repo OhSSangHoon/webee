@@ -60,7 +60,7 @@ body {
 
 .custom-Input {
   /*기본 인풋 박스*/
-  @apply border border-gray-300 placeholder-gray-300  px-4 py-2 w-full h-fit rounded-sm mt-2;
+  @apply border border-gray-300 placeholder-gray-300  px-4 py-2 lg:w-full h-fit rounded-sm mt-2;
 }
 
 /*
@@ -71,8 +71,13 @@ body {
   @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600;
 }
 
+.white-button {
+  /*기본 흰색 버튼*/
+  @apply px-4 py-2 text-[#2B7FFF] border bg-white border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
+}
+
 .custom-button {
-  /* 기본 흰색 버튼*/
+  /* 작은 흰색 버튼*/
   background-color: #ffffff;
   color: #333333;
   border: 1px solid #d9d9d9;
@@ -133,13 +138,14 @@ body {
   font-size: 12px;
 }
 
-/* 모달 창 */
+/* 수정벌 추천 페이지 */
 .card-section {
-  @apply h-screen max-w-[580px] max-h-[57rem] bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+  @apply h-screen w-full  bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
 }
 
+/*질병진단 페이지*/
 .card-section-2 {
-  @apply h-screen max-w-[580px] bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+  @apply min-h-screen w-full bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
 }
 
 /*
