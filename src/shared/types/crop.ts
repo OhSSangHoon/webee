@@ -1,11 +1,11 @@
 export enum CultivationMethod {
   OPEN_FIELD = "노지",
-  GREENHOUSE = "비닐하우스"
+  GREENHOUSE = "비닐하우스",
 }
 
 export enum CultivationType {
   CONTROLLED = "CONTROLLED",
-  OPEN_FIELD = "OPEN_FIELD"
+  OPEN_FIELD = "OPEN_FIELD",
 }
 
 export interface CropFormData {
@@ -18,8 +18,9 @@ export interface CropFormData {
   plantingDate: string;
 }
 
-
-export const getCultivationType = (method: CultivationMethod): CultivationType => {
+export const getCultivationType = (
+  method: CultivationMethod
+): CultivationType => {
   switch (method) {
     case CultivationMethod.GREENHOUSE:
       return CultivationType.CONTROLLED;
