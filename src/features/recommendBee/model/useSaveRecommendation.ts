@@ -1,6 +1,7 @@
 import { BeeResult } from "@/shared/types/crop";
-import { saveRecommendation } from "../api";
+
 import { useRecommendBee } from "./useRecommendation";
+import { saveRecommendation } from "../api/recommendApi";
 
 export type BeeResultForServer = Omit<
   BeeResult,
@@ -40,8 +41,7 @@ export const transformDataForServer = (
   cultivationType,
 });
 
-
-// 추천 결과 저장 
+// 추천 결과 저장
 export const useSaveRecommendation = (
   resultData: BeeResult,
   setIsSave: React.Dispatch<React.SetStateAction<string>>
