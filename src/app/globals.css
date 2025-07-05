@@ -140,7 +140,7 @@ body {
 
 /* 수정벌 추천 페이지 */
 .card-section {
-  @apply h-screen w-full  bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+  @apply w-full  bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
 }
 
 /*질병진단 페이지*/
