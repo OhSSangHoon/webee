@@ -77,13 +77,17 @@ export default function WeatherUI() {
           if (addressRes.ok) {
             const addressData: AddressData = await addressRes.json();
             const addr = addressData.address;
-            const koreanAddr =
+            const fullKoreanAddr =
               addr.city ||
               addr.town ||
               addr.village ||
               addr.county ||
               addr.state ||
               "알 수 없는 위치";
+
+            const koreanAddr = fullKoreanAddr.substring(0, 2);
+
+            //nominatim api의 한글주소와 농업기상관측소 주소 맞추기
             setKoreanAddress(koreanAddr);
           }
         } catch (error) {
