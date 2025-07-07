@@ -62,6 +62,9 @@ export default function pesticideTable() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+
   const rowsPerPage = 10;
 
   useEffect(() => {
@@ -72,10 +75,17 @@ export default function pesticideTable() {
         setAList(data.filter((d) => d.code === "A").map((d) => d.codeNm));
         setBList(data.filter((d) => d.code === "B").map((d) => d.codeNm));
         setCList(data.filter((d) => d.code === "C").map((d) => d.codeNm));
+      })
+      .then(() => {
+        // 항목 세팅 후 전체 조회 한 번 실행
+        handleSearch(1, true);
       });
   }, []);
 
-  const handleSearch = async (pageNo = 1) => {
+  const handleSearch = async (pageNo = 1, isTrue: boolean) => {
+    setLoading(isTrue);
+    setSearched(true);
+
     const query = new URLSearchParams({
       sCropsNm: crop,
       sPrpos: usage,
@@ -88,7 +98,6 @@ export default function pesticideTable() {
     const xmlText = await res.text();
     const parsed = await parseXMLtoResults(xmlText);
 
-    // 페이지 수 계산
     const parser = new DOMParser();
     const doc = parser.parseFromString(xmlText, "text/xml");
     const totalCount = parseInt(
@@ -99,113 +108,156 @@ export default function pesticideTable() {
     setResults(parsed);
     setTotalPages(pageCount);
     setPage(pageNo);
+    setLoading(false);
   };
 
+  const pageGroup = Math.floor((page - 1) / 10);
+  const startPage = pageGroup * 10 + 1;
+  const endPage = Math.min(startPage + 9, totalPages);
+
   return (
-    <div className="p-6 space-y-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold">🐝 농약적용검색</h1>
+    
+    <div className="bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 min-h-screen text-white px-6 py-10">
+      <div className="max-w-6xl mx-auto space-y-10 pt-20">
+        <h1 className="text-4xl font-extrabold text-center">
+          🐝 화분매개곤충 농약 적용 검색
+        </h1>
+        <p className="text-center text-lg text-white/80">
+          작물, 용도, 곤충을 선택하고 검색하면 농약 적용 정보를 확인할 수
+          있습니다.
+        </p>
 
-      <div className="flex gap-4 items-end">
-        <div>
-          <label>작물명</label>
-          <select
-            onChange={(e) => setCrop(e.target.value)}
-            className="border p-2 rounded block"
-          >
-            <option value="">전체</option>
-            {aList.map((v, i) => (
-              <option key={i} value={v}>
-                {v}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label>용도</label>
-          <select
-            onChange={(e) => setUsage(e.target.value)}
-            className="border p-2 rounded block"
-          >
-            <option value="">전체</option>
-            {bList.map((v, i) => (
-              <option key={i} value={v}>
-                {v}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label>곤충</label>
-          <select
-            onChange={(e) => setInsect(e.target.value)}
-            className="border p-2 rounded block"
-          >
-            <option value="">전체</option>
-            {cList.map((v, i) => (
-              <option key={i} value={v}>
-                {v}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          onClick={() => handleSearch(1)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          검색
-        </button>
-      </div>
-
-      <table className="w-full border mt-4 text-sm">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="border px-2 py-1">번호</th>
-            <th className="border px-2 py-1">상표명</th>
-            <th className="border px-2 py-1">품목명</th>
-            <th className="border px-2 py-1">함량정보</th>
-            <th className="border px-2 py-1">안전방사시간</th>
-            <th className="border px-2 py-1">작물명</th>{" "}
-            <th className="border px-2 py-1">봄종명</th>
-            <th className="border px-2 py-1">용도</th>
-            <th className="border px-2 py-1">적용병해충</th>
-          </tr>
-        </thead>
-        <tbody>
-          {results.map((r, i) => (
-            <tr key={i}>
-              <td className="border px-2 py-1">{r.agchmApplcNo}</td>
-              <td className="border px-2 py-1">{r.brandNm}</td>
-              <td className="border px-2 py-1">{r.prdlstNm}</td>
-              <td className="border px-2 py-1">{r.contInfo}</td>
-              <td className="border px-2 py-1">{r.safeRdmtrTime}</td>{" "}
-              <td className="border px-2 py-1">{r.cropsNm}</td>
-              <td className="border px-2 py-1">{r.sprngspcsNm}</td>
-              <td className="border px-2 py-1">{r.prpos}</td>
-              <td className="border px-2 py-1">{r.applcsicknsHlsctsickns}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* 페이지네이션 */}
-      <div className="flex justify-center gap-2 mt-4">
-        {Array.from({ length: totalPages }).map((_, idx) => {
-          const pageNo = idx + 1;
-          return (
-            <button
-              key={pageNo}
-              onClick={() => handleSearch(pageNo)}
-              className={`px-3 py-1 border rounded ${
-                page === pageNo ? "bg-blue-500 text-white" : "bg-white"
-              }`}
+        {/* 검색 폼 */}
+        <div className="bg-white/10 p-6 rounded-xl shadow-lg flex flex-wrap gap-4 justify-center items-end">
+          <div>
+            <label className="block mb-1 font-medium">작물명</label>
+            <select
+              onChange={(e) => setCrop(e.target.value)}
+              className="bg-white text-black p-2 rounded-md"
             >
-              {pageNo}
-            </button>
-          );
-        })}
+              <option value="">전체</option>
+              {aList.map((v, i) => (
+                <option key={i} value={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">용도</label>
+            <select
+              onChange={(e) => setUsage(e.target.value)}
+              className="bg-white text-black p-2 rounded-md"
+            >
+              <option value="">전체</option>
+              {bList.map((v, i) => (
+                <option key={i} value={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">곤충</label>
+            <select
+              onChange={(e) => setInsect(e.target.value)}
+              className="bg-white text-black p-2 rounded-md"
+            >
+              <option value="">전체</option>
+              {cList.map((v, i) => (
+                <option key={i} value={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            onClick={() => handleSearch(1, true)}
+            className="bg-yellow-400 text-black px-6 py-2 rounded-full font-bold hover:bg-yellow-300 transition"
+          >
+             검색
+          </button>
+        </div>
+
+        {/* 결과 테이블 */}
+        <div className="bg-white text-black rounded-xl overflow-auto shadow-lg">
+          {loading ? (
+            <div className="text-center p-6 text-xl">검색 중...</div>
+          ) : results.length === 0 && searched ? (
+            <div className="text-center p-6 text-lg text-gray-500">
+              해당 조합으로 된 검색결과가 없습니다.
+            </div>
+          ) : (
+            <table className="w-full text-sm text-center">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="p-2">번호</th>
+                  <th className="p-2">상표명</th>
+                  <th className="p-2">품목명</th>
+                  <th className="p-2">함량정보</th>
+                  <th className="p-2">안전방사시간</th>
+                  <th className="p-2">작물명</th>
+                  <th className="p-2">봄종명</th>
+                  <th className="p-2">용도</th>
+                  <th className="p-2">적용병해충</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((r, i) => (
+                  <tr key={i} className="odd:bg-gray-50 even:bg-white">
+                    <td className="p-2">{r.agchmApplcNo}</td>
+                    <td className="p-2">{r.brandNm}</td>
+                    <td className="p-2">{r.prdlstNm}</td>
+                    <td className="p-2">{r.contInfo}</td>
+                    <td className="p-2">{r.safeRdmtrTime}</td>
+                    <td className="p-2">{r.cropsNm}</td>
+                    <td className="p-2">{r.sprngspcsNm}</td>
+                    <td className="p-2">{r.prpos}</td>
+                    <td className="p-2">{r.applcsicknsHlsctsickns}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        {/* 페이지네이션 */}
+        {totalPages > 1 && (
+          <div className="flex justify-center gap-2 flex-wrap">
+            {startPage > 1 && (
+              <button
+                onClick={() => handleSearch(startPage - 1, false)}
+                className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200"
+              >
+                ◀
+              </button>
+            )}
+            {Array.from({ length: endPage - startPage + 1 }).map((_, idx) => {
+              const pageNo = startPage + idx;
+              return (
+                <button
+                  key={pageNo}
+                  onClick={() => handleSearch(pageNo, false)}
+                  className={`px-3 py-1 rounded-full transition ${
+                    page === pageNo
+                      ? "bg-yellow-400 text-black font-bold"
+                      : "bg-white text-black hover:bg-gray-200"
+                  }`}
+                >
+                  {pageNo}
+                </button>
+              );
+            })}
+            {endPage < totalPages && (
+              <button
+                onClick={() => handleSearch(endPage + 1, false)}
+                className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200"
+              >
+                ▶
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
