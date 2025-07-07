@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRecommendBee } from "../model/useRecommendation";
-import Crops from "@/features/crops/ui/cropsUI";
+import Crops from "@/features/crops/ui/CropsUI";
 import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {
@@ -55,11 +55,16 @@ export default function CropInfo() {
 
   return (
     <form
-      className=" flex flex-col justify-center items-stretch w-full h-full gap-4 card-section"
+      className=" flex flex-col justify-start items-stretch w-full gap-4 card-section"
       onSubmit={handleSubmit}
     >
-      <h2 className="text-2xl font-bold">🥬 새 작물 추가</h2>
-
+      <h2 className="text-2xl font-bold">
+        🥬 새 작물 추가{" "}
+        <span className="text-sm text-red-400">
+          <span className="text-red-500">*</span> 별이 붙어있는 항목은
+          필수입력이에요.{" "}
+        </span>
+      </h2>
       <div>
         <label className="block mb-1 text-sm font-medium">
           재배 작물 <span className="text-red-500">*</span>
@@ -74,7 +79,6 @@ export default function CropInfo() {
           required
         />
       </div>
-
       {/* 품종 */}
       <div>
         <label className="block mb-1 text-sm font-medium">품종</label>
@@ -87,7 +91,6 @@ export default function CropInfo() {
           placeholder="예: 설향, 한라봉 등"
         />
       </div>
-
       {/* 재배 방식 */}
       <div>
         <label className="block mb-1 text-sm font-medium">
@@ -105,11 +108,11 @@ export default function CropInfo() {
           <option value="CONTROLLED">비닐하우스</option>
         </select>
       </div>
-
       {/* 재배 지역 */}
       <div>
         <label className="block mb-1 text-sm font-medium">
-          재배 지역 <span className="text-red-500">*</span>
+          재배 지역{" "}
+          <span className="text-red-500">* 정확한 주소를 입력해주세요!</span>
         </label>
         <input
           type="text"
@@ -121,7 +124,6 @@ export default function CropInfo() {
           required
         />
       </div>
-
       {/* 재배 면적 */}
       <div>
         <label className="block mb-1 text-sm font-medium">
@@ -137,7 +139,6 @@ export default function CropInfo() {
           required
         />
       </div>
-
       {/* 정식일 (파종일) */}
       <div>
         <label className="block mb-1 text-sm font-medium">

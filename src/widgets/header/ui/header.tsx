@@ -62,6 +62,11 @@ export default function Header() {
               </div>
             </li>
             <li>
+              <div onClick={() => router.push("/pesticide")} className={NAV_ITEMS}>
+                맞는농약찾기
+              </div>
+            </li>
+            <li>
               <div onClick={() => router.push("/news")} className={NAV_ITEMS}>
                 꿀벌뉴스
               </div>

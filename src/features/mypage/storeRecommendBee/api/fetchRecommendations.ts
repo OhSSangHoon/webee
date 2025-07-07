@@ -13,6 +13,6 @@ export async function fetchRecommendations(): Promise<BeeRecommendation[]> {
 import { BeeRecommendationDetail } from "../model/types";
 
 export async function fetchRecommendationDetail(id: number): Promise<BeeRecommendationDetail> {
-  const response = await api.get(`bee/recommendations/${id}`);
+  const response = await api.get(`/bee/recommendations/${id}`);
   return response.data.data;
 }

@@ -1,7 +1,7 @@
-// 수정벌 추천 훅 
+// 수정벌 추천 훅
 import { create } from "zustand";
 import { CropFormDataForRecommend, BeeResult } from "@/shared/types/crop";
-import { postRecommendation } from "../api";
+import { postRecommendation } from "../api/recommendApi";
 
 type RecommendBeeState = {
   resultData: BeeResult;
@@ -14,7 +14,7 @@ type RecommendBeeState = {
   submitCropInfo: (formData: CropFormDataForRecommend) => Promise<void>;
 };
 
-// zustand로 추천 내용 관리 
+// zustand로 추천 내용 관리
 export const useRecommendBee = create<RecommendBeeState>((set) => ({
   resultData: {
     beeType: "뒤영벌",
@@ -50,7 +50,7 @@ export const useRecommendBee = create<RecommendBeeState>((set) => ({
       cropName: formData.name,
       cultivationAddress: formData.cultivationAddress,
       cultivationType: formData.cultivationType,
-       // 작물 정보는 formData에서 가져옴. 추후 추천 내용 저장 시 필요한 정보.  
+      // 작물 정보는 formData에서 가져옴. 추후 추천 내용 저장 시 필요한 정보.
     });
     try {
       const response = await postRecommendation(formData);

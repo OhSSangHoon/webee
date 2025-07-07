@@ -6,7 +6,7 @@ import api from "@/shared/auth/lib";
 export const PostCropInfo = () => {
   const postCropInfo = useCallback(async (data: CropFormData) => {
     try {
-      const response = await api.post("profile/crops", {
+      const response = await api.post("/profile/crops", {
         name: data.crop,
         variety: data.variety,
         cultivationType: getCultivationType(data.method),

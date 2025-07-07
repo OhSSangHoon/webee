@@ -6,7 +6,7 @@ import { BeeResultForServer } from "../model/useSaveRecommendation";
 // 수정벌 추천 api
 export async function postRecommendation(data: CropFormDataForRecommend) {
   try {
-    const response = await api.post("bee/recommendations/ai", data);
+    const response = await api.post("/bee/recommendations/ai", data);
     return response.data;
   } catch (error) {
     return error;

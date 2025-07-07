@@ -36,7 +36,7 @@ export async function postBusinessProfile(data: BusinessProfilePayload) {
     formData.append("businessCertificateImage", data.businessCertificateImage);
   }
 
-  const response = await api.post("profile/business", formData, {
+  const response = await api.post("/profile/business", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
