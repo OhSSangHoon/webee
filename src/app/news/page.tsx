@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 
 type NewsItem = {
@@ -37,12 +36,12 @@ const fetchGoogleNews = async (query: string): Promise<NewsItem[]> => {
 export default function BeeNews() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [keyword, setKeyword] = useState("꿀벌"); // ✅ 현재 검색어 상태
+  const [keyword, setKeyword] = useState("꿀벌"); // 현재 검색어 상태
   const itemsPerPage = 10;
 
   useEffect(() => {
     fetchGoogleNews(keyword).then(setNews).catch(console.error);
-    setCurrentPage(1); // ✅ 키워드 바뀌면 첫 페이지로 초기화
+    setCurrentPage(1); //  키워드 바뀌면 첫 페이지로 초기화
   }, [keyword]);
 
   const totalPages = Math.ceil(news.length / itemsPerPage);
@@ -51,8 +50,11 @@ export default function BeeNews() {
     currentPage * itemsPerPage
   );
 
+  const handleRouter = (link: string) => {
+    window.open(link, "_blank"); // 새 탭에서 링크 열기
+  };
   return (
-    <div className=" bg-gradient-to-br from-indigo-400 via-purple-400 to-purple-400 overflow-hidden pt-20 ">
+    <div className=" bg-gradient-to-br from-indigo-400 via-purple-400 to-purple-400 overflow-hidden pt-20 h-lvh">
       <main className=" py-5 flex flex-col lg:flex-row lg:mr-60 gap-6 items-start justify-center">
         <section className="w-full lg:w-1/5 lg:translate-x-[-50px]">
           <h2 className=" text-4xl font-extrabold  text-white drop-shadow">
@@ -92,11 +94,12 @@ export default function BeeNews() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
             {currentItems.map((item, index) => (
               <div
+                onClick={() => handleRouter(item.link)}
                 key={index}
                 className="bg-white/10 hover:bg-white/30 transition-all shadow-xl rounded-2xl p-6 border-[1.5] border-purple-300"
               >
                 <h3 className="text-xl font-bold text-purple-800 hover:text-purple-600 transition-colors mb-3">
-                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                  <a target="_blank" rel="noopener noreferrer">
                     {item.title}
                   </a>
                 </h3>
