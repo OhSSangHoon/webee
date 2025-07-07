@@ -54,8 +54,11 @@ export default function Home() {
             </section>
 
             {/* 날씨 위젯 */}
-            <section className="max-w-7xl mx-auto ">
+            <section className="max-w-7xl mx-auto relative ">
               <Weather2 />
+              <h2 className="text-white absolute">
+              날씨 정보를 보려면 <span className="underline underline-offset-4">내 위치 확인</span>을 허용해 주세요 ! ☀️
+              </h2>
             </section>
           </div>
         </main>
