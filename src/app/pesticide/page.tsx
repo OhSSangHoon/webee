@@ -1,4 +1,5 @@
-export default function Pesticide() {
+import { Pesticide } from "@/features";
 
-         return <Pesticide/>
+export default function FindPesticide() {
+  return <Pesticide />;
 }

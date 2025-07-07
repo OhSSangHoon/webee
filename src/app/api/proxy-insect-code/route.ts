@@ -1,4 +1,4 @@
-// 항목 리스트용
+// 항목 리스트용 프록시 서버 
 import { NextResponse } from "next/server";
 
 export async function GET() {

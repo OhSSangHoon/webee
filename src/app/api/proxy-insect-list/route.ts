@@ -1,4 +1,4 @@
-// 검색 결과 리스트용
+// 검색 결과 리스트용 프록시 서버 
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
