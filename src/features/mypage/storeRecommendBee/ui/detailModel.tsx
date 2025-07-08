@@ -6,9 +6,14 @@ import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 type Props = {
   detail: BeeRecommendationDetail;
   onClose: () => void;
+  setOpenModal: (open: boolean) => void;
 };
 
-export const BeeRecommendationDetailModal = ({ detail, onClose }: Props) => {
+export const BeeRecommendationDetailModal = ({
+  detail,
+  onClose,
+  setOpenModal,
+}: Props) => {
   const {
     beeType,
     inputStartDate,
@@ -21,8 +26,16 @@ export const BeeRecommendationDetailModal = ({ detail, onClose }: Props) => {
   const splitToLines = (text: string) => text.split("\n");
 
   return (
-    <div className="fixed inset-0 bg-black/50  flex items-center justify-center z-50">
-      <div className="bg-white p-6 w-[90%] max-w-xl rounded-2xl shadow-2xl animate-fade-in">
+    <div
+      className="fixed inset-0 bg-black/70  flex items-center justify-center z-50"
+      onClick={() => setOpenModal(false)}
+    >
+      <div
+        className="bg-white p-6 w-[90%] max-w-xl rounded-2xl shadow-2xl animate-fade-in"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         {/* 투입 적정 시기 카드 */}
         <div className="relative bg-white border-t-4 border-pink-500 p-4 rounded-xl shadow flex flex-col gap-2 mb-6">
           <div className="flex justify-between items-center">

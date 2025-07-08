@@ -23,7 +23,7 @@ export const PostcodeModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
       <div className="bg-white rounded shadow-lg w-[500px] max-w-full">
         <div className="flex justify-between items-center text-black p-4 border-b">
           <div>업체 주소 찾기</div>
