@@ -5,19 +5,16 @@ import {
   //  MySaleList,
   StoreRecommendBee,
 } from "@/features";
+import ClientOnly from "@/shared/components/ClientOnly";
 
 export default function MyPage() {
   return (
     <div className="max-w-[75%] flex flex-col gap-8 mx-auto py-20">
-      <div className="w-full grid grid-cols-[4fr_1fr] gap-7 h-[260px]">
-        <div className="h-full"></div>
-
-        <div className="h-full">
-          <MyProfile />
-        </div>
-      </div>
-      <StoreRecommendBee />
-      <DiagnosisHistory />
+      <ClientOnly fallback="Loading... ">
+        <MyProfile />
+        <StoreRecommendBee />
+        <DiagnosisHistory />
+      </ClientOnly>
       {/*<MySaleList />*/}
     </div>
   );
