@@ -1,14 +1,14 @@
 /* 마이페이지  */
-export { default as BeehiveMap } from "./beehiveMap/ui/BeehiveMap";
+export { default as BeehiveMap } from "./beehiveMap/ui/beehiveMap";
 
 /*마이프로필*/
-export { default as MyProfile } from "./mypage/myProfile/ui/MyProfile";
+export { default as MyProfile } from "./mypage/myProfile/ui/myProfile";
 
 /*질병진단 이력 */
-export { default as DiagnosisHistory } from "./mypage/diagnosisHistory/ui/DiagnosisHistory";
+export { default as DiagnosisHistory } from "./mypage/diagnosisHistory/ui/diagnosisHistory";
 
 /* 내 판매 물품  */
-export { default as MySaleList } from "./mypage/mySaleList/ui/MySaleList";
+export { default as MySaleList } from "./mypage/mySaleList/ui/mySaleList";
 
 /* 마이프로필  */
 export { default as BusinessProfile } from "./Register/businessProfile/ui/businessProfile";
@@ -18,7 +18,7 @@ export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
 export { default as Logout } from "./Logout/ui/Logout";
 
 /* 저장된 작물정보 모달*/
-export { default as Crops } from "./crops/ui/CropsUI";
+export { default as Crops } from "./crops/ui/cropsUI";
 
 /* AI 닥터 */
 export { default as AiDoctor } from "./AiDoctor/ui/AiDoctUi";
@@ -36,7 +36,7 @@ export { default as ProductDetail } from "./products/ui/productsDetail";
 export { default as Search } from "./search/ui/ProductsSearch";
 
 /* 수정벌 추천 결과 저장 */
-export { default as StoreRecommendBee } from "./mypage/storeRecommendBee/ui/Module";
+export { default as StoreRecommendBee } from "./mypage/storeRecommendBee/ui/module";
 
 /* 날씨 위젯 */
 export { default as Weather2 } from "./weather/ui/WeatherUi";

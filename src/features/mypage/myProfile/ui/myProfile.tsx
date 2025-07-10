@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BusinessList } from "./MyBusinessList";
+import { BusinessList } from "./myBusinessList";
 
 export default function MyProfile() {
   const [realName, setRealName] = useState<string>("");
