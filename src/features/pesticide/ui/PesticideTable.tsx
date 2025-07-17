@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type SelectOption = { code: string; codeNm: string };
 type ResultItem = {
@@ -49,7 +49,7 @@ const parseXMLtoResults = async (xmlText: string): Promise<ResultItem[]> => {
   }));
 };
 
-export default function pesticideTable() {
+export default function PesticideTable() {
   const [aList, setAList] = useState<string[]>([]);
   const [bList, setBList] = useState<string[]>([]);
   const [cList, setCList] = useState<string[]>([]);
@@ -67,22 +67,7 @@ export default function pesticideTable() {
 
   const rowsPerPage = 10;
 
-  useEffect(() => {
-    fetch("/api/proxy-insect-code")
-      .then((res) => res.text())
-      .then(parseXMLtoOptions)
-      .then((data) => {
-        setAList(data.filter((d) => d.code === "A").map((d) => d.codeNm));
-        setBList(data.filter((d) => d.code === "B").map((d) => d.codeNm));
-        setCList(data.filter((d) => d.code === "C").map((d) => d.codeNm));
-      })
-      .then(() => {
-        // 항목 세팅 후 전체 조회 한 번 실행
-        handleSearch(1, true);
-      });
-  }, []);
-
-  const handleSearch = async (pageNo = 1, isTrue: boolean) => {
+  const handleSearch = useCallback(async (pageNo = 1, isTrue: boolean) => {
     setLoading(isTrue);
     setSearched(true);
 
@@ -109,7 +94,22 @@ export default function pesticideTable() {
     setTotalPages(pageCount);
     setPage(pageNo);
     setLoading(false);
-  };
+  }, [crop, usage, insect, rowsPerPage]);
+
+  useEffect(() => {
+    fetch("/api/proxy-insect-code")
+      .then((res) => res.text())
+      .then(parseXMLtoOptions)
+      .then((data) => {
+        setAList(data.filter((d) => d.code === "A").map((d) => d.codeNm));
+        setBList(data.filter((d) => d.code === "B").map((d) => d.codeNm));
+        setCList(data.filter((d) => d.code === "C").map((d) => d.codeNm));
+      })
+      .then(() => {
+        // 항목 세팅 후 전체 조회 한 번 실행
+        handleSearch(1, true);
+      });
+  }, [handleSearch]);
 
   const pageGroup = Math.floor((page - 1) / 10);
   const startPage = pageGroup * 10 + 1;
