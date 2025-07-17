@@ -171,13 +171,23 @@ export default function BusinessProfileForm() {
               >
                 주소 검색
               </button>
-              <div className="custom-Input"> 주소: {selectedAddress}</div>
+              <input
+                className="custom-Input"
+                required
+                readOnly
+                value={
+                  selectedAddress
+                    ? `주소 ${selectedAddress}`
+                    : "주소를 검색해주세요! 미입력시 등록이 불가합니다!"
+                }
+              />
+
               {isOpen && (
                 <PostcodeModal
                   setIsOpen={setIsOpen}
                   onComplete={(address) => {
                     console.log("선택된 주소:", address);
-                    setSelectedAddress(address); // 필요한 로직 수행
+                    setSelectedAddress(address);
                   }}
                 />
               )}

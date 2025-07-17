@@ -1,5 +1,10 @@
 import { Pesticide } from "@/features";
+import ClientOnly from "@/shared/components/ClientOnly";
 
 export default function FindPesticide() {
-  return <Pesticide />;
+  return (
+    <ClientOnly fallback="Loading...">
+      <Pesticide />
+    </ClientOnly>
+  );
 }

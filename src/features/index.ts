@@ -4,18 +4,20 @@ export { default as BeehiveMap } from "./beehiveMap/ui/BeehiveMap";
 /*마이프로필*/
 export { default as MyProfile } from "./mypage/myProfile/ui/MyProfile";
 
+/* 사업자정보등록  */
+export { default as BusinessProfile } from "./Register/businessProfile/ui/businessProfile";
+
+/* 로그아웃 */
+export { default as Logout } from "./Logout/ui/Logout";
+
 /*질병진단 이력 */
 export { default as DiagnosisHistory } from "./mypage/diagnosisHistory/ui/DiagnosisHistory";
 
 /* 내 판매 물품  */
 export { default as MySaleList } from "./mypage/mySaleList/ui/MySaleList";
 
-/* 마이프로필  */
-export { default as BusinessProfile } from "./Register/businessProfile/ui/businessProfile";
-
+/* 저장된 작물상세정보 */
 export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
-
-export { default as Logout } from "./Logout/ui/Logout";
 
 /* 저장된 작물정보 모달*/
 export { default as Crops } from "./crops/ui/CropsUI";
@@ -46,3 +48,6 @@ export { default as ChatBot } from "./chatBot/ChatBotModal";
 
 /* 농약 찾기 */
 export { default as Pesticide } from "./pesticide/ui/PesticideTable";
+
+/* 꿀벌,수정벌 뉴스 모아보기 */
+export { default as BeeNews } from "./news/ui/newsUi";

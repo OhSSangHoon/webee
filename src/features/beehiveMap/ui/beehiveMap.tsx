@@ -1,7 +1,7 @@
 export default function BeehiveMap() {
   return (
     <div className=" relative custom-box max-w-[1047px]  flex flex-row justify-between items-center h-full ">
-      <div className="absolute w-full h-full bg-black/20">개발 중입니다</div>
+      <div className="absolute w-full h-full bg-black/70">개발 중입니다</div>
       <div className="">
         <div className="text-[18px] mb-5">경북 고령군</div>
         <div className="grid grid-cols-2 grid-rows-2 gap-4">

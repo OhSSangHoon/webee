@@ -6,8 +6,10 @@ import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 
 export const BeeRecommendationList = ({
   onSelect,
+  setOpenModal,
 }: {
   onSelect: (id: number) => void;
+  setOpenModal: (value: boolean) => void;
 }) => {
   const { list, loadList } = useBeeRecommendationStore();
 
@@ -60,6 +62,7 @@ export const BeeRecommendationList = ({
               onClick={(e) => {
                 e.stopPropagation(); // 부모 클릭 방지
                 onSelect(item.beeRecommendationId);
+                setOpenModal(true);
               }}
             >
               상세 보기

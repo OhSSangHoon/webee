@@ -10,6 +10,8 @@ export default function BeeRecommendationPanel() {
   const { detailMap, loadDetail } = useBeeRecommendationStore();
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
+  const [openModal, setOpenModal] = useState(false);
+
   useEffect(() => {
     if (selectedId !== null) {
       loadDetail(selectedId);
@@ -20,11 +22,15 @@ export default function BeeRecommendationPanel() {
 
   return (
     <div>
-      <BeeRecommendationList onSelect={setSelectedId} />
-      {selectedDetail && (
+      <BeeRecommendationList
+        onSelect={setSelectedId}
+        setOpenModal={setOpenModal}
+      />
+      {selectedDetail && openModal && (
         <BeeRecommendationDetailModal
           detail={selectedDetail}
           onClose={() => setSelectedId(null)}
+          setOpenModal={setOpenModal}
         />
       )}
     </div>
