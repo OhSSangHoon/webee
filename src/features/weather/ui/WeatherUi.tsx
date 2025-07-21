@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DetailUi from "./DetailUi";
+import { useDetailWeather } from "../hooks/useDetailWeather";
 
 type WeatherData = {
   name: string;
@@ -36,6 +36,8 @@ export default function WeatherUI() {
   const [koreanAddress, setKoreanAddress] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  const { data: detailData, error: detailError, loading: detailLoading } = useDetailWeather(koreanAddress);
 
   const API_KEY = "af3abab5447ba09c9b99af1252e0808e";
 
@@ -232,18 +234,12 @@ export default function WeatherUI() {
       return "🐝벌들이 활동하기 좋은 날이에요. 벌통을 활짝 열어주세요!";
     }
 
-    return "⛈️날씨가 나빠요! 벌통을 닫아주세요 >-<";
+    return "⛈️날씨가 나빠요! 벌통을 닫아주세요!";
   };
 
   return (
-    <div className=" flex flex-col lg:flex-row justify-center items-center ">
-      <div
-        className="w-full h-80 shadow-xl rounded-2xl flex flex-col items-center justify-center "
-        style={{
-          background:
-            "linear-gradient(to bottom, #78d0ff90 70%, #f6f6f661 100%)",
-        }}
-      >
+    <div className="flex justify-center items-center">
+      <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10">
         {loading && (
           <div className="text-center text-gray-600 text-lg">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
@@ -258,98 +254,115 @@ export default function WeatherUI() {
         )}
 
         {weatherData && (
-          /* 메인 날씨 */
-          <div className="w-full flex flex-row items-center justify-center ">
-            <div className="relative mt-10">
-              <div className="absolute bg-[#FFFCF8] w-50 h-50 rounded-full blur-[3px]"></div>
-              <div className="bg-[#FFD8A5] rounded-full w-50 h-50 translate-y-[-15px]">
-                <div className="bg-[#FFC477] rounded-full w-50 h-48 translate-y-[-17px]">
-                  {/*현재 위치,온도*/}
-                  <div className="flex flex-col justify-center items-center absolute inset-0">
-                    <div className="text-white font-bold text-4xl translate-x-[-8px] translate-y-2 ">
-                      <span className="text-xl text-shadow-md">📍</span>
+          <div className="w-full flex flex-col lg:flex-row gap-6">
+            {/* 메인 콘텐츠 영역 */}
+            <div className="flex-1 flex flex-col justify-between min-h-96">
+              <div>
+                <div className="flex flex-row items-center justify-between mb-6">
+                  {/* 메인 날씨 */}
+                  <div className="flex flex-col justify-center items-start">
+                    <div className="text-white font-bold text-2xl mb-2">
+                      <span className="text-lg text-shadow-md">📍</span>
                       {koreanAddress || weatherData.name}
                     </div>
-                    <div className="text-blue-500 font-extrabold text-9xl text-shadow-2xs">
+                    <div className="text-white font-extrabold text-8xl text-shadow-2xs">
                       {Math.round(weatherData.main.temp)}
-                      <span className="text-8xl">°C</span>
+                      <span className="text-7xl">°C</span>
                     </div>
-                    {/* 일출 일몰 */}
-                    <div className=" text-center text-white text-shadow-md text-[12px] translate-y-[-8px] font-semibold">
-                      일출:
-                      {formatTime(weatherData.sys.sunrise)}
-                      &nbsp;|&nbsp; 일몰:
-                      {formatTime(weatherData.sys.sunset)}
+                    <div className="text-center text-white text-shadow-md text-sm font-semibold mt-2">
+                      일출 {formatTime(weatherData.sys.sunrise)} • 일몰 {formatTime(weatherData.sys.sunset)}
                     </div>
                   </div>
+                  
+                  {/* 현재 날씨 상태 */}
+                  <div className="text-center">
+                    <div className="text-6xl mb-2">
+                      {getWeatherIcon(weatherData.weather[0].main)}
+                    </div>
+                    <div className="text-white text-lg font-semibold mb-1">
+                      {getWeatherKorean(weatherData.weather[0].main)}
+                    </div>
+                    <div className="text-white/80 text-sm">
+                      체감 {Math.round(weatherData.main.feels_like)}°C
+                    </div>
+                  </div>
+                </div>
+
+                {/* 7일 예보 */}
+                {forecastData && (
+                  <div className="mb-6">
+                    <div className="grid grid-cols-6 gap-3">
+                      {getDailyForecast().map((day, index) => {
+                        const temp = Math.round((day.temp_max + day.temp_min) / 2);
+                        return (
+                          <div key={index} className="bg-white/10 rounded-lg p-3 text-center hover:bg-white/20 transition-colors">
+                            <div className="text-white/80 text-xs font-medium mb-2">
+                              {formatDayShort(day.dt)}
+                            </div>
+                            <div className="text-2xl mb-2">
+                              {getWeatherIcon(day.weather.main)}
+                            </div>
+                            <div className="text-white font-bold text-lg mb-1">
+                              {temp}°
+                            </div>
+                            <div className="text-white/70 text-xs">
+                              {formatDateShort(day.dt)}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 벌 메시지 */}
+              <div className="bg-white/15 rounded-xl p-4 text-center">
+                <div className="text-white text-lg font-semibold">
+                  {getBeeMessage()}
                 </div>
               </div>
             </div>
 
-            {forecastData && (
-              /* 7일 예보 */
-              <div className=" flex flex-col items-center justify-around w-[70%] ">
-                <div className="flex flex-row items-center justify-around w-[90%]">
-                  {getDailyForecast().map((day, index) => {
-                    const temp = Math.round((day.temp_max + day.temp_min) / 2);
-
-                    return (
-                      <div key={index} className="text-center text-white ">
-                        {/* 온도 표시 */}
-                        <div className="text-lg font-bold mb-2 text-blue-500">
-                          {temp}
-                        </div>
-
-                        {/* 날짜 표시 */}
-                        <div className="text-sm opacity-90 mb-2">
-                          {formatDateShort(day.dt)}
-                        </div>
-
-                        {/* 시간 표시*/}
-                        <div className="text-xs opacity-75 mb-3">
-                          {index === 0
-                            ? "오전 2시"
-                            : index === 1
-                            ? "오전 5시"
-                            : index === 2
-                            ? "오전 8시"
-                            : index === 3
-                            ? "오전 11시"
-                            : index === 4
-                            ? "오후 2시"
-                            : index === 5
-                            ? "오후 5시"
-                            : "오후 8시"}
-                        </div>
-
-                        {/* 요일 */}
-                        <div className="text-sm font-semibold mb-3 ">
-                          {formatDayShort(day.dt)}
-                        </div>
-
-                        {/* 날씨 아이콘 */}
-                        <div className="text-3xl mb-2">
-                          {getWeatherIcon(day.weather.main)}
-                        </div>
+            {/* 농업기상 정보 */}
+            <div className="w-full lg:w-80 bg-white/20 border border-white/10 rounded-xl p-4 flex flex-col">
+              <div className="flex-1">
+                <h3 className="text-white text-lg font-bold mb-4 flex items-center gap-2">
+                </h3>
+                {detailError && <p className="text-red-300 text-xs mb-2">{detailError}</p>}
+                {detailData ? (
+                  <div className="space-y-3">
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <div className="text-white/70 text-xs mb-1">관측소</div>
+                      <div className="text-white text-sm font-semibold">{detailData.stn_Name}</div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-white/10 rounded-lg p-3">
+                        <div className="text-white/70 text-xs mb-1">습도</div>
+                        <div className="text-white text-sm font-semibold">{detailData.hum}%</div>
                       </div>
-                    );
-                  })}
-                </div>
-                {/* 하단 메시지 */}
-                <div className=" flex flex-row items-center justify-around w-full translate-y-4">
-                  <div className="text-lg font-bold text-blue-700/50">
-                    {getWeatherKorean(weatherData.weather[0].main)}
+                      <div className="bg-white/10 rounded-lg p-3">
+                        <div className="text-white/70 text-xs mb-1">지중온도</div>
+                        <div className="text-white text-sm font-semibold">{detailData.soil_Temp}℃</div>
+                      </div>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <div className="text-white/70 text-xs mb-1">토양수분</div>
+                      <div className="text-white text-sm font-semibold">{detailData.soil_Wt}%</div>
+                    </div>
                   </div>
-                  <div className="text-blue-500 text-2xl font-extrabold  bg-white/30 rounded-2xl p-2 px-5">
-                    {getBeeMessage()}
-                  </div>
-                </div>
+                ) : (
+                  !detailError && <p className="text-white/70 text-sm text-center py-4">불러오는 중...</p>
+                )}
               </div>
-            )}
+              <div className="text-center pt-4 border-t border-white/10 mt-auto">
+                <div className="text-white/50 text-xs">{detailData?.date}</div>
+                <div className="text-white/40 text-xs">※ 국립농업과학원</div>
+              </div>
+            </div>
           </div>
         )}
-      </div>{" "}
-      <DetailUi KoreanAddress={koreanAddress} />
+      </div>
     </div>
   );
 }
