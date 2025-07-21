@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useRouter, usePathname } from "next/navigation";
 import { Logout } from "@/features";
 import { useUserStore } from "@/shared/auth/useUserStore";
@@ -39,32 +45,29 @@ export default function Header() {
           >
             webee
           </div>
-          <ul className="hidden md:flex gap-8 cursor-pointer">
+          <ul className="hidden md:flex gap-8 cursor-pointer items-center">
             <li>
               <div onClick={() => router.push("/search")} className={NAV_ITEMS}>
                 업체검색
               </div>
             </li>
             <li>
-              <div
-                onClick={() => router.push("/diagnosis")}
-                className={NAV_ITEMS}
-              >
-                질병진단
-              </div>
-            </li>
-            <li>
-              <div
-                onClick={() => router.push("/recommend")}
-                className={NAV_ITEMS}
-              >
-                수정벌추천
-              </div>
-            </li>
-            <li>
-              <div onClick={() => router.push("/pesticide")} className={NAV_ITEMS}>
-                맞는농약찾기
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className={NAV_ITEMS}>AI 컨설팅</div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-white rounded-xl shadow-lg border border-gray-200 p-2">
+                <DropdownMenuItem className="hover:bg-gray-100 rounded-md cursor-pointer" onClick={() => router.push("/diagnosis")}>
+                    질병진단
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-gray-100 rounded-md cursor-pointer" onClick={() => router.push("/recommend")}>
+                    수정벌추천
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-gray-100 rounded-md cursor-pointer" onClick={() => router.push("/pesticide")}>
+                    맞는농약찾기
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </li>
             <li>
               <div onClick={() => router.push("/news")} className={NAV_ITEMS}>
