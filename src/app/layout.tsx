@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/widgets";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
+import ChatBot from "@/features/chatBot/ChatBotModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
             {children}
           </Providers>
         </HydrationProvider>
+        <ChatBot />
       </body>
     </html>
   );

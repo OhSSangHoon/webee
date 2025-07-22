@@ -10,7 +10,7 @@ export default function SignIn() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-550px)] w-full ">
+    <div className="flex flex-col h-screen items-center justify-center min-h-[calc(100vh-550px)] w-full ">
       <div className="flex flex-col items-start justify-center w-full max-w-[400px]">
         <h1 className="text-5xl font-extrabold mb-5">로그인</h1>
         <p className="text-gray-custom mb-10">
