@@ -77,9 +77,8 @@ export function BusinessSidebar({
   const getBeeTypeLabel = (beeType: string) => {
     const types: { [key: string]: string } = {
       'HONEYBEE': '꿀벌',
-      'ASIAN_BUMBLEBEE': '호박벌(동양)',
-      'EUROPEAN_BUMBLEBEE': '호박벌(서양)',
-      'MASON_BEE': '머슨벌'
+      'BUMBLEBEE': '뒤영벌',
+      'MASON_BEE': '머리뿔가위벌'
     };
     return types[beeType] || beeType;
   };
