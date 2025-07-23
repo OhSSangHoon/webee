@@ -54,9 +54,9 @@ export default function BeeNews() {
     window.open(link, "_blank"); // 새 탭에서 링크 열기
   };
   return (
-    <div className=" bg-gradient-to-br from-indigo-400 via-purple-400 to-purple-400 overflow-hidden pt-20 h-lvh">
-      <main className=" py-5 flex flex-col lg:flex-row lg:mr-60 gap-6 items-start justify-center">
-        <section className="w-full lg:w-1/5 lg:translate-x-[-50px]">
+    <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] pt-40 pb-20 w-full min-h-screen">
+      <main className="max-w-[75%] mx-auto gap-6 flex lg:flex-row flex-col">
+        <section className="w-full lg:w-2/4">
           <h2 className=" text-4xl font-extrabold  text-white drop-shadow">
             {keyword} 소식을 들고왔어요!
           </h2>
@@ -65,7 +65,7 @@ export default function BeeNews() {
             환경, 정책 변화, 기술 동향까지 관련 이슈를 빠르게 전달해드립니다.
           </h3>
 
-          {/* ✅ 주제 선택 버튼 */}
+          {/* 주제 선택 버튼 */}
           <div className="flex gap-2 mt-4">
             <button
               onClick={() => setKeyword("꿀벌")}
@@ -88,9 +88,27 @@ export default function BeeNews() {
               수정벌 뉴스
             </button>
           </div>
+          <div className="py-10 flex items-center space-x-4">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40"
+            >
+              ← 이전
+            </button>
+            <span className="w-22 text-center px-4 py-2 text-white font-semibold bg-purple-500 rounded-full shadow">
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              className="px-5 py-2  border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40"
+            >
+              다음 →
+            </button>
+          </div>
         </section>
-
-        <section>
+        <section className="w-full lg:w-3/4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
             {currentItems.map((item, index) => (
               <div
@@ -108,26 +126,6 @@ export default function BeeNews() {
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="mt-5 mb-10 flex justify-center items-center space-x-4">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40"
-            >
-              ← 이전
-            </button>
-            <span className="px-4 py-2 text-white font-semibold bg-purple-500 rounded-full shadow ">
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-              className="px-5 py-2  border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40"
-            >
-              다음 →
-            </button>
           </div>
         </section>
       </main>

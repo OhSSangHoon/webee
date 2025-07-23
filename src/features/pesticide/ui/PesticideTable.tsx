@@ -117,7 +117,7 @@ export default function PesticideTable() {
 
   return (
     
-    <div className="bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 min-h-screen text-white px-6 py-10">
+    <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] min-h-screen text-white px-6 py-10">
       <div className="max-w-6xl mx-auto space-y-10 pt-20">
         <h1 className="text-4xl font-extrabold text-center">
           🐝 화분매개곤충 농약 적용 검색

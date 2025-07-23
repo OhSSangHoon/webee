@@ -3,33 +3,99 @@
 import React, { useEffect } from "react";
 import { useBeeRecommendationStore } from "../model/store";
 import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
+import { BeeRecommendation } from "../model/types";
+import { getCultivationTypeKorean } from "@/shared/utils/cultivationUtils";
 
-export const BeeRecommendationList = ({
-  onSelect,
-  setOpenModal,
-}: {
+interface BeeRecommendationListProps {
   onSelect: (id: number) => void;
   setOpenModal: (value: boolean) => void;
+}
+
+/**
+ * 날짜 포맷팅 (YYYY-MM-DD -> MM/DD)
+ */
+const formatDate = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    return `${date.getMonth() + 1}/${date.getDate()}`;
+  } catch {
+    return dateString;
+  }
+};
+
+export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
+  onSelect,
+  setOpenModal,
 }) => {
-  const { list, loadList } = useBeeRecommendationStore();
+  const { list, loading, error, loadList } = useBeeRecommendationStore();
 
   useEffect(() => {
     loadList();
   }, [loadList]);
 
-  if (!list) return <p className="text-center py-4">불러오는 중...</p>;
+  // 로딩 상태
+  if (loading) {
+    return (
+      <div className="custom-box2 rounded-xl bg-white shadow-lg">
+        <div className="custom-box2-title w-full text-xl font-semibold">
+          🐝 수정벌 추천 리스트
+        </div>
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+          <p className="ml-2 text-gray-600">불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className="custom-box2 rounded-xl bg-white shadow-lg">
+        <div className="custom-box2-title w-full text-xl font-semibold">
+          🐝 수정벌 추천 리스트
+        </div>
+        <div className="flex justify-center items-center py-8">
+          <div className="text-red-500 text-center">
+            <p className="font-semibold">오류 발생</p>
+            <p className="text-sm mt-1">{error}</p>
+            <button 
+              onClick={() => loadList()} 
+              className="mt-2 px-4 py-1 bg-pink-500 text-white rounded text-sm"
+            >
+              다시 시도
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 데이터 없음
+  if (!list || list.length === 0) {
+    return (
+      <div className="custom-box2 rounded-xl bg-white shadow-lg">
+        <div className="custom-box2-title w-full text-xl font-semibold">
+          🐝 수정벌 추천 리스트
+        </div>
+        <div className="flex justify-center items-center py-8">
+          <p className="text-gray-500">추천된 수정벌이 없습니다.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="custom-box2 h-80 rounded-xl bg-white shadow-lg">
-      <div className="custom-box2-title w-full text-xl font-semibold mb-2">
+    <div className="custom-box2 rounded-xl bg-white shadow-lg">
+      <div className="custom-box2-title w-full text-xl font-semibold">
         🐝 수정벌 추천 리스트
       </div>
 
-      <ul className="flex flex-row overflow-x-auto space-x-4 h-[80%] p-2">
-        {list.map((item) => (
+      <ul className="flex flex-row overflow-x-auto p-4 gap-4">
+        {list.map((item: BeeRecommendation) => (
           <li
             key={item.beeRecommendationId}
-            className="min-w-[260px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between items-start hover:scale-105 transform cursor-pointer"
+            className="min-w-[280px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between items-start hover:scale-105 transform cursor-pointer"
             onClick={() => onSelect(item.beeRecommendationId)}
           >
             <div className="flex items-center justify-between w-full mb-2">
@@ -44,13 +110,17 @@ export const BeeRecommendationList = ({
             <div className="text-sm text-gray-700 mb-1">
               <span className="font-medium">작물명:</span> {item.cropName}
             </div>
+            
+            {/* 투입 기간 정보 */}
             <div className="text-sm text-gray-700 mb-1">
-              <span className="font-medium">추천 투입일:</span> {item.createdAt}
+              <span className="font-medium">추천 투입 기간:</span> 
+              <span className="ml-1">
+                {formatDate(item.inputStartDate)} ~ {formatDate(item.inputEndDate)}
+              </span>
             </div>
-
             <div className="flex flex-wrap gap-2 mt-2">
               <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">
-                {item.cultivationType === "CONTROLLED" ? "노지" : "하우스"}
+                {getCultivationTypeKorean(item.cultivationType)}
               </span>
               <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">
                 {item.cultivationAddress}
@@ -58,7 +128,7 @@ export const BeeRecommendationList = ({
             </div>
 
             <button
-              className="mt-3 w-full py-1 bg-white border border-pink-400 text-pink-500 rounded-full text-sm font-medium hover:bg-pink-50 transition-colors duration-200 active:scale-95"
+              className="mt-3 w-full py-2 bg-white border border-pink-400 text-pink-500 rounded-full text-sm font-medium hover:bg-pink-50 transition-colors duration-200 active:scale-95 cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation(); // 부모 클릭 방지
                 onSelect(item.beeRecommendationId);
