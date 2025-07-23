@@ -45,6 +45,10 @@
   font-display: swap;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   /*폰트 프리텐다드 기본설정*/
   font-family: "Pretendard", sans-serif;

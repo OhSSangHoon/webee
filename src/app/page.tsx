@@ -14,23 +14,22 @@ export default function Home() {
   return (
     <div className="relative">
       {/* 랜딩 섹션 */}
-      <section className="relative h-full bg-gradient-to-br from-[#667eea] to-[#764ba2] overflow-hidden pt-20">
-        <main className="relative z-10 pt-20 pb-20">
+      <section className="relative h-full bg-gradient-to-br from-[#667eea] to-[#764ba2] overflow-hidden pt-30">
+        <main className="relative z-10 pb-20">
           <div className="container mx-auto px-5 text-center">
-            <section className="mb-16">
-              <h1 className="text-6xl md:text-7xl font-black text-white mb-5 leading-tight">
+            <section className="mb-15">
+              <h1 className="text-6xl md:text-7xl font-black text-white mb-3 leading-tight">
                 농업인들의 든든한 파트너
                 <br />
                 <span className="text-yellow-300">webee</span>와 함께
               </h1>
-              <p className="text-xl text-gray-100 mb-10 opacity-90">
+              <p className="text-xl text-gray-100 mb-6 opacity-90">
                 수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다.
               </p>
-              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl shadow-yellow-400/30">
+              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl shadow-yellow-400/30" onClick={() => router.push("/login")}>
                 지금 시작하기
               </button>
             </section>
-
             {/* 날씨 위젯 */}
             <section className="max-w-6xl mx-auto relative">
               <Weather2 />
