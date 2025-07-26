@@ -56,7 +56,7 @@ export default function MySaleList() {
   }
 
   // 상품이 없는 경우
-  if (myProducts.length === 0) {
+  if (!isLoading && myProducts.length === 0) {
     return (
       <div className="custom-box2 w-full h-full flex flex-col justify-center items-center">
         <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>

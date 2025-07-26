@@ -16,6 +16,7 @@ export const useMySaleList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasInitialized, setHasInitialized] = useState(false);
   
   const { list: businessList, fetchList: fetchBusinessList } = useBusinessStore();
   const { isLoggedIn } = useUserStore();
@@ -55,10 +56,12 @@ export const useMySaleList = () => {
       try {
         setIsLoading(true);
         await fetchBusinessList();
+        setHasInitialized(true);
       } catch (err) {
         console.error('업체 목록 조회 실패:', err);
         setError('업체 정보를 불러오는 중 오류가 발생했습니다.');
         setIsLoading(false);
+        setHasInitialized(true);
       }
     };
 
@@ -68,6 +71,8 @@ export const useMySaleList = () => {
   // 업체별 상품 조회
   useEffect(() => {
     const loadProductsFromBusinesses = async () => {
+      if (!hasInitialized) return;
+      
       if (businessList.length === 0) {
         setMyProducts([]);
         setIsLoading(false);
@@ -88,7 +93,7 @@ export const useMySaleList = () => {
     };
 
     loadProductsFromBusinesses();
-  }, [businessList]);
+  }, [businessList, hasInitialized]);
 
   return {
     myProducts,
