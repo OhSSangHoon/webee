@@ -12,7 +12,6 @@ import {
 export async function fetchRecommendations(): Promise<BeeRecommendation[]> {
   try {
     const response = await api.get<BeeRecommendationListResponse>("/bee/recommendations");
-    console.log("벌 추천 목록 조회 성공:", response.data);
     return response.data.data;
   } catch (error) {
     console.error("벌 추천 목록 조회 실패:", error);
@@ -26,7 +25,6 @@ export async function fetchRecommendations(): Promise<BeeRecommendation[]> {
 export async function fetchRecommendationDetail(id: number): Promise<BeeRecommendationDetail> {
   try {
     const response = await api.get<BeeRecommendationDetailResponse>(`/bee/recommendations/${id}`);
-    console.log("벌 추천 상세 조회 성공:", response.data);
     return response.data.data;
   } catch (error) {
     console.error("벌 추천 상세 조회 실패:", error);

@@ -71,12 +71,10 @@ export function useInfiniteReviewsAdapter(productId: number) {
   } = useInfiniteQuery({
     queryKey: ['reviews-infinite', productId],
     queryFn: async ({ pageParam = 0 }): Promise<PaginatedApiResponse> => {
-      console.log(`리뷰 무한스크롤 조회: productId=${productId}, page=${pageParam}`);
       
       // 전체 데이터를 한 번만 가져오기 (첫 페이지에서만)
       if (pageParam === 0) {
         const apiResponse = await getProductReviews(productId);
-        console.log('API 원본 응답:', apiResponse);
         
         // 전체 데이터를 QueryClient에 캐시
         queryClient.setQueryData(['reviews-full', productId], apiResponse);
@@ -98,11 +96,6 @@ export function useInfiniteReviewsAdapter(productId: number) {
     initialPageParam: 0,
     getNextPageParam: (lastPage: PaginatedApiResponse) => {
       const pageData = lastPage.data;
-      console.log('다음 페이지 확인:', { 
-        current: pageData.number, 
-        isLast: pageData.last,
-        total: pageData.totalPages 
-      });
       
       return !pageData.last ? pageData.number + 1 : undefined;
     },
