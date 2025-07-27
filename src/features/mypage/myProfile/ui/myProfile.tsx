@@ -33,7 +33,7 @@ export default function MyProfile() {
   }
 
   return (
-    <div className="custom-box h-full w-full text-xs flex flex-col justify-between items-start p-4 gap-4">
+    <div className="custom-box h-full text-xs flex flex-col justify-between items-start p-4 gap-4">
       {/* 상단 컨텐츠 */}
       <div className="flex flex-col gap-4 w-full">
         {/* 사용자 정보 헤더 */}

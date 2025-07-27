@@ -71,7 +71,7 @@ export default function MySaleList() {
   }
 
   return (
-    <div className="custom-box2 w-full flex flex-col">
+    <div className="custom-box2 flex flex-col">
       <div className="custom-box2-title mb-4">
          🛒 내가 등록한 상품 목록
       </div>
