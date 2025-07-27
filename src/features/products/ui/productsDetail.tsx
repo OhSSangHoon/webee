@@ -27,15 +27,10 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
     const fetchBusinessInfo = async () => {
       if (product?.businessId) {
         try {
-          console.log("=== 업체 정보 로드 ===");
-          console.log("상품 정보:", product);
-          console.log("업체 정보 요청 - businessId:", product.businessId);
-
           setBusinessLoading(true);
           setBusinessError(null);
           
           const businessData = await getBusinessDetail(product.businessId);
-          console.log("업체 정보 응답:", businessData);
           setBusinessInfo(businessData);
         } catch (error) {
           console.error("업체 정보 로드 실패:", error);
@@ -44,7 +39,6 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           setBusinessLoading(false);
         }
       } else {
-        console.log("businessId가 없습니다.");
         setBusinessLoading(false);
         setBusinessError("업체 정보가 없습니다.");
       }

@@ -46,7 +46,6 @@ export function useSignUpForm() {
     const { username, password, name } = data;
     try {
       await signUp({ username, password, name });
-      console.log("회원가입이 완료되었습니다.");
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
       const errorMessage =

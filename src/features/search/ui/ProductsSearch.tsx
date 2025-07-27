@@ -165,27 +165,6 @@ export default function Search() {
     <div className="flex flex-row relative pt-20">
       {/* 검색 영역 */}
       <div className="w-[20%] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
-        {/* 검색 입력 */}
-        <div className="w-full flex flex-col">
-          <div className="relative my-10 px-10">
-            <div className="absolute inset-y-0 left-10 flex items-center pl-3 pointer-events-none">
-              <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
-            </div>
-            <input 
-              type="text" 
-              className="w-full h-10 border-2 border-[#E5E7EB] rounded-md text-[#333333] pl-10 pr-16"
-              placeholder="상품명, 업체명, 주소 검색"
-            />
-            <button 
-              className="absolute right-12 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600 transition-colors"
-            >
-              검색
-            </button>
-          </div>
-        </div>
-        
         {/* 상품 리스트 */}
         <div className="w-full flex-1 overflow-y-auto">
           {filteredProducts.length === 0 ? (

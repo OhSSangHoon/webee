@@ -11,7 +11,6 @@ export const profileApi = {
   getCropAddresses: async (): Promise<string[]> => {
     try {
       const response = await api.get<CropAddressResponse>("/profile/crops/addresses");
-      console.log("재배지 목록 조회 성공:", response.data);
       return response.data.data.address;
     } catch (error) {
       console.error("재배지 목록 조회 오류:", error);

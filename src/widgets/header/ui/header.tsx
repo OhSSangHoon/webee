@@ -27,7 +27,7 @@ export default function Header() {
           <ul className="hidden md:flex gap-8 cursor-pointer items-center">
             <li>
               <div onClick={() => router.push("/search")} className="text-gray-900 hover:text-blue-600 font-medium transition-colors">
-                업체검색
+                업체찾기
               </div>
             </li>
             <li>
