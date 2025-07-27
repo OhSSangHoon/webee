@@ -262,8 +262,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
               (mapState.map as { setLevel: (level: number) => void }).setLevel(currentLevel - 1);
             }
           }}
+          aria-label="지도 확대"
           className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
-          title="확대"
         >
           +
         </button>
@@ -274,8 +274,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
               (mapState.map as { setLevel: (level: number) => void }).setLevel(currentLevel + 1);
             }
           }}
+          aria-label="지도 축소"
           className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
-          title="축소"
         >
           -
         </button>
@@ -283,3 +283,6 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     </div>
   );
 };
+
+// React.memo로 컴포넌트 최적화
+export default Maps;

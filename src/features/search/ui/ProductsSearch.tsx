@@ -195,7 +195,7 @@ export default function Search() {
       {/* 검색 영역 */}
       <div className="w-[20%] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
         {/* 벌 타입 필터 버튼 */}
-        <div className="w-full p-4 border-b border-gray-200">
+        <div className="w-full p-4 border-b border-gray-200 flex-shrink-0 min-h-[200px]">
           <h3 className="text-sm font-medium text-gray-700 mb-3">벌 종류별 필터</h3>
           <div className="space-y-2">
             <button
@@ -225,9 +225,9 @@ export default function Search() {
         </div>
 
         {/* 상품 리스트 */}
-        <div className="w-full flex-1 overflow-y-auto">
+        <div className="w-full flex-1 overflow-y-auto scrollbar-hide">
           {filteredProducts.length === 0 ? (
-            <div className="w-full flex flex-col items-center justify-center py-10">
+            <div className="w-full flex flex-col items-center justify-center py-10 min-h-[200px]">
               <p className="text-gray-500">검색된 상품이 없습니다.</p>
             </div>
           ) : (
@@ -249,7 +249,6 @@ export default function Search() {
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <div className="flex flex-row items-center">
-                    {/* img 태그를 Next.js Image로 변경 */}
                     <Image 
                       src="/Location.svg" 
                       alt="location" 
@@ -272,7 +271,14 @@ export default function Search() {
       </div>
       
       {/* 지도 영역 */}
-      <div className="w-[80%] h-[calc(100vh-80px)]">
+      <div className="w-[80%] h-[calc(100vh-80px)] relative">
+        {/* 로딩 */}
+        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+            <p className="text-gray-600">지도를 로딩 중입니다...</p>
+          </div>
+        </div>
         <Maps
           products={filteredProducts}
           selectedProductId={selectedProductId}
