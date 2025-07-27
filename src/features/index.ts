@@ -1,6 +1,3 @@
-/* 마이페이지  */
-export { default as BeehiveMap } from "./beehiveMap/ui/beehiveMap";
-
 /*마이프로필*/
 export { default as MyProfile } from "./mypage/myProfile/ui/myProfile";
 
