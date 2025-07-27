@@ -224,19 +224,18 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     }
   }, [mapState.map, selectedProduct, mapState.businessCoordinates]);
 
-  // 로딩 상태 표시
   if (!mapState.isKakaoLoaded) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100">
-        <div className="text-center">
+      <div className="w-full h-full absolute inset-0 bg-gray-100">
+        <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
           {mapState.loadError ? (
-            <div className="text-red-600">
-              <div className="text-xl mb-2">⚠️</div>
+            <div className="text-red-600 text-center">
+              <div className="text-xl mb-2" aria-hidden="true">⚠️</div>
               <p className="font-medium mb-2">카카오 맵 로드 실패</p>
               <p className="text-sm mb-4">{mapState.loadError}</p>
             </div>
           ) : (
-            <div>
+            <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
               <p className="text-gray-600">{LOADING_MESSAGES.MAP_LOADING}</p>
             </div>
@@ -251,9 +250,15 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       <div 
         ref={mapContainer} 
         className="w-full h-full"
+        style={{ 
+          width: '100%', 
+          height: '100%',
+          minHeight: 'calc(100vh - 80px)'
+        }}
+        role="application"
+        aria-label="상품 위치 지도"
       />
       
-      {/* 지도 컨트롤 버튼들 */}
       <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-2 z-[1000]">
         <button
           onClick={() => {
@@ -263,6 +268,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
             }
           }}
           aria-label="지도 확대"
+          type="button"
           className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
         >
           +
@@ -275,6 +281,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
             }
           }}
           aria-label="지도 축소"
+          type="button"
           className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
         >
           -
@@ -284,5 +291,4 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
   );
 };
 
-// React.memo로 컴포넌트 최적화
 export default Maps;

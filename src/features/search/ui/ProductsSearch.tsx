@@ -24,7 +24,25 @@ interface BusinessInfo {
   longitude?: number;
 }
 
-const Maps = dynamic(() => import('./Map').then(mod => ({ default: mod.Maps })), { ssr: false });
+// 로딩 컴포넌트
+const MapLoadingComponent = () => (
+  <div className="w-full h-full absolute inset-0 bg-gray-100">
+    <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+        <p className="text-gray-600">지도를 로딩 중입니다...</p>
+      </div>
+    </div>
+  </div>
+);
+
+const Maps = dynamic(
+  () => import('./Map').then(mod => ({ default: mod.Maps })), 
+  { 
+    ssr: false,
+    loading: () => <MapLoadingComponent />
+  }
+);
 
 export default function Search() {
   const [loading, setLoading] = useState(true);
@@ -183,6 +201,7 @@ export default function Search() {
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
           <p className="text-lg">상품 정보를 불러오는 중...</p>
           <p className="text-sm text-gray-500 mt-2">업체 정보도 함께 조회하고 있습니다.</p>
         </div>
@@ -193,9 +212,9 @@ export default function Search() {
   return (
     <div className="flex flex-row relative pt-20">
       {/* 검색 영역 */}
-      <div className="w-[20%] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
+      <div className="w-[20%] min-w-[300px] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
         {/* 벌 타입 필터 버튼 */}
-        <div className="w-full p-4 border-b border-gray-200 flex-shrink-0 min-h-[200px]">
+        <div className="w-full p-4 border-b border-gray-200 flex-shrink-0 h-[180px]">
           <h3 className="text-sm font-medium text-gray-700 mb-3">벌 종류별 필터</h3>
           <div className="space-y-2">
             <button
@@ -205,6 +224,8 @@ export default function Search() {
                   ? 'bg-blue-100 text-blue-700 font-medium' 
                   : 'hover:bg-gray-100 text-gray-700'
               }`}
+              aria-label="전체 벌 종류 보기"
+              type="button"
             >
               전체
             </button>
@@ -217,6 +238,8 @@ export default function Search() {
                     ? 'bg-blue-100 text-blue-700 font-medium' 
                     : 'hover:bg-gray-100 text-gray-700'
                 }`}
+                aria-label={`${getBeeTypeLabel(beeType)} 필터 적용`}
+                type="button"
               >
                 {getBeeTypeLabel(beeType)}
               </button>
@@ -227,58 +250,69 @@ export default function Search() {
         {/* 상품 리스트 */}
         <div className="w-full flex-1 overflow-y-auto scrollbar-hide">
           {filteredProducts.length === 0 ? (
-            <div className="w-full flex flex-col items-center justify-center py-10 min-h-[200px]">
+            <div className="w-full h-[200px] flex flex-col items-center justify-center">
               <p className="text-gray-500">검색된 상품이 없습니다.</p>
             </div>
           ) : (
-            filteredProducts.map(product => (
-              <div 
-                key={product.id} 
-                className={`w-full min-h-[110px] border-b border-[#EEF2FF] flex flex-col justify-between px-5 py-3 cursor-pointer transition-colors ${
-                  selectedProductId === product.id 
-                    ? 'bg-blue-50 border-l-4 border-l-blue-500' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleProductClick(product)}
-              >
-                <div className="flex flex-row justify-between items-center flex-1">
-                  <p className="text-[#333333] font-medium text-base leading-tight mb-1">
-                    {product.name.length > 15 ? product.name.slice(0,15) + '···' : product.name}
-                  </p>
-                  <p className="text-[#6B7280] font-medium text-lg">&gt;</p>
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row items-center">
-                    <Image 
-                      src="/Location.svg" 
-                      alt="location" 
-                      width={12}
-                      height={12}
-                      className="mr-1"
-                    />
-                    <p className="text-[#6B7280] text-xs">
-                      {getShortAddress(product.businessAddress)}
+            <div className="space-y-0">
+              {filteredProducts.map(product => (
+                <div 
+                  key={product.id} 
+                  className={`w-full border-b border-[#EEF2FF] flex flex-col justify-between px-5 py-3 cursor-pointer transition-colors ${
+                    selectedProductId === product.id 
+                      ? 'bg-blue-50 border-l-4 border-l-blue-500' 
+                      : 'hover:bg-gray-50'
+                  }`}
+                  style={{ 
+                    minHeight: '110px', 
+                    maxHeight: '110px',
+                    height: '110px'
+                  }}
+                  onClick={() => handleProductClick(product)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${product.name} 상품 선택`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleProductClick(product);
+                    }
+                  }}
+                >
+                  <div className="flex flex-row justify-between items-center flex-1">
+                    <p className="text-[#333333] font-medium text-base leading-tight mb-1 overflow-hidden text-ellipsis">
+                      {product.name.length > 15 ? product.name.slice(0,15) + '···' : product.name}
+                    </p>
+                    <p className="text-[#6B7280] font-medium text-lg flex-shrink-0" aria-hidden="true">&gt;</p>
+                  </div>
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="flex flex-row items-center min-w-0 flex-1">
+                      <Image 
+                        src="/Location.svg" 
+                        alt=""
+                        width={12}
+                        height={12}
+                        className="mr-1 flex-shrink-0"
+                        style={{ width: '12px', height: '12px' }}
+                        loading="lazy"
+                      />
+                      <p className="text-[#6B7280] text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                        {getShortAddress(product.businessAddress)}
+                      </p>
+                    </div>
+                    <p className="text-[#6B7280] text-xs flex-shrink-0 ml-2">
+                      업체정보
                     </p>
                   </div>
-                  <p className="text-[#6B7280] text-xs">
-                    업체정보
-                  </p>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
       </div>
       
-      {/* 지도 영역 */}
+      {/* 지도 */}
       <div className="w-[80%] h-[calc(100vh-80px)] relative">
-        {/* 로딩 */}
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-            <p className="text-gray-600">지도를 로딩 중입니다...</p>
-          </div>
-        </div>
         <Maps
           products={filteredProducts}
           selectedProductId={selectedProductId}
