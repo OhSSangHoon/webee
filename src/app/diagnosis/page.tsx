@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 
 const AiDiagnosis = dynamic(() => import("@/features/AiDiagnosis/ui/AiDiagnosisUi"), { ssr: false });
