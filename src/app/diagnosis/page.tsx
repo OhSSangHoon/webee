@@ -1,4 +1,7 @@
-import { AiDiagnosis, AiDoctor } from "@/features";
+import dynamic from "next/dynamic";
+
+const AiDiagnosis = dynamic(() => import("@/features/AiDiagnosis/ui/AiDiagnosisUi"), { ssr: false });
+const AiDoctor = dynamic(() => import("@/features/AiDoctor/ui/AiDoctUi"), { ssr: false });
 
 export default function Diagnosis() {
   return (
