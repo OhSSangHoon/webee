@@ -104,7 +104,7 @@ export function BusinessSidebar({
           </div>
 
           {/* 내용 */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto scrollbar-hide">
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="text-center">
@@ -159,7 +159,7 @@ export function BusinessSidebar({
                       <p className="text-gray-500 text-sm">등록된 상품이 없습니다.</p>
                     </div>
                   ) : (
-                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                    <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-hide">
                       {businessProducts.map((product) => (
                         <div
                           key={product.id}
