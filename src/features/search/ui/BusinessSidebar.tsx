@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { BusinessDetail } from '@/shared/business/api';
 import { getProductsWithPaging } from '../api/api';
 import { ProductWithBusiness } from '@/features/search/model/model';
+import { getBeeTypeKorean } from '@/shared/types/beeSwitch';
 
 /**
  * 업체 상품 목록 조회
@@ -74,14 +75,6 @@ export function BusinessSidebar({
     return new Intl.NumberFormat('ko-KR').format(price) + '원';
   };
 
-  const getBeeTypeLabel = (beeType: string) => {
-    const types: { [key: string]: string } = {
-      'HONEYBEE': '꿀벌',
-      'BUMBLEBEE': '뒤영벌',
-      'MASON_BEE': '머리뿔가위벌'
-    };
-    return types[beeType] || beeType;
-  };
 
   return (
     <>
@@ -187,7 +180,7 @@ export function BusinessSidebar({
                             </p>
                             <p>
                               <span className="inline-block bg-gray-100 px-2 py-1 rounded text-xs">
-                                {getBeeTypeLabel(product.beeType)}
+                                {getBeeTypeKorean(product.beeType)}
                               </span>
                             </p>
                             <div className="flex justify-between items-center text-xs">
