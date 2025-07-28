@@ -98,10 +98,10 @@ export default function WeatherUI() {
                 </div>
               </div>
 
-              {/* 7일 예보 */}
+              {/* 6일 예보 */}
               {forecastData && (
                 <div className="mb-6">
-                  <div className="grid grid-cols-6 gap-3">
+                  <div className="grid grid-cols-5 gap-3">
                     {dailyForecast.map((day, index) => {
                       const temp = Math.round((day.temp_max + day.temp_min) / 2);
                       return (
