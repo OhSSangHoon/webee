@@ -6,6 +6,7 @@ import { getAllProducts } from '@/features/search/api/api';
 import { BusinessDetail, getBusinessDetail } from '@/shared/business/api';
 import { product } from '@/features/products/model/model';
 import { BusinessSidebar } from './BusinessSidebar';
+import { BeeTypeFilter } from './BeeTypeFilter';
 import { ProductWithBusiness } from '@/features/search/model/model';
 import dynamic from 'next/dynamic';
 
@@ -148,16 +149,6 @@ export default function Search() {
     setSelectedBeeType(beeType);
   };
 
-  // 벌 타입 라벨 변환
-  const getBeeTypeLabel = (beeType: string) => {
-    const types: { [key: string]: string } = {
-      'HONEYBEE': '꿀벌',
-      'BUMBLEBEE': '뒤영벌',
-      'MASON_BEE': '머리뿔가위벌'
-    };
-    return types[beeType] || beeType;
-  };
-
   // 상품 클릭 시 즉시 지도 이동을 위한 데이터 설정
   const handleProductClick = (product: ProductWithBusiness) => {
     // 선택된 물품 정보 저장
@@ -213,39 +204,11 @@ export default function Search() {
     <div className="flex flex-row relative pt-20">
       {/* 검색 영역 */}
       <div className="w-[20%] min-w-[300px] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
-        {/* 벌 타입 필터 버튼 */}
-        <div className="w-full p-4 border-b border-gray-200 flex-shrink-0 h-[180px]">
-          <h3 className="text-sm font-medium text-gray-700 mb-3">벌 종류별 필터</h3>
-          <div className="space-y-2">
-            <button
-              onClick={() => handleBeeTypeFilter(null)}
-              className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                selectedBeeType === null 
-                  ? 'bg-blue-100 text-blue-700 font-medium' 
-                  : 'hover:bg-gray-100 text-gray-700'
-              }`}
-              aria-label="전체 벌 종류 보기"
-              type="button"
-            >
-              전체
-            </button>
-            {['HONEYBEE', 'BUMBLEBEE', 'MASON_BEE'].map((beeType) => (
-              <button
-                key={beeType}
-                onClick={() => handleBeeTypeFilter(beeType)}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                  selectedBeeType === beeType 
-                    ? 'bg-blue-100 text-blue-700 font-medium' 
-                    : 'hover:bg-gray-100 text-gray-700'
-                }`}
-                aria-label={`${getBeeTypeLabel(beeType)} 필터 적용`}
-                type="button"
-              >
-                {getBeeTypeLabel(beeType)}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* 벌 타입 필터 */}
+        <BeeTypeFilter 
+          selectedBeeType={selectedBeeType}
+          onBeeTypeChange={handleBeeTypeFilter}
+        />
 
         {/* 상품 리스트 */}
         <div className="w-full flex-1 overflow-y-auto scrollbar-hide">
