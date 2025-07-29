@@ -108,6 +108,16 @@ export default function ProductsPage() {
       if (!files || files.length === 0) return;
 
       const newFiles = Array.from(files);
+      const maxSizeInMB = 5; // 5MB 제한
+      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
+      // 파일 크기 검증
+      const oversizedFiles = newFiles.filter(file => file.size > maxSizeInBytes);
+      if (oversizedFiles.length > 0) {
+        alert(`파일 크기가 ${maxSizeInMB}MB를 초과합니다. 더 작은 이미지를 선택해주세요.\n초과된 파일: ${oversizedFiles.map(f => f.name).join(', ')}`);
+        e.target.value = ''; // 파일 선택 초기화
+        return;
+      }
 
       setImageFiles((prev) => [...prev, ...newFiles]);
 
@@ -292,7 +302,7 @@ export default function ProductsPage() {
                   <button
                     type="button"
                     className="ml-2 text-blue-500 underline"
-                    onClick={() => router.push("/business/register")}
+                    onClick={() => router.push("/myprofile")}
                   >
                     업체 등록하기
                   </button>
