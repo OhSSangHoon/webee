@@ -41,7 +41,20 @@ export default function BusinessProfileForm() {
       alert("등록 완료되었습니다!");
     } catch (error) {
       console.error(error);
-      alert("등록에 실패했습니다.");
+      
+      // 502 에러 (사업자등록정보 진위 확인 실패) 처리
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number } };
+        if (axiosError.response?.status === 502) {
+          alert("사업자등록정보 진위 확인에 실패했습니다.\n사업자번호, 대표자명, 개업일을 다시 확인해주세요.");
+        } else if (axiosError.response?.status === 400) {
+          alert("잘못된 요청 형식입니다. 입력 정보를 확인해주세요.");
+        } else {
+          alert("등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
+        }
+      } else {
+        alert("등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
+      }
     }
   };
 
