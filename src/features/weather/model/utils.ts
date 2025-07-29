@@ -73,29 +73,48 @@ export const formatTime = (unix: number): string => {
 };
 
 /**
- * 7일간의 일별 예보 데이터 처리
+ * 6일간의 일별 예보 데이터 처리
  */
 export const getDailyForecast = (forecastData: ForecastData | null): DailyForecast[] => {
   if (!forecastData) return [];
 
   const dailyData: { [key: string]: DailyForecast } = {};
+  const now = new Date();
+  
+  // 현재 시간이 21시 이후라면 다음날부터 시작
+  const startDate = new Date(now);
+  if (now.getHours() >= 21) {
+    startDate.setDate(startDate.getDate() + 1);
+  } else {
+    // 21시 이전이라면 오늘은 제외하고 내일부터 시작
+    startDate.setDate(startDate.getDate() + 1);
+  }
+  startDate.setHours(0, 0, 0, 0); // 시작일의 자정으로 설정
 
   forecastData.list.forEach((item) => {
-    const date = new Date(item.dt * 1000).toDateString();
-    if (!dailyData[date]) {
-      dailyData[date] = {
+    const date = new Date(item.dt * 1000);
+    
+    // 시작일 이전의 데이터는 제외
+    if (date < startDate) return;
+    
+    const dateKey = date.toDateString();
+
+    if (!dailyData[dateKey]) {
+      dailyData[dateKey] = {
         dt: item.dt,
         temp_min: item.main.temp_min,
         temp_max: item.main.temp_max,
         weather: item.weather[0],
       };
     } else {
-      dailyData[date].temp_min = Math.min(dailyData[date].temp_min, item.main.temp_min);
-      dailyData[date].temp_max = Math.max(dailyData[date].temp_max, item.main.temp_max);
+      dailyData[dateKey].temp_min = Math.min(dailyData[dateKey].temp_min, item.main.temp_min);
+      dailyData[dateKey].temp_max = Math.max(dailyData[dateKey].temp_max, item.main.temp_max);
     }
   });
 
-  return Object.values(dailyData).slice(0, 7);
+  return Object.values(dailyData)
+    .sort((a, b) => a.dt - b.dt)
+    .slice(0, 5); // 5일만 표시
 };
 
 /**

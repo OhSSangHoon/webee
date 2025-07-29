@@ -1,5 +1,9 @@
-import CropAddForm from "@/features/recommendBee/ui/cropAddForm";
-import ResultBox from "@/features/recommendBee/ui/recommendBeeResult";
+"use client";
+
+import dynamic from "next/dynamic";
+
+const CropAddForm = dynamic(() => import("@/features/recommendBee/ui/cropAddForm"), { ssr: false });
+const ResultBox = dynamic(() => import("@/features/recommendBee/ui/recommendBeeResult"), { ssr: false });
 
 export default function RecommendBee() {
   return (
