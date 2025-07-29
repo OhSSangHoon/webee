@@ -1,5 +1,5 @@
 import axios from "axios";
-import { reissue, signOut } from "./api";
+import { reissue } from "./api";
 import { safeLocalStorage } from "@/shared/utils/localStorage";
 
 const api = axios.create({

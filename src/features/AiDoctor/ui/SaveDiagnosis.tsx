@@ -4,10 +4,12 @@ import { useState } from "react";
 import AiDiagnosisUI from "./AiDiagnosisUi";
 import AiDoctorUi from "./AiDoctorUi";
 import api from "@/shared/auth/lib";
+import { DiagnosisResult } from "@/shared/types/diagnosis";
 
 export default function DiagnosisWrapper() {
   const [imageFile, setImageFile] = useState<File | null>(null); // step 1. AiDiagnosis 사진
-  const [diagnosisResult, setDiagnosisResult] = useState<any>(null); // step1. AiDiagnosis 결과
+  const [diagnosisResult, setDiagnosisResult] =
+    useState<DiagnosisResult | null>(null); // step1. AiDiagnosis 결과
   const [form, setForm] = useState({
     disease: "",
     cultivationType: "OPEN_FIELD", //기본값: 노지

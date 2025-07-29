@@ -3,15 +3,7 @@ import api from "@/shared/auth/lib";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Camera } from "lucide-react";
-
-type DiagnosisResult = {
-  name: string;
-  confidence: string;
-  description: string;
-  symptoms: string[];
-  cause: string;
-  severity: string;
-};
+import { DiagnosisResult } from "@/shared/types/diagnosis";
 
 type AiDiagnosisUIProps = {
   setImageFile: React.Dispatch<React.SetStateAction<File | null>>;

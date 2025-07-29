@@ -1,10 +1,7 @@
 "use client";
 
 import api from "@/shared/auth/lib";
-import {
-  getBeeDiseaseKorean,
-  getBeeTypeKorean,
-} from "@/shared/types/beeSwitch";
+import { getBeeDiseaseKorean } from "@/shared/types/beeSwitch";
 import { useEffect, useState } from "react";
 
 interface DiagnosisItem {

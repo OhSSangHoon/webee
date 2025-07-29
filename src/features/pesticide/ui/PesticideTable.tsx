@@ -49,7 +49,7 @@ const parseXMLtoResults = async (xmlText: string): Promise<ResultItem[]> => {
   }));
 };
 
-export default function pesticideTable() {
+export default function PesticideTable() {
   const [aList, setAList] = useState<string[]>([]);
   const [bList, setBList] = useState<string[]>([]);
   const [cList, setCList] = useState<string[]>([]);
@@ -116,7 +116,6 @@ export default function pesticideTable() {
   const endPage = Math.min(startPage + 9, totalPages);
 
   return (
-    
     <div className="bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 min-h-screen text-white px-6 py-10">
       <div className="max-w-6xl mx-auto space-y-10 pt-20">
         <h1 className="text-4xl font-extrabold text-center">
@@ -175,7 +174,7 @@ export default function pesticideTable() {
             onClick={() => handleSearch(1, true)}
             className="bg-yellow-400 text-black px-6 py-2 rounded-full font-bold hover:bg-yellow-300 transition"
           >
-             검색
+            검색
           </button>
         </div>
 
