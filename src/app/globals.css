@@ -71,9 +71,28 @@ body {
   @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600;
 }
 
+.blue-button2 {
+  @apply bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-full;
+}
+
+.blue-button2.loading {
+  background-color: #f0f0f0;
+  color: #999;
+  cursor: not-allowed;
+  pointer-events: none; /* 클릭 막기 */
+}
+
 .white-button {
   /*기본 흰색 버튼*/
   @apply px-4 py-2 text-[#2B7FFF] border bg-white border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
+}
+
+.white-button.loading,
+.white-button:disabled {
+  background-color: #f0f0f0;
+  color: #999;
+  cursor: not-allowed;
+  pointer-events: none; /* 클릭 막기 */
 }
 
 .custom-button {

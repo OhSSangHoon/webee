@@ -22,11 +22,14 @@ export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
 /* 저장된 작물정보 모달*/
 export { default as Crops } from "./crops/ui/CropsUI";
 
-/* AI 닥터 */
-export { default as AiDoctor } from "./AiDoctor/ui/AiDoctUi";
+/* step1. AI 질병 진단 */
+export { default as AiDiagnosis } from "./AiDoctor/ui/AiDiagnosisUi";
 
-/* AI 질병 진단 */
-export { default as AiDiagnosis } from "./AiDiagnosis/ui/AiDiagnosisUi";
+/* step2. AI 닥터 */
+export { default as AiDoctor } from "./AiDoctor/ui/AiDoctorUi";
+
+/* step3. AI 질병진단, 솔루션 저장 */
+export { default as AiDiagnosisSave } from "./AiDoctor/ui/SaveDiagnosis";
 
 /* 상품 등록 */
 export { default as Products } from "./products/ui/products";

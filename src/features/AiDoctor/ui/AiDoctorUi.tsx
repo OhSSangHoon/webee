@@ -1,26 +1,40 @@
 "use client";
-import { useState } from "react";
 import api from "@/shared/auth/lib";
 import { Crops } from "@/features";
 import { Crop } from "@/shared/types/crop";
+import { useState } from "react";
 
-export default function AiDoctorUi() {
-  const [form, setForm] = useState({
-    disease: "",
-    cultivationType: "OPEN_FIELD", //기본값: 노지
-    cropName: "",
-    cultivationAddress: "",
-    details: "",
-  });
+type FormType = {
+  disease: string;
+  cultivationType: string;
+  cropName: string;
+  cultivationAddress: string;
+  details: string;
+};
 
-  const [result, setResult] = useState<null | {
-    situationAnalysis: string[];
-    solutions: string[];
-  }>(null);
+type AiDoctorResult = {
+  situationAnalysis: string[];
+  solutions: string[];
+};
+
+type AiDoctorUiProps = {
+  form: FormType;
+  setForm: React.Dispatch<React.SetStateAction<FormType>>;
+  setResult: React.Dispatch<React.SetStateAction<AiDoctorResult | null>>;
+  result: AiDoctorResult | null;
+};
+
+export default function AiDoctorUi({
+  form,
+  setForm,
+  setResult,
+  result,
+}: AiDoctorUiProps) {
+  const [loading, setLoading] = useState(false);
 
   const handleCropSelect = (crop: Crop) => {
     setForm({
-      disease: "", // 만약 작물 정보에는 없으면 빈 문자열로 초기화
+      disease: "",
       cultivationType: crop.cultivationType || "",
       cropName: crop.name,
       cultivationAddress: crop.cultivationAddress || "",
@@ -35,13 +49,17 @@ export default function AiDoctorUi() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+    setLoading(true);
     try {
       const response = await api.post("/bee/diagnosis/ai", form);
       setResult(response.data.data);
+      setLoading(false);
     } catch (error) {
       console.error("AI 진단 요청 실패:", error);
       alert("AI 진단 요청에 실패했습니다.");
+      setLoading(false);
     }
   };
 
@@ -57,20 +75,30 @@ export default function AiDoctorUi() {
         </div>
       </div>
 
-      <div className="space-y-4 mb-6">
-        <input
+      <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+        <select
           name="disease"
-          placeholder="질병명"
           value={form.disease}
           onChange={handleChange}
+          required
           className="w-full border p-2 rounded-md"
-        />
+        >
+          <option value="">질병 선택</option>
+          <option value="성충 날개불구바이러스감염증">
+            성충 날개불구바이러스감염증
+          </option>
+          <option value="성충 응애">성충 응애</option>
+          <option value="유충 부저병">유충 부저병</option>
+          <option value="유충 석고병">유충 석고병</option>
+        </select>
         <select
           name="cultivationType"
           value={form.cultivationType}
           onChange={handleChange}
+          required
           className="w-full border p-2 rounded-md"
         >
+          <option value="">재배 유형 선택</option>
           <option value="CONTROLLED">시설</option>
           <option value="OPEN_FIELD">노지(기본)</option>
         </select>
@@ -79,6 +107,7 @@ export default function AiDoctorUi() {
           placeholder="작물명"
           value={form.cropName}
           onChange={handleChange}
+          required
           className="w-full border p-2 rounded-md"
         />
         <input
@@ -86,6 +115,7 @@ export default function AiDoctorUi() {
           placeholder="재배지 주소"
           value={form.cultivationAddress}
           onChange={handleChange}
+          required
           className="w-full border p-2 rounded-md"
         />
         <input
@@ -93,18 +123,20 @@ export default function AiDoctorUi() {
           placeholder="기타 사항"
           value={form.details}
           onChange={handleChange}
+          required
           className="w-full border p-2 rounded-md"
         />
-        <div className="flex flex-row">
+
+        <div className="flex flex-row gap-4">
           <Crops onSelect={handleCropSelect} />
           <button
-            onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-full"
+            type="submit"
+            className={` blue-button2 ${loading ? "loading" : ""}`}
           >
-            AI 진단 요청
+            {loading ? "요청 중..." : "AI 진단 요청"}
           </button>
         </div>
-      </div>
+      </form>
       {result && (
         <div className="bg-gray-50 p-6 rounded-2xl shadow-lg space-y-10 border border-gray-200 overflow-auto">
           <div>
