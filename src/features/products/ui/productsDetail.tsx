@@ -8,6 +8,7 @@ import { getBusinessDetail, BusinessDetail } from "@/shared/business/api";
 import ReviewSection from "@/features/reviews/ui/ReviewsSection";
 import { useEffect, useState } from "react";
 import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
+import ContactModal from "./ContactModal";
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
   const [businessLoading, setBusinessLoading] = useState(true);
   const [businessError, setBusinessError] = useState<string | null>(null);
   const [imagePositions, setImagePositions] = useState([0, 1, 2, 3, 4]);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   // 뒤로 가기 버튼 처리
   const handleGoBack = () => {
@@ -209,22 +211,20 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                   <span>{businessInfo.businessAddress}</span>
                 </div>
                 <div className="flex">
-                  <span className="w-15 text-gray-500">전화번호:</span>
-                  <span>{businessInfo.phoneNumber}</span>
+                  <span className="w-20 text-gray-500">온라인스토어:</span>
+                  {businessInfo.onlineStoreUrl ? (
+                    <a 
+                      href={businessInfo.onlineStoreUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      바로가기
+                    </a>
+                  ) : (
+                    <span className="text-gray-400">없음</span>
+                  )}
                 </div>
-                {businessInfo.onlineStoreUrl && (
-                  <div className="flex">
-                    <span className="w-20 text-gray-500">온라인스토어:</span>
-                      <a 
-                        href={businessInfo.onlineStoreUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:underline"
-                      >
-                        바로가기
-                      </a>
-                  </div>
-                )}
               </div>
             ) : (
               <div className="text-sm text-gray-500">
@@ -243,15 +243,13 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         <div className="flex flex-row justify-between items-center mb-4">
           <h2 className="text-xl font-bold">상품 상세정보</h2>
           <div className="flex items-center gap-2">
-            {businessInfo?.kakaoChatUrl && (
-              <a 
-                href={businessInfo.kakaoChatUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
+            {businessInfo && (
+              <button
+                onClick={() => setIsContactModalOpen(true)}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
               >
                 문의하기
-              </a>
+              </button>
             )}
           </div>
         </div>
@@ -264,6 +262,15 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
 
       {/* 리뷰 섹션 */}
       <ReviewSection productId={productId} />
+      
+      {/* 문의하기 모달 */}
+      {businessInfo && (
+        <ContactModal
+          isOpen={isContactModalOpen}
+          onClose={() => setIsContactModalOpen(false)}
+          businessInfo={businessInfo}
+        />
+      )}
     </div>
   );
 }
