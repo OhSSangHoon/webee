@@ -120,7 +120,7 @@ export function BusinessSidebar({
                 {/* 기본 정보 */}
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-semibold mb-3 text-gray-800">기본 정보</h3>
-                  <div className="space-y-3">
+                  <div className="space-y-3 flex flex-row gap-4">
                     <div>
                       <p className="text-sm text-gray-500">업체명</p>
                       <p className="font-medium">{businessInfo.companyName}</p>
@@ -129,15 +129,11 @@ export function BusinessSidebar({
                       <p className="text-sm text-gray-500">대표자</p>
                       <p className="font-medium">{businessInfo.representativeName}</p>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">사업자 등록번호</p>
-                      <p className="font-medium">{businessInfo.registrationNumber || '정보 없음'}</p>
-                    </div>
                   </div>
                 </div>
 
                 {/* 전체 상품 */}
-                <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="bg-gray-50 p-3 rounded-lg">
                   <h3 className="font-semibold mb-3 text-gray-800">전체 상품 ({businessProducts.length})</h3>
                   
                   {productsLoading ? (
@@ -152,7 +148,7 @@ export function BusinessSidebar({
                       <p className="text-gray-500 text-sm">등록된 상품이 없습니다.</p>
                     </div>
                   ) : (
-                    <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-hide">
+                    <div className="space-y-3 max-h-120 overflow-y-auto scrollbar-hide">
                       {businessProducts.map((product) => (
                         <div
                           key={product.id}
