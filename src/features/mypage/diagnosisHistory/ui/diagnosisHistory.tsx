@@ -1,6 +1,7 @@
 "use client";
 
 import api from "@/shared/auth/lib";
+import Image from "next/image";
 import { getBeeDiseaseKorean } from "@/shared/types/beeSwitch";
 import { useEffect, useState } from "react";
 
@@ -90,11 +91,12 @@ export default function DiagnosisHistory() {
             </div>
 
             {/* 진단 이미지 */}
-            <div className="flex justify-center mb-6">
-              <img
+            <div className="relative w-full h-64">
+              <Image
                 src={detailContent.imageUrl}
                 alt={detailContent.diseaseType}
-                className="rounded-lg max-h-64 object-contain"
+                fill
+                className="object-contain rounded-lg"
               />
             </div>
 
@@ -142,13 +144,15 @@ export default function DiagnosisHistory() {
             className="flex flex-row justify-start items-start gap-10 hover:bg-blue-50 px-10 py-5 "
             onClick={() => openDetailModal(item.beeDiagnosisId)}
           >
-            <div className="w-22 h-22 min-w-[88px] min-h-[88px] bg-gray-200 rounded-md overflow-hidden">
-              <img
+            <div className="relative w-22 h-22 min-w-[88px] min-h-[88px]">
+              <Image
                 src={item.imageUrl}
                 alt={item.diseaseType}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover rounded-md"
               />
             </div>
+
             <div className="flex flex-col gap-3">
               <div className="text-sm font-semibold">
                 {getBeeDiseaseKorean(item.diseaseType)} ({item.createdAt})

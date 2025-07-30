@@ -95,6 +95,8 @@ export default function AiDiagnosisUI({
             <Image
               src={previewImage}
               alt="선택한 이미지"
+              width={300}
+              height={200}
               className="object-contain h-full w-full"
             />
           ) : (
