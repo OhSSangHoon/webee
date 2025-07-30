@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ProductDetailProps } from "../model/model";
-import { useProductDetail } from "../hooks/useProductDetail";
+import { useProductDetail } from "../model/hooks";
 import Image from "next/image";
 import { getBusinessDetail, BusinessDetail } from "@/shared/business/api";
 import ReviewSection from "@/features/reviews/ui/ReviewsSection";

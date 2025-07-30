@@ -1,4 +1,5 @@
 "use client";
+
 import api from "@/shared/auth/lib";
 import { useRef, useState } from "react";
 import Image from "next/image";

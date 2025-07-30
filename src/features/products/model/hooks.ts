@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getProductDetail } from "../api/api";
-import { product } from "../model/model";
+import { product } from "./model";
 
 // 상품 상세 훅
 export function useProductDetail(productId: number) {

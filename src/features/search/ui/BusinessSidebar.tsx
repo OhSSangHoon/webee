@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { BusinessDetail } from '@/shared/business/api';
 import { getProductsWithPaging } from '../api/api';
 import { ProductWithBusiness } from '@/features/search/model/model';
+import { getBeeTypeKorean } from '@/shared/types/beeSwitch';
 
 /**
  * 업체 상품 목록 조회
@@ -74,14 +75,6 @@ export function BusinessSidebar({
     return new Intl.NumberFormat('ko-KR').format(price) + '원';
   };
 
-  const getBeeTypeLabel = (beeType: string) => {
-    const types: { [key: string]: string } = {
-      'HONEYBEE': '꿀벌',
-      'BUMBLEBEE': '뒤영벌',
-      'MASON_BEE': '머리뿔가위벌'
-    };
-    return types[beeType] || beeType;
-  };
 
   return (
     <>
@@ -104,7 +97,7 @@ export function BusinessSidebar({
           </div>
 
           {/* 내용 */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto scrollbar-hide">
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="text-center">
@@ -159,7 +152,7 @@ export function BusinessSidebar({
                       <p className="text-gray-500 text-sm">등록된 상품이 없습니다.</p>
                     </div>
                   ) : (
-                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                    <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-hide">
                       {businessProducts.map((product) => (
                         <div
                           key={product.id}
@@ -187,7 +180,7 @@ export function BusinessSidebar({
                             </p>
                             <p>
                               <span className="inline-block bg-gray-100 px-2 py-1 rounded text-xs">
-                                {getBeeTypeLabel(product.beeType)}
+                                {getBeeTypeKorean(product.beeType)}
                               </span>
                             </p>
                             <div className="flex justify-between items-center text-xs">
