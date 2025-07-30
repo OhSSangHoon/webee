@@ -25,6 +25,12 @@ export default function Header() {
             onClick={() => router.push("/")}
             className={`flex items-center gap-3 ${getNavStyle()} text-3xl font-bold cursor-pointer transition-colors`}
           >
+            <div 
+              className="w-7 h-7 bg-gradient-to-br from-blue-400 to-yellow-500 transition-all duration-300"
+              style={{
+                clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)'
+              }}
+            />
             webee
           </div>
           <ul className="hidden md:flex gap-8 cursor-pointer items-center">
