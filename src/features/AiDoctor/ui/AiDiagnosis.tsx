@@ -91,7 +91,7 @@ export default function AiDiagnosisUI({
           onClick={() => fileInputRef.current?.click()}
         >
           {previewImage ? (
-            <img
+            <Image
               src={previewImage}
               alt="선택한 이미지"
               className="object-contain h-full w-full"

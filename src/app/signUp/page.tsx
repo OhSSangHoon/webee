@@ -5,7 +5,7 @@ export default function SignUp() {
   const { register, handleSubmit, errors, signUpError } = useSignUpForm();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-400px)]">
+    <div className="flex flex-col h-screen items-center justify-center min-h-[calc(100vh-400px)]">
       <div className="flex flex-col items-start justify-center">
         <h1 className="text-5xl font-extrabold mb-5">회원가입</h1>
         <p className="text-gray-custom mb-10">

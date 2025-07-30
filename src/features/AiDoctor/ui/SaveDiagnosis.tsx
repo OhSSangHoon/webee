@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import AiDiagnosisUI from "./AiDiagnosisUi";
-import AiDoctorUi from "./AiDoctorUi";
+import AiDiagnosisUI from "./AiDiagnosis";
+import AiDoctorUi from "./AiDoctor";
 import api from "@/shared/auth/lib";
 import { DiagnosisResult } from "@/shared/types/diagnosis";
 

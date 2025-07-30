@@ -1,7 +1,7 @@
 import { BeeResult } from "@/shared/types/crop";
-
 import { useRecommendBee } from "./useRecommendation";
 import { saveRecommendation } from "../api/recommendApi";
+import { getBeeTypeEnglish } from "@/shared/types/beeSwitch";
 
 export type BeeResultForServer = Omit<
   BeeResult,
@@ -15,14 +15,7 @@ export type BeeResultForServer = Omit<
   cultivationType: string;
 };
 
-// 벌 타입 변환.
-const beeTypeMap: Record<string, string> = {
-  뒤영벌: "BUMBLEBEE",
-  꿀벌: "HONEYBEE",
-  머리뿔가위벌: "MASON_BEE",
-};
-
-//  줄바꿈 문자열 처리를 통한 string[] -> string.
+// 줄바꿈 문자열 처리를 통한 string[] -> string.
 export const transformDataForServer = (
   data: BeeResult,
   cropName: string,
@@ -30,7 +23,7 @@ export const transformDataForServer = (
   cultivationType: string
 ): BeeResultForServer => ({
   ...data,
-  beeType: beeTypeMap[data.beeType] ?? data.beeType,
+  beeType: getBeeTypeEnglish(data.beeType),
   inputStartDate: data.inputStartDate.replace(/\./g, "-"),
   inputEndDate: data.inputEndDate.replace(/\./g, "-"),
   characteristics: data.characteristics.join("\n"),

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRecommendBee } from "../model/useRecommendation";
-import Crops from "@/features/crops/ui/CropsUI";
+import Crops from "@/features/crops/ui/cropsUI";
 import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {

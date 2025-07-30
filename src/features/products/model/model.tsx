@@ -1,5 +1,4 @@
-// 벌 종류
-export type BeeType = 'HONEYBEE' | 'ASIAN_BUMBLEBEE' | 'EUROPEAN_BUMBLEBEE' | 'MASON_BEE';
+import { BeeType } from '@/shared/types/beeSwitch';
 
 /**
  * 상품 등록 요청 데이터
@@ -40,7 +39,7 @@ export interface productData {
 export interface product {
     id: number;
     name: string;
-    beeType: string;
+    beeType: BeeType;
     price: number;
     businessId: number;
     content: string;

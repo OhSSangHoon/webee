@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useUserStore } from "@/shared/auth/useUserStore";
 import { useRouter } from "next/navigation";
-import { productData, BeeType } from "@/features/products/model/model";
+import { productData } from "@/features/products/model/model";
+import { BeeType } from "@/shared/types/beeSwitch";
 import { useBusinessStore } from "@/shared/business/model";
 import { createProduct } from "@/features/products/api/api";
 import Image from "next/image";
@@ -332,7 +333,7 @@ export default function ProductsPage() {
                   >
                       <option value="">벌 종류를 선택하세요.</option>
                       <option value="HONEYBEE">꿀벌</option>
-                      <option value="EUROPEAN_BUMBLEBEE">서양뒤영벌</option>
+                      <option value="BUMBLEBEE">뒤영벌</option>
                       <option value="MASON_BEE">머리뿔가위벌</option>
                   </select>
               </div>

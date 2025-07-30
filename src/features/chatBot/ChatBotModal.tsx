@@ -72,7 +72,7 @@ export default function ChatbotLauncher() {
       {/* 챗봇 열기 버튼 */}
       <button
         onClick={() => setOpen(true)}
-        className=" fixed bottom-6 right-6 bg-violet-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-violet-700"
+        className="fixed bottom-6 right-6 bg-violet-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-violet-700 z-50"
       >
         챗봇 열기
       </button>
