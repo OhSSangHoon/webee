@@ -20,7 +20,7 @@ export default function ReviewList({
   const [editContent, setEditContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { userName, isLoggedIn } = useUserStore();
+  const { realName, isLoggedIn } = useUserStore();
 
   // Intersection Observer를 사용한 무한 스크롤
   useEffect(() => {
@@ -57,13 +57,13 @@ export default function ReviewList({
 
   // 현재 사용자가 리뷰 작성자인지 확인 (userName 비교)
   const isAuthor = (review: Review) => {
-    if (!isLoggedIn || !userName) return false;
+    if (!isLoggedIn || !realName) return false;
     
     // 리뷰 작성자의 nickname과 현재 사용자의 userName 비교
-    const reviewerNickname = review.writer?.nickname;
+    const reviewerNickname = review.writer?.name;
     
     // userName으로 정확히 비교 (userName이 고유하므로)
-    return reviewerNickname === userName;
+    return reviewerNickname === realName;
   };
 
   // 수정/삭제 함수들
@@ -160,7 +160,7 @@ export default function ReviewList({
         const content = review?.content || '내용이 없습니다.';
         const reviewId = review?.id || index;
         const isEditing = editingReviewId === reviewId;
-        const writerNickname = review?.writer?.nickname || '익명';
+        const writerNickname = review?.writer?.name || '익명';
         
         return (
           <div 
@@ -180,9 +180,6 @@ export default function ReviewList({
                 <div className="flex items-center space-x-2">
                   <span className="font-medium">
                     {maskNickname(writerNickname)}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    리뷰 #{reviewId}
                   </span>
                 </div>
 

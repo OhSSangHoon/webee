@@ -13,7 +13,7 @@ export default function ReviewForm({
   const [content, setContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
   
-  const { userName } = useUserStore();
+  const { realName } = useUserStore();
 
   const handleSubmit = async () => {
     if (!content.trim()) {
@@ -27,14 +27,14 @@ export default function ReviewForm({
       const response = await createReview(productId, content.trim());
       console.log('리뷰 작성 성공:', response);
       
-      // 새로운 리뷰 객체 생성 (userName을 nickname에 저장)
+      // 새로운 리뷰 객체 생성
       const newReview: Review = {
         id: response.data,
         content: content.trim(),
         productId,
         writer: {
           id: 0, // ID는 사용하지 않음
-          nickname: userName || '익명' // userName을 nickname으로 사용
+          name: realName || '익명'
         }
       };
       
