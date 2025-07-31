@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useCropInfo } from "../model/useCropInfo";
 import { CultivationMethod, CropFormData } from "@/shared/types/crop";
+import Crops from "@/features/crops/ui/cropsUI";
+import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {
   const { submitCropInfo, loading, error } = useCropInfo();
@@ -14,6 +16,17 @@ export default function CropInfo() {
     area: "",
     plantingDate: "",
   });
+
+  const handleCropSelect = (crop: Crop) => {
+    setForm({
+      crop: crop.name,
+      variety: crop.variety || "",
+      method: "" as CultivationMethod,
+      location: crop.cultivationAddress || "",
+      area: crop.cultivationArea?.toString() || "",
+      plantingDate: crop.plantingDate || "",
+    });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -160,7 +173,12 @@ export default function CropInfo() {
           </div>
         </section>
         {/* 등록 버튼 */}
-        <div className="text-right">
+
+        <div className="flex flex-row justify-end items-center gap-2 ">
+          <div className="w-[12rem]">
+            <Crops onSelect={handleCropSelect} />
+          </div>
+
           <button
             type="submit"
             className="bg-blue-500 text-white px-15 py-2 rounded my-5 "
