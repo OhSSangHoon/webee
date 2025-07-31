@@ -72,11 +72,11 @@ body {
 
 .blue-button {
   /*기본 블루 버튼*/
-  @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600;
+  @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors;
 }
 
 .blue-button2 {
-  @apply bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-full;
+  @apply bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md w-full;
 }
 
 .blue-button2.loading {
@@ -168,7 +168,7 @@ body {
 
 /*질병진단 페이지*/
 .card-section-2 {
-  @apply min-h-screen w-full bg-white/90 p-6 sm:p-8 rounded-2xl shadow-xl text-gray-800 space-y-6;
+  @apply min-h-screen w-full bg-white/90  rounded-2xl shadow-xl text-gray-800 space-y-6;
 }
 
 /*
