@@ -38,7 +38,7 @@ export default function CropInfo() {
   };
   return (
     <form
-      className="space-y-6 max-w-[1000px] w-full  text-black flex flex-col justify-center rounded-2xl items-start custom-box-shadow"
+      className="space-y-6 max-w-[1000px] w-full  text-black flex flex-col justify-center rounded-2xl items-start shadow-lg"
       onSubmit={handleSubmit}
     >
       {/* 제목 및 설명 */}
