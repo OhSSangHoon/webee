@@ -77,7 +77,7 @@ export default function AiDoctorUi({
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6  rounded-lg border-2 border-[#ececec] p-8"
+        className="space-y-6  rounded-lg border-1 border-[#ececec] p-8"
       >
         {/* 질병 선택 */}
         <div className="flex flex-col">
@@ -155,7 +155,7 @@ export default function AiDoctorUi({
           <input
             id="cultivationAddress"
             name="cultivationAddress"
-            placeholder="경산북도 경산시"
+            placeholder="경산북도 경산시 (정확한 주소를 입력해 주세요)"
             value={form.cultivationAddress}
             onChange={handleChange}
             required

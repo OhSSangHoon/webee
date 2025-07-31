@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRecommendBee } from "../model/useRecommendation";
-import Crops from "@/features/crops/ui/CropsUI";
+import Crops from "@/features/crops/ui/cropsUI";
 import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {
@@ -55,14 +55,14 @@ export default function CropInfo() {
 
   return (
     <form
-      className=" flex flex-col justify-start items-stretch w-full gap-4 card-section"
+      className=" flex flex-col justify-start items-stretch w-full  card-section text-[#333333]"
       onSubmit={handleSubmit}
     >
-      <h2 className="text-2xl font-bold">
-        🥬 새 작물 추가{" "}
+      <h2 className="text-2xl font-bold pb-10">
+        🥬 새 작물 추가
         <span className="text-sm text-red-400">
           <span className="text-red-500">*</span> 별이 붙어있는 항목은
-          필수입력이에요.{" "}
+          필수입력이에요.
         </span>
       </h2>
       <div>
@@ -110,17 +110,14 @@ export default function CropInfo() {
       </div>
       {/* 재배 지역 */}
       <div>
-        <label className="block mb-1 text-sm font-medium">
-          재배 지역{" "}
-          <span className="text-red-500">* 정확한 주소를 입력해주세요!</span>
-        </label>
+        <label className="block mb-1 text-sm font-medium">재배 지역 </label>
         <input
           type="text"
           name="cultivationAddress"
           value={form.cultivationAddress}
           onChange={handleChange}
           className="custom-Input"
-          placeholder="예: 경상북도 경산시"
+          placeholder="경상북도 경산시 (정확한 주소를 입력해 주세요)"
           required
         />
       </div>
@@ -153,7 +150,7 @@ export default function CropInfo() {
           required
         />
       </div>
-      <div className="flex flex-row w-full gap-2">
+      <div className="flex flex-row w-full gap-2 pt-10">
         <Crops onSelect={handleCropSelect} />
         <button
           type="submit"
