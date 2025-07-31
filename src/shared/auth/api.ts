@@ -16,7 +16,7 @@ export async function signIn({ username, password }: SignInRequest) {
     const accessToken = authorization.split(" ")[1];
     safeLocalStorage.setItem("accessToken", accessToken);
   }
-  
+
   const { name } = response.data.data;
   const login = useUserStore.getState().login;
   login(username, name);
@@ -25,15 +25,21 @@ export async function signIn({ username, password }: SignInRequest) {
 }
 
 export async function signOut() {
-  const response = await api.post("/auth/sign-out");
-  
-  safeLocalStorage.removeItem("accessToken");
-  if (typeof window !== 'undefined') {
-    document.cookie = "refreshToken=; path=/; max-age=0;";
+  try {
+    await api.post("/auth/sign-out");
+  } catch (err: any) {
+    console.warn(
+      "sign-out 요청 실패했지만 클라이언트 상태는 정리합니다:",
+      err?.response?.data || err
+    );
+  } finally {
+    safeLocalStorage.removeItem("accessToken");
+    if (typeof window !== "undefined") {
+      document.cookie = "refreshToken=; path=/; max-age=0;";
+    }
+    await useUserStore.getState().logout();
   }
-  
-  await useUserStore.getState().logout();
-  return response.data;
+  return { success: true };
 }
 
 export async function reissue() {
