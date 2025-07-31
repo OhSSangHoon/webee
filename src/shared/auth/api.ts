@@ -25,16 +25,19 @@ export async function signIn({ username, password }: SignInRequest) {
 }
 
 export async function signOut() {
+
   try {
     await api.post("/auth/sign-out");
   } catch (error) {
     console.warn("sign-out 요청 실패했지만 클라이언트 상태는 정리합니다", error);
+
   } finally {
     safeLocalStorage.removeItem("accessToken");
     if (typeof window !== "undefined") {
       document.cookie = "refreshToken=; path=/; max-age=0;";
     }
     await useUserStore.getState().logout();
+
   }
   return { success: true };
 }
