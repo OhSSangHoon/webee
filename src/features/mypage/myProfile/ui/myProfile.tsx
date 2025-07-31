@@ -1,7 +1,7 @@
 "use client";
 
 import { useProfile } from "../model/hooks";
-import { BusinessList } from "./MyBusinessList";
+import { BusinessList } from "./myBusinessList";
 /* 마이프로필 메인 컴포넌트
  * 사용자 정보, 업체 정보, 농지 정보를 표시합니다.
  */

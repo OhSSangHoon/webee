@@ -21,13 +21,15 @@ export const useProfile = () => {
       try {
         // localStorage에서 사용자 이름 가져오기
         let realName = "";
-        const storedData = localStorage.getItem("userStorage");
-        if (storedData) {
-          try {
-            const parsed = JSON.parse(storedData);
-            realName = parsed.state?.realName || "";
-          } catch (error) {
-            console.error("userStorage 파싱 오류:", error);
+        if (typeof window !== 'undefined') {
+          const storedData = localStorage.getItem("userStorage");
+          if (storedData) {
+            try {
+              const parsed = JSON.parse(storedData);
+              realName = parsed.state?.realName || "";
+            } catch (error) {
+              console.error("userStorage 파싱 오류:", error);
+            }
           }
         }
 
