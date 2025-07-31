@@ -5,7 +5,7 @@ export interface Review {
   productId: number;
   writer: {
     id: number;
-    nickname: string;
+    name: string;
   };
 }
 
