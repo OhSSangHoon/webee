@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function BusinessDetailPopup({ businessId, x, y, onClose }: Props) {
-  const detail = useBusinessStore((state) => state.detail);
+  const detail = useBusinessStore((state) => state.selectedDetail); // ✅ selectedDetail로 변경
   const fetchDetail = useBusinessStore((state) => state.fetchDetail);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function BusinessDetailPopup({ businessId, x, y, onClose }: Props) {
   return (
     <div
       style={{ top: y + 10, left: x + 10 }}
-      className="absolute z-50 bg-white border border-gray-300 shadow-md p-4 rounded text-xs"
+      className="absolute z-50 bg-white border border-gray-300 shadow-md p-4 rounded text-sm"
       onMouseLeave={onClose}
     >
       {detail ? (

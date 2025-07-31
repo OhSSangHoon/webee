@@ -16,8 +16,13 @@ import {
  * 현재 날씨, 7일 예보, 농업기상 정보를 포함합니다.
  */
 export default function WeatherUI() {
-  const { weatherData, forecastData, koreanAddress, loading, error } = useWeatherData();
-  const { data: detailData, error: detailError, loading: detailLoading } = useDetailWeather(koreanAddress);
+  const { weatherData, forecastData, koreanAddress, loading, error } =
+    useWeatherData();
+  const {
+    data: detailData,
+    error: detailError,
+    loading: detailLoading,
+  } = useDetailWeather(koreanAddress);
 
   // 로딩 상태 UI
   if (loading) {
@@ -80,10 +85,11 @@ export default function WeatherUI() {
                     <span className="text-7xl">°C</span>
                   </div>
                   <div className="text-center text-white text-shadow-md text-sm font-semibold mt-2">
-                    일출 {formatTime(weatherData.sys.sunrise)} • 일몰 {formatTime(weatherData.sys.sunset)}
+                    일출 {formatTime(weatherData.sys.sunrise)} • 일몰{" "}
+                    {formatTime(weatherData.sys.sunset)}
                   </div>
                 </div>
-                
+
                 {/* 현재 날씨 상태 */}
                 <div className="text-center">
                   <div className="text-6xl mb-2">
@@ -103,9 +109,14 @@ export default function WeatherUI() {
                 <div className="mb-6">
                   <div className="grid grid-cols-5 gap-3">
                     {dailyForecast.map((day, index) => {
-                      const temp = Math.round((day.temp_max + day.temp_min) / 2);
+                      const temp = Math.round(
+                        (day.temp_max + day.temp_min) / 2
+                      );
                       return (
-                        <div key={index} className="bg-white/10 rounded-lg p-3 text-center hover:bg-white/20 transition-colors">
+                        <div
+                          key={index}
+                          className="bg-white/10 rounded-lg p-3 text-center hover:bg-white/20 transition-colors"
+                        >
                           <div className="text-white/80 text-xs font-medium mb-2">
                             {formatDayShort(day.dt)}
                           </div>
@@ -140,39 +151,49 @@ export default function WeatherUI() {
               <h3 className="text-white text-lg font-bold mb-4 flex items-center gap-2">
                 🌾 농업기상 정보
               </h3>
-              
+
               {detailError && (
                 <p className="text-red-300 text-xs mb-2">{detailError}</p>
               )}
-              
+
               {detailData ? (
                 <div className="space-y-3">
                   <div className="bg-white/10 rounded-lg p-3">
                     <div className="text-white/70 text-xs mb-1">관측소</div>
-                    <div className="text-white text-sm font-semibold">{detailData.stn_Name}</div>
+                    <div className="text-white text-sm font-semibold">
+                      {detailData.stn_Name}
+                    </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="bg-white/10 rounded-lg p-3">
                       <div className="text-white/70 text-xs mb-1">습도</div>
-                      <div className="text-white text-sm font-semibold">{detailData.hum}%</div>
+                      <div className="text-white text-sm font-semibold">
+                        {detailData.hum}%
+                      </div>
                     </div>
                     <div className="bg-white/10 rounded-lg p-3">
                       <div className="text-white/70 text-xs mb-1">지중온도</div>
-                      <div className="text-white text-sm font-semibold">{detailData.soil_Temp}℃</div>
+                      <div className="text-white text-sm font-semibold">
+                        {detailData.soil_Temp}℃
+                      </div>
                     </div>
                   </div>
                   <div className="bg-white/10 rounded-lg p-3">
                     <div className="text-white/70 text-xs mb-1">토양수분</div>
-                    <div className="text-white text-sm font-semibold">{detailData.soil_Wt}%</div>
+                    <div className="text-white text-sm font-semibold">
+                      {detailData.soil_Wt}%
+                    </div>
                   </div>
                 </div>
               ) : (
                 detailLoading && (
-                  <p className="text-white/70 text-sm text-center py-4">불러오는 중...</p>
+                  <p className="text-white/70 text-sm text-center py-4">
+                    불러오는 중...
+                  </p>
                 )
               )}
             </div>
-            
+
             {/* 데이터 출처 정보 */}
             <div className="text-center pt-4 border-t border-white/10 mt-auto">
               <div className="text-white/50 text-xs">{detailData?.date}</div>

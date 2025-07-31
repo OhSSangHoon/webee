@@ -1,5 +1,5 @@
 /*마이프로필*/
-export { default as MyProfile } from "./mypage/myProfile/ui/myProfile";
+export { default as MyProfile } from "./mypage/myProfile/ui/MyProfile";
 
 /* 사업자정보등록  */
 export { default as BusinessProfile } from "./Register/businessProfile/ui/businessProfile";
@@ -17,13 +17,16 @@ export { default as MySaleList } from "./mypage/mySaleList/ui/mySaleList";
 export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
 
 /* 저장된 작물정보 모달*/
-export { default as Crops } from "./crops/ui/cropsUI";
+export { default as Crops } from "./crops/ui/CropsUI";
 
-/* AI 닥터 */
-export { default as AiDoctor } from "./AiDoctor/ui/AiDoctUi";
+/* step1. AI 질병 진단 */
+export { default as AiDiagnosis } from "./AiDoctor/ui/AiDiagnosis";
 
-/* AI 질병 진단 */
-export { default as AiDiagnosis } from "./AiDiagnosis/ui/AiDiagnosisUi";
+/* step2. AI 닥터 */
+export { default as AiDoctor } from "./AiDoctor/ui/AiDoctor";
+
+/* step3. AI 질병진단, 솔루션 저장 */
+export { default as AiDiagnosisSave } from "./AiDoctor/ui/SaveDiagnosis";
 
 /* 상품 등록 */
 export { default as Products } from "./products/ui/products";
@@ -44,7 +47,7 @@ export { default as Weather2 } from "./weather/ui/WeatherUi";
 export { default as ChatBot } from "./chatBot/ChatBotModal";
 
 /* 농약 찾기 */
-export { default as Pesticide } from "./pesticide/ui/PesticideTable";
+export { default as Pesticide } from "./pesticide/ui/Pesticide";
 
 /* 꿀벌,수정벌 뉴스 모아보기 */
 export { default as BeeNews } from "./news/ui/newsUi";

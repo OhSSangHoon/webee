@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import { useBeeRecommendationStore } from "../model/store";
 import { BeeRecommendationList } from "./List";
-import { BeeRecommendationDetailModal } from "./detailModel";
+import { BeeRecommendationDetailModal } from "./DetailModel";
 
 export default function BeeRecommendationPanel() {
   const { detailMap, loadDetail } = useBeeRecommendationStore();

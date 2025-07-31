@@ -77,7 +77,7 @@ export default function Crops({ onSelect }: Props) {
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="bg-white max-w-3xl w-full p-6 rounded-md shadow-lg relative">
               <button
-                onClick={openModal}
+                onClick={closeModal}
                 className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold"
                 aria-label="Close modal"
               >
