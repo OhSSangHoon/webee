@@ -1,3 +1,5 @@
+"use client";
+
 import { AiDiagnosisSave } from "@/features";
 export default function Diagnosis() {
   return (
