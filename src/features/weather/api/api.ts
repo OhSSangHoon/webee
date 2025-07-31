@@ -1,4 +1,4 @@
-import { WeatherData, ForecastData, AddressData } from '../model/types';
+import { WeatherData, ForecastData, AddressData } from "../model/types";
 
 /**
  * 기본 날씨 API
@@ -7,37 +7,46 @@ export const weatherApi = {
   /**
    * 현재 날씨 데이터 가져오기
    */
-  getCurrentWeather: async (latitude: number, longitude: number): Promise<WeatherData> => {
+  getCurrentWeather: async (
+    latitude: number,
+    longitude: number
+  ): Promise<WeatherData> => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_API_KEY}&units=metric&lang=kr`
     );
-    
+
     if (!response.ok) {
       throw new Error("현재 날씨 API 호출 실패");
     }
-    
+
     return response.json();
   },
 
   /**
    * 7일 예보 데이터 가져오기
    */
-  getForecast: async (latitude: number, longitude: number): Promise<ForecastData> => {
+  getForecast: async (
+    latitude: number,
+    longitude: number
+  ): Promise<ForecastData> => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_API_KEY}&units=metric&lang=kr`
     );
-    
+
     if (!response.ok) {
       throw new Error("예보 API 호출 실패");
     }
-    
+
     return response.json();
   },
 
   /**
    * 한글 주소 가져오기 (Nominatim API)
    */
-  getKoreanAddress: async (latitude: number, longitude: number): Promise<string> => {
+  getKoreanAddress: async (
+    latitude: number,
+    longitude: number
+  ): Promise<string> => {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ko`
     );
@@ -58,5 +67,5 @@ export const weatherApi = {
 
     // nominatim api의 한글주소와 농업기상관측소 주소 맞추기 위해 2글자로 자름
     return fullKoreanAddr.substring(0, 2);
-  }
+  },
 };
