@@ -28,7 +28,7 @@ export default function Crops({ onSelect }: Props) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
-  const hasAccessToken = !!localStorage.getItem("accessToken");
+  const hasAccessToken = typeof window !== 'undefined' ? !!localStorage.getItem("accessToken") : false;
 
   const openModal = () => {
     setIsOpen(true);
