@@ -2,24 +2,31 @@
 
 import dynamic from "next/dynamic";
 
-const CropAddForm = dynamic(() => import("@/features/recommendBee/ui/cropAddForm"), { ssr: false });
-const ResultBox = dynamic(() => import("@/features/recommendBee/ui/recommendBeeResult"), { ssr: false });
+const CropAddForm = dynamic(
+  () => import("@/features/recommendBee/ui/cropAddForm"),
+  { ssr: false }
+);
+const ResultBox = dynamic(
+  () => import("@/features/recommendBee/ui/recommendBeeResult"),
+  { ssr: false }
+);
 
 export default function RecommendBee() {
   return (
-    <div className="flex flex-col items-center gap-10 pt-30 pb-20">
-      <div className="flex flex-col gap-2">
-        <h1 className=" text-4xl font-bold">수정벌 추천</h1>
-        <h2 className="text-xl font-bold text-black/80">
-          🥒작물 종류🍅와 농사 환경을 알려주시면, 정부의 농사 정보
-          (농림수산식품부 자료)를 참고해 잘 맞는 수정벌을 알려드릴게요. 🐝💨
-        </h2>
-      </div>
+    <div className=" min-h-screen mx-auto gap-10 py-10 lg:w-[65%]">
+      <div className="card-section-2 mt-20 text-[#333333] ">
+        <header className="flex flex-col items-start justify-center bg-[#EEF2FF] px-6 py-6 rounded-t-lg">
+          <h1 className="text-[18px] font-semibold">수정벌 추천</h1>
+          <h3 className="text-[14px] text-[#6B7280]">
+           농작물 정보를 알려주시면, 공공데이터를 바탕으로 적합한 수정벌을 추천해드릴게요!
+          </h3>
+        </header>
 
-      <div className="lg:w-[65%] gap-10 flex flex-row items-center justify-center">
         <title>수정벌 추천</title>
+        <div className="flex flex-row justify-center items-center">
           <CropAddForm />
           <ResultBox />
+        </div>
       </div>
     </div>
   );
