@@ -258,6 +258,11 @@ body {
   }
 }
 
+/* 작물정보 인풋 박스*/
+.crop-input-box {
+  @apply border w-full border-[#ececec] p-2 mb-2 rounded;
+}
+
 .inner-shadow-svg {
   filter: url(#inner-shadow);
   color: white;

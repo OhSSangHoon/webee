@@ -28,7 +28,10 @@ export default function Crops({ onSelect }: Props) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
-  const hasAccessToken = typeof window !== 'undefined' ? !!localStorage.getItem("accessToken") : false;
+  const hasAccessToken =
+    typeof window !== "undefined"
+      ? !!localStorage.getItem("accessToken")
+      : false;
 
   const openModal = () => {
     setIsOpen(true);
@@ -58,13 +61,13 @@ export default function Crops({ onSelect }: Props) {
       <button
         onClick={openModal}
         disabled={!hasAccessToken} // 중복 막기
-        className={`relative w-full px-4 py-2 rounded-md border text-blue-500 ${
+        className={`relative w-full px-4 py-2 rounded-sm border text-blue-500 ${
           hasAccessToken
             ? "white-button"
             : "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
         }`}
       >
-        기존 작물 정보 가져오기
+        작물 정보 가져오기
         {!hasAccessToken && (
           <p className=" absolute mt-2 text-sm text-red-500">
             로그인 시 사용 가능합니다.
@@ -74,8 +77,14 @@ export default function Crops({ onSelect }: Props) {
 
       {isOpen && (
         <>
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="bg-white max-w-3xl w-full p-6 rounded-md shadow-lg relative">
+          <div
+            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+            onClick={closeModal}
+          >
+            <div
+              className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 onClick={closeModal}
                 className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold"
@@ -84,7 +93,7 @@ export default function Crops({ onSelect }: Props) {
                 ✕
               </button>
 
-              <h1 className="text-2xl font-bold mb-4">작물 리스트</h1>
+              <h1 className="text-base font-medium mb-4">작물 리스트</h1>
               <CropList crops={crops} onSelect={setSelectedId} />
 
               {selectedCrop && (
