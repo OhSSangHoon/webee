@@ -60,7 +60,7 @@ export default function Crops({ onSelect }: Props) {
         disabled={!hasAccessToken} // 중복 막기
         className={`relative w-full px-4 py-2 rounded-md border text-blue-500 ${
           hasAccessToken
-            ? "white-button"
+            ? "border-blue-500 hover:bg-blue-500 hover:text-white cursor-pointer"
             : "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
         }`}
       >
