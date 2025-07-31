@@ -64,7 +64,11 @@ export default function DiagnosisWrapper() {
           />
           <AiDoctorUi
             form={{ ...form, disease: derivedDisease }}
-            setForm={setForm as React.Dispatch<React.SetStateAction<any>>}
+            setForm={
+              setForm as React.Dispatch<
+                React.SetStateAction<SaveDiagnosisForm & { disease: string }>
+              >
+            }
             setResult={setAiDoctorResult}
             result={aiDoctorResult}
           />
