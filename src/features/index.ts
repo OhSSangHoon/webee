@@ -1,5 +1,5 @@
 /*마이프로필*/
-export { default as MyProfile } from "./mypage/myProfile/ui/MyProfile";
+export { default as MyProfile } from "./mypage/myProfile/ui/myProfile";
 
 /* 사업자정보등록  */
 export { default as BusinessProfile } from "./Register/businessProfile/ui/businessProfile";
@@ -17,7 +17,7 @@ export { default as MySaleList } from "./mypage/mySaleList/ui/mySaleList";
 export { default as CropInfo } from "./Register/cropInfo/ui/cropInfo";
 
 /* 저장된 작물정보 모달*/
-export { default as Crops } from "./crops/ui/CropsUI";
+export { default as Crops } from "./crops/ui/cropsUI";
 
 /* step1. AI 질병 진단 */
 export { default as AiDiagnosis } from "./AiDoctor/ui/AiDiagnosis";
