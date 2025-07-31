@@ -47,40 +47,27 @@ export default function DiagnosisWrapper() {
   const derivedDisease = diagnosisResult?.name || "";
 
   return (
-    <div className="card-section-2 mt-20 text-[#333333] ">
-      <header className="flex flex-col items-start justify-center bg-[#EEF2FF] px-6 py-6 rounded-t-lg">
-        <h1 className="text-[18px] font-semibold">꿀벌 질병 진단</h1>
-        <h3 className="text-[14px] text-[#6B7280]">
-          60만 장의 꿀벌 이미지 분석을 통해 질병 여부를 진단하고 맞춤형 대처
-          방안을 받아보세요
-        </h3>
-      </header>
-      <div className="lg:mx-8 py-10 sm:px-4 space-y-20">
-        <AiDiagnosisUI
-          setImageFile={setImageFile}
-          setResult={setDiagnosisResult}
-          result={diagnosisResult}
-        />
-        <AiDoctorUi
-          form={{ ...form, disease: derivedDisease }}
-          setForm={
-            setForm as React.Dispatch<
-              React.SetStateAction<SaveDiagnosisForm & { disease: string }>
-            >
-          }
-          setResult={setAiDoctorResult}
-          result={aiDoctorResult}
-        />
-        <button
-          onClick={handleUpload}
-          disabled={!canSubmit || loading}
-          className={` blue-button2 ${
-            loading ? "loading" : ""
-          } disabled:opacity-50`}
-        >
-          {loading ? "저장 중..." : "진단 결과 최종 저장"}
-        </button>
-      </div>
+    <div className="space-y-10">
+      <AiDiagnosisUI
+        setImageFile={setImageFile}
+        setResult={setDiagnosisResult}
+        result={diagnosisResult}
+      />
+      <AiDoctorUi
+        form={{ ...form, disease: derivedDisease }}
+        setForm={setForm as React.Dispatch<React.SetStateAction<SaveDiagnosisForm & { disease: string }>>}
+        setResult={setAiDoctorResult}
+        result={aiDoctorResult}
+      />
+      <button
+        onClick={handleUpload}
+        disabled={!canSubmit || loading}
+        className={`px-6 py-3 rounded ${
+          loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+        } text-white disabled:opacity-50`}
+      >
+        {loading ? "저장 중..." : "진단 결과 최종 저장"}
+      </button>
       <div>{saveResult}</div>
     </div>
   );
