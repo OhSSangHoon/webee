@@ -73,114 +73,112 @@ export default function AiDiagnosisUI({
   };
 
   return (
-    <div className="flex flex-col justify-start items-start w-full gap-4 ">
-      <header className="font-semibold flex flex-row items-end space-x-2 text-[20px] w-full">
-        <div className="text-blue-500 ">Step 1</div> 꿀벌 사진 업로드
-        <div className="text-blue-500 text-[13px] mb-1 mx-2 font-medium ">
+    <div className="flex flex-col justify-start items-start w-full gap-4 card-section-2">
+      <div>
+        <h2 className="text-2xl font-bold">
+          <span className="text-blue-500 text-3xl">Step 1</span> 꿀벌 사진
+          업로드
+        </h2>
+        <div>
           꿀벌 사진을 업로드하여 응애, 부저병, 날개불구바이러스감염증, 석고병
           질병 여부를 진단받을 수 있어요!
         </div>
-      </header>
+      </div>
 
-      <div className="w-full flex flex-col lg:flex-row lg:h-[15rem] space-y-4 space-x-2">
-        {/* 커스텀 파일 업로드 박스 */}
-
-        <div className="flex flex-col gap-3 w-full h-full">
-          <div
-            className="border-2 border-dashed border-[#ececec] rounded-lg h-[120px] lg:h-full flex flex-col justify-center items-center cursor-pointer hover:bg-gray-50 transition relative overflow-hidden"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            {previewImage ? (
-              <Image
-                src={previewImage}
-                alt="선택한 이미지"
-                width={300}
-                height={200}
-                className="object-contain h-full w-full"
-              />
-            ) : (
-              <>
-                <Camera className="w-8 h-8 text-gray-500" />
-                <p className="text-gray-500 text-sm mt-2">
-                  사진을 선택해주세요
-                </p>
-              </>
-            )}
-          </div>
-
-          {/* 실제 input은 숨김 */}
-          <input
-            type="file"
-            accept=".jpg,.jpeg,.png,.svg,.webp"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+      {/* 커스텀 파일 업로드 박스 */}
+      <div className="flex flex-col gap-3 w-full">
+        <div
+          className="border-2 border-dashed border-[#d9d9d9] rounded-xl h-[120px] flex flex-col justify-center items-center cursor-pointer hover:bg-gray-50 transition relative overflow-hidden"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          {previewImage ? (
+            <Image
+              src={previewImage}
+              alt="선택한 이미지"
+              width={300}
+              height={200}
+              className="object-contain h-full w-full"
+            />
+          ) : (
+            <>
+              <Camera className="w-8 h-8 text-gray-500" />
+              <p className="text-gray-500 text-sm mt-2">사진을 선택해주세요</p>
+            </>
+          )}
         </div>
 
-        {/* 예시 이미지 안내 영역 */}
-        <div className="p-5 border-2 border-[#ececec] rounded-lg w-full min-h-[15rem] flex flex-col justify-center items-start ">
-          <div>꿀벌이 잘 보이도록 확대해서 찍어주세요. </div>
-          <div className="flex flex-row justify-center items-center w-full h-full gap-10">
-            <div className="w-2/3 h-40 relative">
-              <Image
-                src="/images/bee1.jpg"
-                alt="예시 꿀벌1"
-                priority
-                sizes="(max-width: 768px) 100vw, 66vw"
-                fill
-                className="object-cover rounded-lg border"
-              />
-            </div>
-            <div className="w-2/3 h-40 relative">
-              <Image
-                src="/images/bee2.jpg"
-                alt="예시 꿀벌2"
-                sizes="(max-width: 768px) 100vw, 66vw"
-                fill
-                className="object-cover rounded-lg border"
-              />
-            </div>
-            <div className="w-2/3 h-40 relative">
-              <Image
-                src="/images/bee3.jpg"
-                alt="예시 꿀벌3"
-                sizes="(max-width: 768px) 100vw, 66vw"
-                fill
-                className="object-cover rounded-lg border"
-              />
-            </div>
+        {/* 실제 input은 숨김 */}
+        <input
+          type="file"
+          accept=".jpg,.jpeg,.png,.svg,.webp"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
+
+        {/* 버튼 */}
+        <button
+          className={`white-button ${loading ? "loading" : ""}`}
+          onClick={apifunc}
+        >
+          {loading ? "진단 중..." : "진단 요청"}
+        </button>
+      </div>
+
+      {/* 예시 이미지 안내 영역 */}
+      <div className="p-4 bg-[#ffdf8e] rounded-2xl w-full min-h-[40rem] flex flex-col justify-center items-center">
+        <div>꿀벌이 잘 보이도록 확대해서 찍어주세요. </div>
+        <div className="flex flex-col justify-center items-center w-full h-full gap-10">
+          <div className="w-2/3 h-40 relative">
+            <Image
+              src="/images/bee1.jpg"
+              alt="예시 꿀벌1"
+              priority
+              sizes="(max-width: 768px) 100vw, 66vw"
+              fill
+              className="object-cover rounded-lg border"
+            />
           </div>
-          <div className="flex justify-end items-end text-sm text-gray-600">
-            ※위의 예시 이미지를 참고해주세요.
+          <div className="w-2/3 h-40 relative">
+            <Image
+              src="/images/bee2.jpg"
+              alt="예시 꿀벌2"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              fill
+              className="object-cover rounded-lg border"
+            />
           </div>
+          <div className="w-2/3 h-40 relative">
+            <Image
+              src="/images/bee3.jpg"
+              alt="예시 꿀벌3"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              fill
+              className="object-cover rounded-lg border"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end items-end text-sm text-gray-600">
+          ※위의 예시 이미지를 참고해주세요.
         </div>
       </div>
-      {/* 버튼 */}
-      <button
-        className={`white-button text-base w-[10rem]  ml-auto ${
-          loading ? "loading" : ""
-        }`}
-        onClick={apifunc}
-      >
-        {loading ? "진단 중..." : "진단 요청"}
-      </button>
 
       {result && (
-        <div className="p-8 bg-[#ffebf6] rounded-lg w-full">
-          <div className="flex flex-col gap-7">
-            <header className="flex flex-col items-start justify-start">
-              <h1 className="text-lg font-semibold">병명 - {result.name}</h1>
-              <h2 className="text-sm">{result.description}</h2>
-              <h3 className="text-sm text-pink-500">
+        <div className="p-6 bg-[#FCE7F3] rounded-xl shadow-md space-y-4">
+          <div className="flex flex-col gap-5">
+            <h3 className="text-xl font-bold text-black">
+              {result.name}
+              <p className="text-sm text-pink-500">
                 정확도: {result.confidence}
-              </h3>
-            </header>
+              </p>
+            </h3>
+
+            <p className="text-pink-600">{result.description}</p>
 
             {Array.isArray(result.symptoms) && (
               <div className="flex flex-col">
-                <div className="font-semibold"> {result.name}의 주요 증상</div>
-                <ul className="list-disc text-base leading-relaxed px-4">
+                <strong>주요 증상</strong>
+                <ul className="list-inside text-sm text-gray-700">
                   {result.symptoms.map((s, idx) => (
                     <li key={idx}>{s}</li>
                   ))}
@@ -190,15 +188,15 @@ export default function AiDiagnosisUI({
 
             {result.cause && (
               <div>
-                <div className="font-semibold">전파 요인</div>
-                <div className=" text-sm ">{result.cause}</div>
+                <strong>전파 요인</strong>
+                <div>{result.cause}</div>
               </div>
             )}
 
             {result.severity && (
               <div>
-                <div className="font-semibold">심각도</div>
-                <div className=" text-sm ">{result.severity}</div>
+                <strong>심각도</strong>
+                <div>{result.severity}</div>
               </div>
             )}
           </div>

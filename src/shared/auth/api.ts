@@ -16,7 +16,7 @@ export async function signIn({ username, password }: SignInRequest) {
     const accessToken = authorization.split(" ")[1];
     safeLocalStorage.setItem("accessToken", accessToken);
   }
-
+  
   const { name } = response.data.data;
   const login = useUserStore.getState().login;
   login(username, name);
@@ -25,6 +25,7 @@ export async function signIn({ username, password }: SignInRequest) {
 }
 
 export async function signOut() {
+
   try {
     await api.post("/auth/sign-out");
   } catch (error) {
@@ -35,8 +36,11 @@ export async function signOut() {
       document.cookie = "refreshToken=; path=/; max-age=0;";
     }
     await useUserStore.getState().logout();
+
   }
-  return { success: true };
+  
+  await useUserStore.getState().logout();
+  return response.data;
 }
 
 export async function reissue() {
