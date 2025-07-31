@@ -11,6 +11,13 @@ export default function Home() {
     router.push(link);
   };
 
+  const handleStart = () => {
+  if (typeof window === "undefined") return;
+  const token = localStorage.getItem("accessToken");
+  router.push(token ? "/recommend" : "/signIn");
+};
+
+
   return (
     <div className="relative">
       {/* 랜딩 섹션 */}
@@ -26,7 +33,8 @@ export default function Home() {
               <p className="text-xl text-gray-100 mb-6 opacity-90">
                 수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다.
               </p>
-              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl shadow-yellow-400/30" onClick={() => router.push("/login")}>
+              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl shadow-yellow-400/30" onClick={handleStart}>
+
                 지금 시작하기
               </button>
             </section>

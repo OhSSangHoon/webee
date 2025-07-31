@@ -122,7 +122,7 @@ export default function PesticideTable() {
     <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] min-h-screen text-white px-6 py-10">
       <div className="max-w-6xl mx-auto space-y-10 pt-20">
         <h1 className="text-4xl font-extrabold text-center">
-          🐝 화분매개곤충 농약 적용 검색
+          🐝 내 작물에 맞는 농약 찾기
         </h1>
         <p className="text-center text-lg text-white/80">
           작물, 용도, 곤충을 선택하고 검색하면 농약 적용 정보를 확인할 수

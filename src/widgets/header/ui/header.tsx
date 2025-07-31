@@ -68,7 +68,7 @@ export default function Header() {
             </li>
             <li>
               <div onClick={() => router.push("/news")} className={`${getNavStyle()} font-medium transition-colors`}>
-                꿀벌 뉴스
+                수정벌 뉴스
               </div>
             </li>
             {userName && (
