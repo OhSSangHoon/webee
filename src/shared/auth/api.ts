@@ -16,7 +16,7 @@ export async function signIn({ username, password }: SignInRequest) {
     const accessToken = authorization.split(" ")[1];
     safeLocalStorage.setItem("accessToken", accessToken);
   }
-  
+
   const { name } = response.data.data;
   const login = useUserStore.getState().login;
   login(username, name);
@@ -30,6 +30,7 @@ export async function signOut() {
     await api.post("/auth/sign-out");
   } catch (error) {
     console.warn("sign-out 요청 실패했지만 클라이언트 상태는 정리합니다", error);
+
   } finally {
     safeLocalStorage.removeItem("accessToken");
     if (typeof window !== "undefined") {
@@ -38,9 +39,7 @@ export async function signOut() {
     await useUserStore.getState().logout();
 
   }
-  
-  await useUserStore.getState().logout();
-  return response.data;
+  return { success: true };
 }
 
 export async function reissue() {
