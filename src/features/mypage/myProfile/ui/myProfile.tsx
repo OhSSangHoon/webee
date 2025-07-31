@@ -1,10 +1,8 @@
 "use client";
 
 import { useProfile } from "../model/hooks";
-import { BusinessList } from "./myBusinessList";
-
-/**
- * 마이프로필 메인 컴포넌트
+import { BusinessList } from "./MyBusinessList";
+/* 마이프로필 메인 컴포넌트
  * 사용자 정보, 업체 정보, 농지 정보를 표시합니다.
  */
 export default function MyProfile() {
@@ -83,14 +81,14 @@ export default function MyProfile() {
       <div className="w-full flex flex-col gap-3 mt-auto">
         <div className="w-full h-px bg-gray-200"></div>
         <div className="flex flex-col gap-2">
-          <button 
-            onClick={() => window.location.href = '/products'}
+          <button
+            onClick={() => (window.location.href = "/products")}
             className="w-full bg-[#2B7FFF] text-white py-3 px-4 rounded-lg hover:bg-[#1E6FE6] transition-colors font-medium text-sm"
           >
             + 새 상품 등록하기
           </button>
-          <button 
-            onClick={() => window.location.href = '/myprofile'}
+          <button
+            onClick={() => (window.location.href = "/myprofile")}
             className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm"
           >
             업체 등록하기

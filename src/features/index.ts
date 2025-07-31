@@ -1,5 +1,5 @@
 /*마이프로필*/
-export { default as MyProfile } from "./mypage/myProfile/ui/myProfile";
+export { default as MyProfile } from "./mypage/myProfile/ui/MyProfile";
 
 /* 사업자정보등록  */
 export { default as BusinessProfile } from "./Register/businessProfile/ui/businessProfile";
