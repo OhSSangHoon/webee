@@ -31,7 +31,7 @@ export default function MyProfile() {
   }
 
   return (
-    <div className="custom-box h-full text-xs flex flex-col justify-between items-start p-4 gap-4">
+    <div className="custom-box h-full text-xs flex flex-col justify-between items-start p-4 gap-4 w-[30%]">
       {/* 상단 컨텐츠 */}
       <div className="flex flex-col gap-4 w-full">
         {/* 사용자 정보 헤더 */}
@@ -92,6 +92,12 @@ export default function MyProfile() {
             className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm"
           >
             업체 등록하기
+          </button>
+          <button
+            onClick={() => (window.location.href = "/cropInfo")}
+            className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+          >
+            작물정보 등록하기
           </button>
         </div>
       </div>

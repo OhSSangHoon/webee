@@ -41,12 +41,14 @@ export default function BusinessProfileForm() {
       alert("등록 완료되었습니다!");
     } catch (error) {
       console.error(error);
-      
+
       // 502 에러 (사업자등록정보 진위 확인 실패) 처리
-      if (error && typeof error === 'object' && 'response' in error) {
+      if (error && typeof error === "object" && "response" in error) {
         const axiosError = error as { response?: { status?: number } };
         if (axiosError.response?.status === 502) {
-          alert("사업자등록정보 진위 확인에 실패했습니다.\n사업자번호, 대표자명, 개업일을 다시 확인해주세요.");
+          alert(
+            "사업자등록정보 진위 확인에 실패했습니다.\n사업자번호, 대표자명, 개업일을 다시 확인해주세요."
+          );
         } else if (axiosError.response?.status === 400) {
           alert("잘못된 요청 형식입니다. 입력 정보를 확인해주세요.");
         } else {
@@ -61,7 +63,7 @@ export default function BusinessProfileForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 w-full max-w-[1000px] text-black flex flex-col justify-center rounded-2xl items-start custom-box-shadow text-[14px] "
+      className="space-y-6 w-full max-w-[1000px] text-black flex flex-col justify-center rounded-2xl items-start shadow-lg text-[14px] "
     >
       <div className="bg-[#EEF2FF] w-full h-[60px] px-4 py-3 rounded-t-2xl">
         <div className="font-semibold text-[16px]">사업자 프로필 등록</div>

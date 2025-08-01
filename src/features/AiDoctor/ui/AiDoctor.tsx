@@ -83,6 +83,10 @@ export default function AiDoctorUi({
         <div className="flex flex-col">
           <label htmlFor="disease" className="text-[#4B5563] font-medium mb-1">
             질병 선택 <span className="text-red-500 ">*</span>
+            <span className="text-gray-400 text-sm">
+              {" "}
+              (사진 진단 후 이용할 수 있습니다.)
+            </span>
           </label>
           <select
             id="disease"
@@ -95,9 +99,11 @@ export default function AiDoctorUi({
             <option value="" disabled hidden className="text-[#d1d1d1]">
               질병 선택
             </option>
+
             <option value="성충 날개불구바이러스감염증">
               성충 날개불구바이러스감염증
             </option>
+            <option value="유층 응애">유충 응애</option>
             <option value="성충 응애">성충 응애</option>
             <option value="유충 부저병">유충 부저병</option>
             <option value="유충 석고병">유충 석고병</option>

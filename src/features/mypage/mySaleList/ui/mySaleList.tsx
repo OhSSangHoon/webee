@@ -1,29 +1,23 @@
-'use client';
+"use client";
 
-import React, { useCallback } from 'react';
-import { useMySaleList } from '../model/model';
-import { ProductCard } from './productCards';
-import { NavigationButton } from './navButton';
+import React, { useCallback } from "react";
+import { useMySaleList } from "../model/model";
+import { ProductCard } from "./productCards";
+import { NavigationButton } from "./navButton";
 
 export default function MySaleList() {
-  const {
-    myProducts,
-    visibleProducts,
-    slideInfo,
-    isLoading,
-    error,
-    actions
-  } = useMySaleList();
+  const { myProducts, visibleProducts, slideInfo, isLoading, error, actions } =
+    useMySaleList();
 
   // 가격 포맷팅 함수
   const formatPrice = useCallback((price: number) => {
-    return new Intl.NumberFormat('ko-KR').format(price) + '원';
+    return new Intl.NumberFormat("ko-KR").format(price) + "원";
   }, []);
 
   // 로딩 상태
   if (isLoading) {
     return (
-      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center pb-10">
+      <div className="custom-box2 shadow-lg w-full h-full flex flex-col justify-center items-center pb-10">
         <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
         <div className="flex items-center justify-center flex-1">
           <div className="flex items-center gap-2">
@@ -38,12 +32,12 @@ export default function MySaleList() {
   // 에러 상태
   if (error) {
     return (
-      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center pb-10">
+      <div className="custom-box2 shadow-lg w-full h-full flex flex-col justify-center items-center pb-10">
         <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
         <div className="flex items-center justify-center flex-1">
           <div className="text-center">
             <div className="text-red-500 mb-3">{error}</div>
-            <button 
+            <button
               onClick={actions.retry}
               className="text-blue-500 hover:underline text-sm bg-blue-50 px-3 py-1 rounded transition-colors"
             >
@@ -58,7 +52,7 @@ export default function MySaleList() {
   // 상품이 없는 경우
   if (!isLoading && myProducts.length === 0) {
     return (
-      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center">
+      <div className="custom-box2 w-full h-full flex flex-col justify-center shadow-lg items-center">
         <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
         <div className="flex items-center justify-center flex-1">
           <div className="text-center">
@@ -71,10 +65,8 @@ export default function MySaleList() {
   }
 
   return (
-    <div className="custom-box2 flex flex-col">
-      <div className="custom-box2-title mb-4">
-         🛒 내가 등록한 상품 목록
-      </div>
+    <div className="custom-box2 shadow-lg flex flex-col w-[70%] overflow-auto">
+      <div className="custom-box2-title mb-4">🛒 내가 등록한 상품 목록</div>
 
       {/* 슬라이드 컨테이너 */}
       <div className="relative w-full px-10 py-4">
@@ -91,17 +83,17 @@ export default function MySaleList() {
         </div>
 
         {/* 좌우 네비게이션 버튼 */}
-        {myProducts.length > 4 && (
+        {myProducts.length > 2 && (
           <>
-            <NavigationButton 
-              direction="prev" 
-              onClick={actions.goPrev} 
-              disabled={!slideInfo.canGoPrev} 
+            <NavigationButton
+              direction="prev"
+              onClick={actions.goPrev}
+              disabled={!slideInfo.canGoPrev}
             />
-            <NavigationButton 
-              direction="next" 
-              onClick={actions.goNext} 
-              disabled={!slideInfo.canGoNext} 
+            <NavigationButton
+              direction="next"
+              onClick={actions.goNext}
+              disabled={!slideInfo.canGoNext}
             />
           </>
         )}

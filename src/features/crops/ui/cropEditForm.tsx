@@ -15,63 +15,65 @@ export default function CropEditForm({
   error,
 }: Props) {
   return (
-    <div>
-      <label className="block mb-1 font-medium">
+    <div className="font-medium">
+      <label className="block mb-1  ">
         이름 <span className="text-red-500">*</span>
       </label>
       <input
         type="text"
         value={formData.name || ""}
         onChange={(e) => onChange({ ...formData, name: e.target.value })}
-        className="border w-full p-2 mb-2"
+        className="crop-input-box"
       />
 
-      <label className="block mb-1 font-medium">품종</label>
+      <label className="block mb-1 ">품종</label>
       <input
         type="text"
         value={formData.variety || ""}
         onChange={(e) => onChange({ ...formData, variety: e.target.value })}
-        className="border w-full p-2 mb-2"
+        className="crop-input-box"
       />
 
-      <label className="block mb-1 font-medium">재배 방식</label>
-      <input
-        type="text"
+      <label className="block mb-1 ">재배 방식</label>
+      <select
+        className="crop-input-box"
         value={formData.cultivationType || ""}
         onChange={(e) =>
           onChange({ ...formData, cultivationType: e.target.value })
         }
-        className="border w-full p-2 mb-2"
-      />
+      >
+        <option value="OPEN_FIELD">노지</option>
+        <option value="CONTROLLED">시설재배</option>
+      </select>
 
-      <label className="block mb-1 font-medium">재배지 주소</label>
+      <label className="block mb-1 ">재배지 주소</label>
       <input
         type="text"
         value={formData.cultivationAddress || ""}
         onChange={(e) =>
           onChange({ ...formData, cultivationAddress: e.target.value })
         }
-        className="border w-full p-2 mb-2"
+        className="crop-input-box"
       />
 
-      <label className="block mb-1 font-medium">재배 면적 (㎡)</label>
+      <label className="block mb-1 ">재배 면적 (㎡)</label>
       <input
         type="number"
         value={formData.cultivationArea || ""}
         onChange={(e) =>
           onChange({ ...formData, cultivationArea: Number(e.target.value) })
         }
-        className="border w-full p-2 mb-2"
+        className="crop-input-box"
       />
 
-      <label className="block mb-1 font-medium">파종 날짜</label>
+      <label className="block mb-1 ">파종 날짜</label>
       <input
         type="date"
         value={formData.plantingDate || ""}
         onChange={(e) =>
           onChange({ ...formData, plantingDate: e.target.value })
         }
-        className="border w-full p-2 mb-2"
+        className="crop-input-box"
       />
 
       <button

@@ -1,6 +1,6 @@
 export enum CultivationMethod {
   OPEN_FIELD = "노지",
-  GREENHOUSE = "비닐하우스",
+  CONTROLLED = "비닐하우스",
 }
 
 export enum CultivationType {
@@ -22,7 +22,7 @@ export const getCultivationType = (
   method: CultivationMethod
 ): CultivationType => {
   switch (method) {
-    case CultivationMethod.GREENHOUSE:
+    case CultivationMethod.CONTROLLED:
       return CultivationType.CONTROLLED;
     case CultivationMethod.OPEN_FIELD:
     default:

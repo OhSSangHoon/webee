@@ -137,11 +137,11 @@ export default function DiagnosisHistory() {
         </div>
       )}
 
-      <div className="flex flex-col max-h-150 overflow-scroll">
+      <div className="flex flex-col-reverse max-h-150 overflow-scroll">
         {diagnosisList.map((item) => (
           <div
             key={item.beeDiagnosisId}
-            className="flex flex-row justify-start items-start gap-10 hover:bg-blue-50 px-10 py-5 "
+            className="flex flex-row justify-start items-start gap-10 hover:bg-blue-50 px-10 py-5 hover:shadow-md transition-all duration-300 group "
             onClick={() => openDetailModal(item.beeDiagnosisId)}
           >
             <div className="relative w-22 h-22 min-w-[88px] min-h-[88px]">
@@ -149,7 +149,7 @@ export default function DiagnosisHistory() {
                 src={item.imageUrl}
                 alt={item.diseaseType}
                 fill
-                className="object-cover rounded-md"
+                className="object-cover rounded-md hover:scale-105"
               />
             </div>
 

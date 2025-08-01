@@ -1,6 +1,6 @@
-// features/crops/components/CropModal.tsx
 import { Crop } from "@/shared/types/crop";
 import CropEditForm from "./cropEditForm";
+import { getCultivationTypeKorean } from "@/shared/utils/cultivationUtils";
 
 type Props = {
   crop: Crop;
@@ -19,7 +19,6 @@ export default function CropModal({
   crop,
   formData,
   isEditing,
-  onClose,
   onEdit,
   onDelete,
   onSelect,
@@ -28,49 +27,45 @@ export default function CropModal({
   error,
 }: Props) {
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md relative">
-        <button onClick={onClose} className="absolute top-2 right-3">
-          ✕
-        </button>
-        {isEditing ? (
-          <CropEditForm
-            formData={formData}
-            onChange={onChange}
-            onSave={onSave}
-            error={error}
-          />
-        ) : (
-          <>
-            <h2 className="text-xl font-semibold mb-2">{crop.name}</h2>
-            <p>품종: {crop.variety}</p>
-            <p>유형: {crop.cultivationType}</p>
-            <p>면적: {crop.cultivationArea} ㎡</p>
-            <p>주소: {crop.cultivationAddress}</p>
-            <p>식재일: {crop.plantingDate}</p>
-            <div className="flex gap-2 mt-4">
-              <button
-                onClick={onEdit}
-                className="bg-yellow-400 px-4 py-2 rounded"
-              >
-                수정
-              </button>
-              <button
-                onClick={onDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                삭제
-              </button>
-              <button
-                onClick={onSelect}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                선택하기
-              </button>
-            </div>
-          </>
-        )}
-      </div>
+    <div className="border-[#ececec] border-2 rounded px-4 py-2 mt-3">
+      {isEditing ? (
+        <CropEditForm
+          formData={formData}
+          onChange={onChange}
+          onSave={onSave}
+          error={error}
+        />
+      ) : (
+        <>
+          <h2 className="text-base font-medium mb-2">
+            {crop.name} ({crop.variety})
+          </h2>
+          <p>유형 - {getCultivationTypeKorean(crop.cultivationType ?? "")}</p>
+          <p>면적 - {crop.cultivationArea} ㎡</p>
+          <p>주소 - {crop.cultivationAddress}</p>
+          <p>식재일 - {crop.plantingDate}</p>
+          <div className="flex gap-2 mt-4">
+            <button
+              onClick={onEdit}
+              className="cursor-pointer border border-[#ececec] rounded px-4 hover:shadow-md transition"
+            >
+              수정
+            </button>
+            <button
+              onClick={onDelete}
+              className="cursor-pointer border border-[#ececec] rounded px-4 hover:shadow-md transition"
+            >
+              삭제
+            </button>
+            <button
+              onClick={onSelect}
+              className=" border border-blue-500 text-blue-500 px-4 py-2 rounded hover:shadow-md transition"
+            >
+              선택하기
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
