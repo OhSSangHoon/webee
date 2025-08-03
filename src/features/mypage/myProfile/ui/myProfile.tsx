@@ -48,7 +48,7 @@ export default function MyProfile() {
         </div>
 
         {/* 컨텐츠 영역 */}
-        <div className="flex flex-col justify-start items-center gap-5 w-full">
+        <div className="flex flex-col justify-start items-center gap-1 w-full">
           {/* 나의 업체 정보 */}
           <div className="flex flex-col gap-2 w-full">
             <div>나의 업체 정보</div>

@@ -127,7 +127,6 @@ body {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-
 /*
 * 프로필 수정 페이지용 섹션 박스*/
 .custom-box2 {
@@ -138,6 +137,10 @@ body {
   @apply w-full bg-[#EEF2FF] h-[60px] rounded-t-xl font-semibold text-[16px] flex items-center p-5;
 }
 
+.custom-box2-icon {
+  @apply bg-white rounded-lg p-1 mr-3;
+}
+
 .custom-box2-title2 {
   @apply w-full bg-[#FCE7F3]
  h-[60px] rounded-t-xl font-semibold  text-[16px] flex items-center p-5;
@@ -146,6 +149,10 @@ body {
 .custom-outline-button {
   /*마이페이지 확인 버튼*/
   @apply w-fit px-4 py-2 text-[#2B7FFF] border border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
+}
+
+.hover_start_button:hover {
+  @apply bg-gradient-to-r from-yellow-400 to-orange-500 shadow-2xl translate-y-1 shadow-yellow-400/30 transition-all duration-300 ease-in-out;
 }
 
 .text-grey-tag {
@@ -289,4 +296,96 @@ body {
 
 .fade-in-up {
   animation: fadeInUp 0.3s ease-out;
+}
+
+/* 공통 벌 스타일 */
+.bee {
+  position: absolute;
+  font-size: 2.5rem;
+  transition: transform 0.2s ease;
+  will-change: transform;
+}
+
+/* 벌 1 경로 */
+@keyframes fly-path-1 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(1000px, -20px) rotate(25deg);
+  }
+  50% {
+    transform: translate(-50px, 15px) rotate(-15deg);
+  }
+  75% {
+    transform: translate(20px, -10px) rotate(10deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* 벌 2 경로 */
+@keyframes fly-path-2 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(150px, -10px) rotate(20deg);
+  }
+  50% {
+    transform: translate(250px, 20px) rotate(-30deg);
+  }
+
+  80% {
+    transform: translate(100px, 10px) rotate(20deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-10deg);
+  }
+}
+
+/* 벌 3 경로 */
+@keyframes fly-path-3 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(40px, -25px) rotate(20deg);
+  }
+  50% {
+    transform: translate(-70px, 20px) rotate(-20deg);
+  }
+  70% {
+    transform: translate(30px, -25px) rotate(15deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* 공통 투명도 펄스 */
+@keyframes pulse-opacity {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.fly-1 {
+  animation: fly-path-1 12s ease-in-out infinite 0s,
+    pulse-opacity 6s ease-in-out infinite 0s;
+}
+
+.fly-2 {
+  animation: fly-path-2 10s ease-in-out infinite 2s,
+    pulse-opacity 2s ease-in-out infinite 1s;
+}
+
+.fly-3 {
+  animation: fly-path-3 16s ease-in-out infinite 1s,
+    pulse-opacity 7s ease-in-out infinite 0.5s;
 }

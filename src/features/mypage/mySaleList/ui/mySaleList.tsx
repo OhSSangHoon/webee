@@ -66,12 +66,14 @@ export default function MySaleList() {
 
   return (
     <div className="custom-box2 shadow-lg flex flex-col w-[70%] overflow-auto">
-      <div className="custom-box2-title mb-4">🛒 내가 등록한 상품 목록</div>
+      <div className="custom-box2-title mb-4">
+        <span className="custom-box2-icon">🛒</span>내가 등록한 상품 목록
+      </div>
 
       {/* 슬라이드 컨테이너 */}
       <div className="relative w-full px-10 py-4">
         {/* 상품 슬라이드 */}
-        <div className="flex flex-row justify-between items-center w-full gap-2">
+        <div className="flex flex-row justify-between items-center w-full h-full gap-2">
           {visibleProducts.map((product, index) => (
             <ProductCard
               key={product.id}

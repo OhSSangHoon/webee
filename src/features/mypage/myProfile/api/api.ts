@@ -10,7 +10,9 @@ export const profileApi = {
    */
   getCropAddresses: async (): Promise<string[]> => {
     try {
-      const response = await api.get<CropAddressResponse>("/profile/crops/addresses");
+      const response = await api.get<CropAddressResponse>(
+        "/profile/crops/addresses"
+      );
       return response.data.data.address;
     } catch (error) {
       console.error("재배지 목록 조회 오류:", error);

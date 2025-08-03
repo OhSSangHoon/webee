@@ -174,19 +174,15 @@ export default function CropInfo() {
         </section>
         {/* 등록 버튼 */}
 
-        <div className="flex flex-row justify-end items-center gap-2 ">
-          <div className="w-[12rem]">
-            <Crops onSelect={handleCropSelect} />
-          </div>
-
+        <div className="flex flex-col justify-end items-end my-5 ">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-15 py-2 rounded my-5 "
+            className="bg-blue-500 text-white px-15 py-2 rounded "
             disabled={loading}
           >
             {loading ? "등록 중..." : "재배 작물 추가"}
           </button>
-          {error && <div className="text-red-500 text-sm pb-5">{error}</div>}
+          {error && <div className="text-red-500 text-sm ">{error}</div>}
         </div>
       </div>
     </form>
