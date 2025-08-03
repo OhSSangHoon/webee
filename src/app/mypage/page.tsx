@@ -7,11 +7,9 @@ import {
 
 export default function MyPage() {
   return (
-    <div className="lg:w-[65%] flex flex-col gap-8 mx-auto pt-30 pb-10">
-      <div className="flex flex-row gap-6 w-full">
-        <MySaleList />
-        <MyProfile />
-      </div>
+    <div className="w-[90%] xl:w-[65%] flex flex-col gap-8 mx-auto pt-30 pb-10">
+      <MyProfile />
+      <MySaleList />
       <StoreRecommendBee />
       <DiagnosisHistory />
     </div>

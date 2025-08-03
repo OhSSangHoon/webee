@@ -17,7 +17,7 @@ export default function MySaleList() {
   // 로딩 상태
   if (isLoading) {
     return (
-      <div className="custom-box2 shadow-lg w-full h-full flex flex-col justify-center items-center pb-10">
+      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center pb-10">
         <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
         <div className="flex items-center justify-center flex-1">
           <div className="flex items-center gap-2">
@@ -32,7 +32,7 @@ export default function MySaleList() {
   // 에러 상태
   if (error) {
     return (
-      <div className="custom-box2 shadow-lg w-full h-full flex flex-col justify-center items-center pb-10">
+      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center pb-10">
         <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
         <div className="flex items-center justify-center flex-1">
           <div className="text-center">
@@ -52,7 +52,7 @@ export default function MySaleList() {
   // 상품이 없는 경우
   if (!isLoading && myProducts.length === 0) {
     return (
-      <div className="custom-box2 w-full h-full flex flex-col justify-center shadow-lg items-center">
+      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center">
         <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
         <div className="flex items-center justify-center flex-1">
           <div className="text-center">
@@ -65,15 +65,15 @@ export default function MySaleList() {
   }
 
   return (
-    <div className="custom-box2 shadow-lg flex flex-col w-[70%] overflow-auto">
+    <div className="custom-box2 flex flex-col">
       <div className="custom-box2-title mb-4">
-        <span className="custom-box2-icon">🛒</span>내가 등록한 상품 목록
+        <span className="custom-box2-icon">🛒</span> 내가 등록한 상품 목록
       </div>
 
       {/* 슬라이드 컨테이너 */}
       <div className="relative w-full px-10 py-4">
         {/* 상품 슬라이드 */}
-        <div className="flex flex-row justify-between items-center w-full h-full gap-2">
+        <div className="flex flex-row justify-between items-center w-full gap-2">
           {visibleProducts.map((product, index) => (
             <ProductCard
               key={product.id}
@@ -85,7 +85,7 @@ export default function MySaleList() {
         </div>
 
         {/* 좌우 네비게이션 버튼 */}
-        {myProducts.length > 2 && (
+        {myProducts.length > 4 && (
           <>
             <NavigationButton
               direction="prev"

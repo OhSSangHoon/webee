@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useBusinessStore } from "@/shared/business/model";
-import { BusinessDetailPopup } from "./myBusinessDetailpopup"
+import { BusinessDetailPopup } from "./myBusinessDetailpopup";
 import { useState } from "react";
 
 export function BusinessList() {

@@ -31,74 +31,78 @@ export default function MyProfile() {
   }
 
   return (
-    <div className="custom-box h-full text-xs flex flex-col justify-between items-start p-4 gap-4 w-[30%]">
-      {/* 상단 컨텐츠 */}
-      <div className="flex flex-col gap-4 w-full">
-        {/* 사용자 정보 헤더 */}
-        <div className="w-full flex flex-row justify-between items-center">
-          <div>
-            <span className="font-bold text-xl">{realName || "사용자"}</span>님
-            반갑습니다
-          </div>
-          <div>
-            <a href="" className="underline hover:text-black">
-              프로필 수정
-            </a>
-          </div>
+    <div className="custom-box text-xs">
+      {/* 사용자 정보 헤더 */}
+      <div className="flex flex-row justify-between items-center ">
+        <div>
+          <span className="font-bold text-xl">{realName || "사용자"}</span>님
+          반갑습니다
         </div>
+        <div>
+          <a href="" className="underline hover:text-black">
+            프로필 수정
+          </a>
+        </div>
+      </div>{" "}
+      <div className="w-full h-px bg-gray-200"></div>
+      <div className=" flex flex-row justify-between items-start p-2 gap-4 ">
+        {/* 상단 컨텐츠 */}
 
-        {/* 컨텐츠 영역 */}
-        <div className="flex flex-col justify-start items-center gap-1 w-full">
-          {/* 나의 업체 정보 */}
-          <div className="flex flex-col gap-2 w-full">
-            <div>나의 업체 정보</div>
-            <div className="flex flex-row gap-1 overflow-x-auto scrollbar-hide hover:scrollbar-show group">
-              <BusinessList />
+        <div className="flex flex-col gap-4 w-[70%]">
+          {/* 컨텐츠 영역 */}
+          <div className="flex flex-col justify-start items-start gap-1 ">
+            {/* 나의 업체 정보 */}
+            <div className="flex flex-col gap-2 w-full pr-4">
+              <div>나의 업체 정보</div>
+              <div className="flex flex-row gap-1 overflow-x-auto scrollbar-hide hover:scrollbar-show group">
+                <BusinessList />
+              </div>
             </div>
-          </div>
 
-          {/* 나의 농지 정보 - 동적 데이터 */}
-          <div className="flex flex-col gap-2 w-full">
-            <div>나의 농지 정보</div>
-            <div className="flex flex-row gap-1 overflow-x-auto scrollbar-thin">
-              {cropAddresses.length > 0 ? (
-                cropAddresses.map((address, index) => (
-                  <div key={index} className="custom-button whitespace-nowrap">
-                    {address}
+            {/* 나의 농지 정보 - 동적 데이터 */}
+            <div className="flex flex-col gap-2 w-full">
+              <div>나의 농지 정보</div>
+              <div className="flex flex-row gap-1 overflow-x-auto scrollbar-thin">
+                {cropAddresses.length > 0 ? (
+                  cropAddresses.map((address, index) => (
+                    <div
+                      key={index}
+                      className="custom-button whitespace-nowrap"
+                    >
+                      {address}
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-gray-500 text-sm py-2">
+                    등록된 농지 정보가 없습니다.
                   </div>
-                ))
-              ) : (
-                <div className="text-gray-500 text-sm py-2">
-                  등록된 농지 정보가 없습니다.
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* 하단 액션 버튼 영역 */}
-      <div className="w-full flex flex-col gap-3 mt-auto">
-        <div className="w-full h-px bg-gray-200"></div>
-        <div className="flex flex-col gap-2">
-          <button
-            onClick={() => (window.location.href = "/products")}
-            className="w-full bg-[#2B7FFF] text-white py-3 px-4 rounded-lg hover:bg-[#1E6FE6] transition-colors font-medium text-sm"
-          >
-            + 새 상품 등록하기
-          </button>
-          <button
-            onClick={() => (window.location.href = "/myprofile")}
-            className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm"
-          >
-            업체 등록하기
-          </button>
-          <button
-            onClick={() => (window.location.href = "/cropInfo")}
-            className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm"
-          >
-            작물정보 등록하기
-          </button>
+        <div className="w-full flex flex-col gap-3 mt-auto">
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => (window.location.href = "/products")}
+              className="w-full bg-[#2B7FFF] text-white py-3 px-4 rounded-lg hover:bg-[#1E6FE6] transition-colors font-medium text-sm"
+            >
+              + 새 상품 등록하기
+            </button>
+            <button
+              onClick={() => (window.location.href = "/myprofile")}
+              className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+            >
+              업체 등록하기
+            </button>
+            <button
+              onClick={() => (window.location.href = "/cropInfo")}
+              className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+            >
+              작물정보 등록하기
+            </button>
+          </div>
         </div>
       </div>
     </div>

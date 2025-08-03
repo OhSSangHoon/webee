@@ -32,9 +32,9 @@ export const ProductCard = memo<ProductCardProps>(
     }, []);
 
     return (
-      <div className="w-[235px] h-[90%] rounded-md border border-gray-300 flex flex-col hover:shadow-md transition-all duration-300 group">
+      <div className="w-[215px] h-[180px] rounded-md border border-gray-300 flex flex-col hover:shadow-md transition-all duration-300 group">
         {/* 상품 이미지 */}
-        <div className="h-2/3 rounded-t-md overflow-hidden relative">
+        <div className="h-1/2 rounded-t-md overflow-hidden relative">
           {product.imageUrls && product.imageUrls.length > 0 && !imageError ? (
             <>
               {/* 로딩 스켈레톤 */}
