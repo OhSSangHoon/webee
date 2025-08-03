@@ -88,7 +88,7 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   return (
     <div className="custom-box2 rounded bg-white shadow-lg ">
       <header className="custom-box2-title w-full text-base font-medium">
-        수정벌 추천 리스트
+        <span className="custom-box2-icon">🐝</span> 저장된 수정벌 추천 리스트
       </header>
       <div className="px-10 py-4">
         <ul className="flex flex-row overflow-x-auto p-4 gap-4">
@@ -97,7 +97,7 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
               key={item.beeRecommendationId}
               className="min-w-[280px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between items-start hover:scale-105 transform cursor-pointer"
               onClick={(e) => {
-                e.stopPropagation(); // 부모 클릭 방지
+                e.stopPropagation();
                 onSelect(item.beeRecommendationId);
                 setOpenModal(true);
               }}
@@ -123,6 +123,8 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
                   {formatDate(item.inputEndDate)}
                 </span>
               </div>
+              <div>저장일자: {item.createdAt}</div>
+              {/* 재배지 정보 */}
               <div className="flex flex-wrap gap-2 mt-2">
                 <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">
                   {getCultivationTypeKorean(item.cultivationType)}

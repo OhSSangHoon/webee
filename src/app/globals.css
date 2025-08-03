@@ -137,6 +137,10 @@ body {
   @apply w-full bg-[#EEF2FF] h-[60px] rounded-t-xl font-semibold text-[16px] flex items-center p-5;
 }
 
+.custom-box2-icon {
+  @apply bg-white rounded-lg p-1 mr-3;
+}
+
 .custom-box2-title2 {
   @apply w-full bg-[#FCE7F3]
  h-[60px] rounded-t-xl font-semibold  text-[16px] flex items-center p-5;
@@ -293,7 +297,6 @@ body {
 .fade-in-up {
   animation: fadeInUp 0.3s ease-out;
 }
-
 
 /* 공통 벌 스타일 */
 .bee {

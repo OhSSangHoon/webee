@@ -65,7 +65,10 @@ export default function DiagnosisHistory() {
 
   return (
     <div className="custom-box2">
-      <div className="custom-box2-title">질병 진단 결과 히스토리</div>
+      <div className="custom-box2-title">
+        {" "}
+        <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+      </div>
       {detailModal && detailContent && (
         <div
           className="fixed inset-0 bg-black/70 flex justify-center items-center z-50  "
