@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useCropInfo } from "../model/useCropInfo";
 import { CultivationMethod, CropFormData } from "@/shared/types/crop";
-import Crops from "@/features/crops/ui/cropsUI";
 import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {
@@ -16,17 +15,6 @@ export default function CropInfo() {
     area: "",
     plantingDate: "",
   });
-
-  const handleCropSelect = (crop: Crop) => {
-    setForm({
-      crop: crop.name,
-      variety: crop.variety || "",
-      method: "" as CultivationMethod,
-      location: crop.cultivationAddress || "",
-      area: crop.cultivationArea?.toString() || "",
-      plantingDate: crop.plantingDate || "",
-    });
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
