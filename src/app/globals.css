@@ -133,10 +133,12 @@ body {
   @apply bg-white border rounded-xl border-gray-200 text-[#333333] text-[14px];
 }
 
+/*타이틀*/
 .custom-box2-title {
   @apply w-full bg-[#EEF2FF] h-[60px] rounded-t-xl font-semibold text-[16px] flex items-center p-5;
 }
 
+/*타이틀 앞쪽 아이콘*/
 .custom-box2-icon {
   @apply bg-white rounded-lg p-1 mr-3;
 }
@@ -146,8 +148,8 @@ body {
  h-[60px] rounded-t-xl font-semibold  text-[16px] flex items-center p-5;
 }
 
+/*마이페이지 확인 버튼*/
 .custom-outline-button {
-  /*마이페이지 확인 버튼*/
   @apply w-fit px-4 py-2 text-[#2B7FFF] border border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
 }
 

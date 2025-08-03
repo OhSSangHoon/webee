@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { useCropInfo } from "../model/useCropInfo";
 import { CultivationMethod, CropFormData } from "@/shared/types/crop";
-import Crops from "@/features/crops/ui/cropsUI";
-import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {
   const { submitCropInfo, loading, error } = useCropInfo();
@@ -16,17 +14,6 @@ export default function CropInfo() {
     area: "",
     plantingDate: "",
   });
-
-  const handleCropSelect = (crop: Crop) => {
-    setForm({
-      crop: crop.name,
-      variety: crop.variety || "",
-      method: "" as CultivationMethod,
-      location: crop.cultivationAddress || "",
-      area: crop.cultivationArea?.toString() || "",
-      plantingDate: crop.plantingDate || "",
-    });
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -88,7 +75,7 @@ export default function CropInfo() {
                 value={form.crop}
                 onChange={handleChange}
                 className="custom-Input"
-                placeholder="예: 딸기, 블루베리 등"
+                placeholder="딸기, 블루베리 등"
                 required
               />
             </div>
@@ -102,7 +89,7 @@ export default function CropInfo() {
                 value={form.variety}
                 onChange={handleChange}
                 className="custom-Input"
-                placeholder="예: 설향, 한라봉 등"
+                placeholder="설향, 거봉 등"
               />
             </div>
 
@@ -135,7 +122,7 @@ export default function CropInfo() {
                 value={form.location}
                 onChange={handleChange}
                 className="custom-Input"
-                placeholder="예: 경상북도 경산시"
+                placeholder="경상북도 경산시 (정확한 주소를 입력해 주세요)"
                 required
               />
             </div>
