@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import api from "@/shared/auth/lib";
+import Image from "next/image";
 
 interface QuestionResponse {
   input: string;
@@ -70,17 +71,23 @@ export default function ChatbotLauncher() {
   return (
     <>
       {/* 챗봇 열기 버튼 */}
+
       <button
+        aria-label="챗봇 열기"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 bg-violet-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-violet-700 z-50"
+        className="fixed bottom-6 right-6 rounded-full  z-50 hover:scale-110 transition-transform duration-100"
       >
-        챗봇 열기
+        <Image src="/chatbot.svg" alt="챗봇 열기" width={120} height={80} />
       </button>
 
       {/* 챗봇 모달 */}
       {open && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-md rounded-2xl shadow-lg overflow-hidden fade-in-up relative ">
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+          onClick={() => setOpen(false)}
+        >
+          <div className="bg-white w-full max-w-md rounded-2xl shadow-lg overflow-hidden fade-in-up relative"
+           onClick={(e) => e.stopPropagation()}>
             {/* 상단 헤더 */}
             <div className="bg-gray-100 p-4 text-center font-bold text-lg relative shadow-xl">
               챗봇

@@ -12,14 +12,26 @@ export default function Home() {
   };
 
   const handleStart = () => {
-  if (typeof window === "undefined") return;
-  const token = localStorage.getItem("accessToken");
-  router.push(token ? "/recommend" : "/signIn");
-};
-
+    if (typeof window === "undefined") return;
+    const token = localStorage.getItem("accessToken");
+    router.push(token ? "/recommend" : "/signIn");
+  };
 
   return (
     <div className="relative">
+      {/* 떠다니는 벌 효과 */}
+      <div className="fixed inset-0 z-9 pointer-events-none">
+        <div className="bee fly-1" style={{ top: "10%", right: "20%" }}>
+          🐝
+        </div>
+        <div className="bee fly-2" style={{ top: "40%", left: "20%" }}>
+          🐝
+        </div>
+        <div className="bee fly-3" style={{ top: "30%", right: "30%" }}>
+          🐝
+        </div>
+      </div>
+
       {/* 랜딩 섹션 */}
       <section className="relative h-full bg-gradient-to-br from-[#667eea] to-[#764ba2] overflow-hidden pt-30">
         <main className="relative z-10 pb-20">
@@ -33,8 +45,10 @@ export default function Home() {
               <p className="text-xl text-gray-100 mb-6 opacity-90">
                 수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다.
               </p>
-              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl shadow-yellow-400/30" onClick={handleStart}>
-
+              <button
+                className="bg-yellow-400  text-gray-800 px-10 py-5 rounded-full text-lg font-bold hover_start_button "
+                onClick={handleStart}
+              >
                 지금 시작하기
               </button>
             </section>
@@ -42,7 +56,11 @@ export default function Home() {
             <section className="max-w-6xl mx-auto relative">
               <Weather2 />
               <h2 className="text-white/50 absolute text-sm mt-1 px-1 text-center">
-              날씨 정보를 보려면 <span className="underline underline-offset-4">내 위치 확인</span>을 허용해 주세요.
+                날씨 정보를 보려면{" "}
+                <span className="underline underline-offset-4">
+                  내 위치 확인
+                </span>
+                을 허용해 주세요.
               </h2>
             </section>
           </div>
