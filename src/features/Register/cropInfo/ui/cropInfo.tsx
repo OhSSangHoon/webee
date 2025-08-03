@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useCropInfo } from "../model/useCropInfo";
 import { CultivationMethod, CropFormData } from "@/shared/types/crop";
-import { Crop } from "@/shared/types/crop";
 
 export default function CropInfo() {
   const { submitCropInfo, loading, error } = useCropInfo();
