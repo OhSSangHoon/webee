@@ -153,8 +153,12 @@ body {
   @apply w-fit px-4 py-2 text-[#2B7FFF] border border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
 }
 
+.hover_start_button {
+  @apply transition-all duration-300 ease-in-out;
+}
+
 .hover_start_button:hover {
-  @apply bg-gradient-to-r from-yellow-400 to-orange-500 shadow-2xl translate-y-1 shadow-yellow-400/30 transition-all duration-300 ease-in-out;
+  @apply bg-gradient-to-r from-yellow-400 to-orange-500 shadow-2xl translate-y-1 shadow-yellow-400/30;
 }
 
 .text-grey-tag {
