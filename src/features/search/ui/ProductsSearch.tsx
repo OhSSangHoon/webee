@@ -27,9 +27,9 @@ interface BusinessInfo {
 
 // 로딩 컴포넌트
 const MapLoadingComponent = () => (
-  <div className="w-full h-full absolute inset-0 bg-gray-100">
+  <div className="w-full h-full absolute inset-0 bg-gray-100" style={{ height: 'calc(100vh - 80px)' }}>
     <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
-      <div className="text-center">
+      <div className="text-center" style={{ minHeight: '60px' }}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
         <p className="text-gray-600">지도를 로딩 중입니다...</p>
       </div>
@@ -191,7 +191,7 @@ export default function Search() {
   if (loading) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center" style={{ minHeight: '120px' }}>
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
           <p className="text-lg">상품 정보를 불러오는 중...</p>
           <p className="text-sm text-gray-500 mt-2">업체 정보도 함께 조회하고 있습니다.</p>

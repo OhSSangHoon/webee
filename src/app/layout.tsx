@@ -70,6 +70,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link rel="preconnect" href="https://dapi.kakao.com" />
+        <link rel="dns-prefetch" href="https://dapi.kakao.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
