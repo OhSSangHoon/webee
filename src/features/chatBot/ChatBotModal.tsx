@@ -75,9 +75,9 @@ export default function ChatbotLauncher() {
       <button
         aria-label="챗봇 열기"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 rounded-full  z-50 hover:scale-110 transition-transform duration-100"
+        className="fixed bottom-6 right-6 rounded-full z-50 hover:scale-110 transition-transform duration-100 w-[120px] h-[80px]"
       >
-        <Image src="/chatbot.svg" alt="챗봇 열기" width={120} height={80} />
+        <Image src="/chatbot.svg" alt="챗봇 열기" width={120} height={80} className="w-full h-full object-contain" />
       </button>
 
       {/* 챗봇 모달 */}
