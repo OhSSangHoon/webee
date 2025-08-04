@@ -4,17 +4,24 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import { useRouter, usePathname } from "next/navigation";
 import { Logout } from "@/features";
 import { useUserStore } from "@/shared/auth/useUserStore";
+import { useState } from "react";
 
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { userName } = useUserStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const isWhiteNavPage = pathname === "/" || pathname === "/news" || pathname === "/pesticide";
 
   const getNavStyle = () => {
     return isWhiteNavPage ? "text-white hover:text-yellow-400" : "text-gray-800 hover:text-blue-600";
+  }
+
+  const handleMobileMenuClick = (path: string) => {
+    router.push(path);
+    setIsMobileMenuOpen(false);
   }
 
   return (
@@ -33,6 +40,7 @@ export default function Header() {
             />
             webee
           </div>
+          {/* 데스크톱 네비게이션 */}
           <ul className="hidden md:flex gap-8 cursor-pointer items-center">
             <li>
               <div onClick={() => router.push("/search")} className={`${getNavStyle()} font-medium transition-colors`}>
@@ -85,7 +93,90 @@ export default function Header() {
               <Logout />
             </li>
           </ul>
+
+          {/* 모바일 버거 메뉴 버튼 */}
+          <button 
+            className={`md:hidden ${getNavStyle()} p-2`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="메뉴 열기"
+          >
+            <div className="w-6 h-6 flex flex-col justify-center items-center">
+              <span className={`w-6 h-0.5 bg-current transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+              <span className={`w-6 h-0.5 bg-current transition-all duration-300 mt-1 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
+              <span className={`w-6 h-0.5 bg-current transition-all duration-300 mt-1 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+            </div>
+          </button>
         </nav>
+
+        {/* 모바일 드롭다운 메뉴 */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg border-t border-gray-200/50 z-10">
+            <div className="container mx-auto px-5 py-4">
+              <ul className="space-y-4">
+                <li>
+                  <button 
+                    onClick={() => handleMobileMenuClick("/search")} 
+                    className="w-full text-left text-gray-800 hover:text-blue-600 font-medium transition-colors py-2"
+                  >
+                    업체 찾기
+                  </button>
+                </li>
+                <li>
+                  <div className="text-gray-800 font-medium py-2">수정벌 솔루션</div>
+                  <ul className="ml-4 space-y-2 mt-2">
+                    <li>
+                      <button 
+                        onClick={() => handleMobileMenuClick("/diagnosis")} 
+                        className="w-full text-left text-gray-600 hover:text-blue-600 transition-colors py-1"
+                      >
+                        질병진단
+                      </button>
+                    </li>
+                    <li>
+                      <button 
+                        onClick={() => handleMobileMenuClick("/recommend")} 
+                        className="w-full text-left text-gray-600 hover:text-blue-600 transition-colors py-1"
+                      >
+                        수정벌추천
+                      </button>
+                    </li>
+                    <li>
+                      <button 
+                        onClick={() => handleMobileMenuClick("/pesticide")} 
+                        className="w-full text-left text-gray-600 hover:text-blue-600 transition-colors py-1"
+                      >
+                        맞춤농약찾기
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => handleMobileMenuClick("/news")} 
+                    className="w-full text-left text-gray-800 hover:text-blue-600 font-medium transition-colors py-2"
+                  >
+                    수정벌 뉴스
+                  </button>
+                </li>
+                {userName && (
+                  <li>
+                    <button 
+                      onClick={() => handleMobileMenuClick("/mypage")} 
+                      className="w-full text-left text-gray-800 hover:text-blue-600 font-medium transition-colors py-2"
+                    >
+                      마이페이지
+                    </button>
+                  </li>
+                )}
+                <li className="pt-2 border-t border-gray-200">
+                  <div onClick={() => setIsMobileMenuOpen(false)}>
+                    <Logout />
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
