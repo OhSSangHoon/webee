@@ -42,13 +42,13 @@ export const metadata: Metadata = {
     siteName: 'webee',
     locale: 'ko_KR',
     type: 'website',
-    images: ['/webee-logo.svg'],
+    images: ['/LOGO.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: "webee - 수정벌 전문 플랫폼",
     description: "수정벌과 관련된 모든 정보! AI 질병진단, 맞춤 수정벌 추천, 거래 연결까지",
-    images: ['/webee-logo.svg'],
+    images: ['/LOGO.png'],
   },
   robots: {
     index: true,
