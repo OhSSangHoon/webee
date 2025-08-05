@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getAllProducts } from '@/features/search/api/api';
@@ -8,7 +9,7 @@ import { product } from '@/features/products/model/model';
 import { BusinessSidebar } from './BusinessSidebar';
 import { BeeTypeFilter } from './BeeTypeFilter';
 import { ProductWithBusiness } from '@/features/search/model/model';
-import dynamic from 'next/dynamic';
+import { Maps } from './Map';
 
 // 업체 정보 타입 정의
 interface BusinessInfo {
@@ -24,26 +25,6 @@ interface BusinessInfo {
   latitude?: number;
   longitude?: number;
 }
-
-// 로딩 컴포넌트
-const MapLoadingComponent = () => (
-  <div className="w-full h-full absolute inset-0 bg-gray-100" style={{ height: 'calc(100vh - 80px)' }}>
-    <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
-      <div className="text-center" style={{ minHeight: '60px' }}>
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-        <p className="text-gray-600">지도를 로딩 중입니다...</p>
-      </div>
-    </div>
-  </div>
-);
-
-const Maps = dynamic(
-  () => import('./Map').then(mod => ({ default: mod.Maps })), 
-  { 
-    ssr: false,
-    loading: () => <MapLoadingComponent />
-  }
-);
 
 export default function Search() {
   const [loading, setLoading] = useState(true);
@@ -252,12 +233,17 @@ export default function Search() {
                     <div className="flex flex-row items-center min-w-0 flex-1">
                       <Image 
                         src="/Location.svg" 
-                        alt=""
+                        alt="위치 아이콘"
                         width={12}
                         height={12}
                         className="mr-1 flex-shrink-0"
-                        style={{ width: '12px', height: '12px' }}
+                        style={{ 
+                          width: '12px', 
+                          height: '12px',
+                          aspectRatio: '1'
+                        }}
                         loading="lazy"
+                        priority={false}
                       />
                       <p className="text-[#6B7280] text-xs overflow-hidden text-ellipsis whitespace-nowrap">
                         {getShortAddress(product.businessAddress)}

@@ -6,6 +6,7 @@ import { loadKakaoMapScript, geocodeAddress, initializeKakaoMap, isKakaoMapLoade
 
 export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerClick }: KakaoMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
   
   // 맵 상태 관리
   const [mapState, setMapState] = useState<MapState>({
@@ -17,8 +18,32 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     loadError: null
   });
 
-  // 카카오 맵 API 로드 (최적화됨)
+  // Intersection Observer로 지연 로딩
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '100px' // 100px 미리 로딩
+      }
+    );
+
+    if (mapContainer.current) {
+      observer.observe(mapContainer.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // 카카오 맵 API 로드 (지연 로딩)
+  useEffect(() => {
+    if (!shouldLoadMap) return;
+
     const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
     
     if (!apiKey) {
@@ -26,7 +51,6 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       return;
     }
 
-    // 즉시 로딩 상태를 확인하고 빠르게 처리
     const initializeMap = async () => {
       try {
         if (isKakaoMapLoaded()) {
@@ -34,7 +58,6 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           return;
         }
 
-        // 병렬로 스크립트 로드 시작
         await loadKakaoMapScript(apiKey);
         setMapState(prev => ({ ...prev, isKakaoLoaded: true, loadError: null }));
       } catch (error) {
@@ -47,7 +70,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     };
 
     initializeMap();
-  }, []);
+  }, [shouldLoadMap]);
 
   // 제품들을 업체별로 그룹화 (메모이제이션)
   const businessGroups = useMemo(() => {
@@ -258,7 +281,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     }
   }, [mapState.map, selectedProduct, mapState.businessCoordinates]);
 
-  if (!mapState.isKakaoLoaded) {
+  // 지연 로딩 대기 중이거나 카카오 맵이 로드되지 않은 경우
+  if (!shouldLoadMap || !mapState.isKakaoLoaded) {
     return (
       <div className="w-full h-full absolute inset-0 bg-gray-50" style={{ height: 'calc(100vh - 80px)' }}>
         {mapState.loadError ? (
