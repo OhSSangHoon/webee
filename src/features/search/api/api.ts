@@ -40,19 +40,22 @@ export async function getProductsWithPaging(params: {
     return response.data;
 }
 
-// 카카오맵 스크립트 로드 (최적화된 버전)
+// 지연 로딩을 위한 전역 캐시
+let kakaoMapPromise: Promise<void> | null = null;
+const addressCache = new Map<string, Coordinates>();
+
+// 카카오맵 스크립트 지연 로드 (성능 최적화)
 export const loadKakaoMapScript = (apiKey: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
+  // 이미 로딩 중이거나 완료된 경우 같은 Promise 반환
+  if (kakaoMapPromise) {
+    return kakaoMapPromise;
+  }
+
+  kakaoMapPromise = new Promise((resolve, reject) => {
     // 이미 로드된 경우 즉시 반환
     if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
       resolve();
       return;
-    }
-
-    // 기존 스크립트가 있으면 제거
-    const existingScript = document.querySelector('script[src*="dapi.kakao.com"]');
-    if (existingScript) {
-      existingScript.remove();
     }
 
     const script = document.createElement('script');
@@ -60,9 +63,16 @@ export const loadKakaoMapScript = (apiKey: string): Promise<void> => {
     script.async = true;
     script.defer = true;
     
+    // preload hint 추가
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.href = script.src;
+    preloadLink.as = 'script';
+    document.head.appendChild(preloadLink);
+    
     const timeoutId = setTimeout(() => {
-      reject(new Error('카카오 맵 로딩 타임아웃 (10초)'));
-    }, 10000);
+      reject(new Error('카카오 맵 로딩 타임아웃 (5초)'));
+    }, 5000); // 타임아웃 단축
     
     script.onload = () => {
       clearTimeout(timeoutId);
@@ -77,16 +87,25 @@ export const loadKakaoMapScript = (apiKey: string): Promise<void> => {
     
     script.onerror = () => {
       clearTimeout(timeoutId);
+      kakaoMapPromise = null; // 실패 시 재시도 가능하도록
       reject(new Error('카카오 맵 스크립트 로드 실패'));
     };
     
     document.head.appendChild(script);
   });
+
+  return kakaoMapPromise;
 };
 
-// 주소를 좌표로 변환
+// 주소를 좌표로 변환 (캐싱 적용)
 export const geocodeAddress = (address: string): Promise<Coordinates | null> => {
   return new Promise((resolve) => {
+    // 캐시에서 먼저 확인
+    if (addressCache.has(address)) {
+      resolve(addressCache.get(address)!);
+      return;
+    }
+
     if (!window.kakao || !window.kakao.maps || !window.kakao.maps.services) {
       console.error('맵 서비스가 로드되지 않았습니다.');
       resolve(null);
@@ -101,6 +120,8 @@ export const geocodeAddress = (address: string): Promise<Coordinates | null> => 
           lat: parseFloat(result[0].y),
           lng: parseFloat(result[0].x)
         };
+        // 캐시에 저장
+        addressCache.set(address, coordinates);
         resolve(coordinates);
       } else {
         console.warn(`주소 변환 실패: ${address}, 상태: ${status}`);

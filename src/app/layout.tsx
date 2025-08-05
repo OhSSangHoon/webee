@@ -73,6 +73,8 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://dapi.kakao.com" />
         <link rel="dns-prefetch" href="https://dapi.kakao.com" />
+        <link rel="preconnect" href="https://api.webee.sbs" />
+        <link rel="dns-prefetch" href="https://d96w70pr33mqi.cloudfront.net" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
