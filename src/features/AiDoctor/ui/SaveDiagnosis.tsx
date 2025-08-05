@@ -71,17 +71,19 @@ export default function DiagnosisWrapper() {
           setResult={setAiDoctorResult}
           result={aiDoctorResult}
         />
-        <button
-          onClick={handleUpload}
-          disabled={!canSubmit || loading}
-          className={` blue-button2 ${
-            loading ? "loading" : ""
-          } disabled:opacity-50`}
-        >
-          {loading ? "저장 중..." : "진단 결과 최종 저장"}
-        </button>
+        <div className="text-center">
+          <button
+            onClick={handleUpload}
+            disabled={!canSubmit || loading}
+            className={` mb-2 blue-button2 ${
+              loading ? "loading" : ""
+            } disabled:opacity-50`}
+          >
+            {loading ? "저장 중..." : "진단 결과 최종 저장"}
+          </button>
+          <div>{saveResult}</div>
+        </div>
       </div>
-      <div>{saveResult}</div>
     </div>
   );
 }
