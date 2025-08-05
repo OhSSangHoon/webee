@@ -105,8 +105,10 @@ export default function WeatherUI() {
                     <Image
                       src={getWeatherIcon(weatherData.weather[0].main)}
                       alt={weatherData.weather[0].main}
-                      fill
+                      width={72}
+                      height={72}
                       className="object-contain"
+                      priority
                     />
                   </div>
                   <div className="text-white text-lg font-semibold mb-1">
@@ -139,9 +141,10 @@ export default function WeatherUI() {
                               <Image
                                 src={getWeatherIcon(day.weather.main)}
                                 alt={day.weather.main}
-                                height={40}
-                                width={40}
+                                height={24}
+                                width={24}
                                 className="object-contain"
+                                loading="lazy"
                               />
                             </div>
                           </div>
