@@ -29,7 +29,6 @@ export default function ResultBox() {
   const [canSave, setCanSave] = useState(false);
   const [products, setProducts] = useState<product[]>([]);
   const [productsLoading, setProductsLoading] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
 
   const save = useSaveRecommendation(resultData, setIsSave);
 
