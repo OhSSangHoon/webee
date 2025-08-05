@@ -157,7 +157,7 @@ export default function CropInfo() {
           className="w-full bg-blue-500 text-white  rounded m-0 hover:bg-blue-600 transition duration-200 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
-          {loading ? "분석 중..." : "대처 방안 요청"}
+          {loading ? "분석 중..." : "추천 요청"}
         </button>
         {error && <div className="text-red-500 text-sm pb-5">{error}</div>}
       </div>
