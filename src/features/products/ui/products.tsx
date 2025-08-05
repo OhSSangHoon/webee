@@ -204,7 +204,15 @@ export default function ProductsPage() {
         <form onSubmit={handleSubmit}>
           <div className="p-10">
               <div className="warning">
-                  <Image src="/warning.svg" alt="warning" width={20} height={20} />
+                  <Image 
+                    src="/warning.svg" 
+                    alt="경고 아이콘" 
+                    width={20} 
+                    height={20}
+                    style={{ aspectRatio: '1' }}
+                    loading="lazy"
+                    priority={false}
+                  />
                   <div className="flex flex-col ml-3">
                       <p className="warning-title">
                           상품 등록 주의사항
@@ -252,7 +260,15 @@ export default function ProductsPage() {
                           className="upload-button"
                           onClick={() => document.getElementById('fileInput')?.click()}
                       >
-                          <Image src="/photo.svg" alt="upload" width={24} height={24} />
+                          <Image 
+                            src="/photo.svg" 
+                            alt="사진 업로드" 
+                            width={24} 
+                            height={24}
+                            style={{ aspectRatio: '1' }}
+                            loading="lazy"
+                            priority={false}
+                          />
                           <p className="text-sm text-[#6B7280] font-normal mt-2">사진 추가</p>
                           <input 
                               id="fileInput"
