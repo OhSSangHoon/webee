@@ -2,7 +2,8 @@
 import { useSignUpForm } from "./model/useSignUp";
 
 export default function SignUp() {
-  const { register, handleSubmit, errors, signUpError } = useSignUpForm();
+  const { register, handleSubmit, errors, signUpError, loading } =
+    useSignUpForm();
 
   return (
     <div className="flex flex-col h-screen items-center justify-center min-h-[calc(100vh-400px)]">
@@ -55,8 +56,12 @@ export default function SignUp() {
             </p>
           </div>
 
-          <button type="submit" className="blue-button w-full ">
-            회원가입
+          <button
+            type="submit"
+            className="blue-button w-full "
+            disabled={loading}
+          >
+            {loading ? "로딩 중" : "회원가입"}
           </button>
           <div className=" text-red-500 text-sm ">{signUpError}</div>
         </form>

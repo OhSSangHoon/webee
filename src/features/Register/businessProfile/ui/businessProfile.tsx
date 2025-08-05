@@ -146,7 +146,7 @@ export default function BusinessProfileForm() {
                     <span className="truncate">{file.name}</span>
                     <button
                       onClick={removeFile}
-                      className="ml-5 text-gray-500 hover:text-red-700"
+                      className="ml-5 text-gray-500 hover:text-red-700  cursor-pointer"
                     >
                       x
                     </button>
@@ -182,7 +182,7 @@ export default function BusinessProfileForm() {
             <div className="flex flex-row justify-center items-center gap-5">
               <button
                 onClick={() => setIsOpen(true)}
-                className=" px-4 py-2 h-fit rounded-sm  border-blue-500 border-2 text-blue-500 w-30 hover:border-black hover:text-black"
+                className=" px-4 py-2 h-fit rounded-sm  border-blue-500 border-2 text-blue-500 w-30 hover:border-black hover:text-black  cursor-pointer"
               >
                 주소 검색
               </button>
@@ -242,7 +242,7 @@ export default function BusinessProfileForm() {
             <button
               type="button"
               onClick={() => handleInquirySelect("phone")}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 border rounded  cursor-pointer ${
                 form.inquiryMethod === "phone" ? "bg-blue-500 text-white" : ""
               }`}
             >
@@ -252,7 +252,7 @@ export default function BusinessProfileForm() {
             <button
               type="button"
               onClick={() => handleInquirySelect("kakao")}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 border rounded  cursor-pointer ${
                 form.inquiryMethod === "kakao" ? "bg-blue-500 text-white" : ""
               }`}
             >

@@ -164,7 +164,7 @@ export default function CropInfo() {
         <div className="flex flex-col justify-end items-end my-5 ">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-15 py-2 rounded "
+            className="bg-blue-500 text-white px-15 py-2 rounded  cursor-pointer"
             disabled={loading}
           >
             {loading ? "등록 중..." : "재배 작물 추가"}

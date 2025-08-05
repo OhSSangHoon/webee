@@ -52,7 +52,7 @@ export default function ContactModal({ isOpen, onClose, businessInfo }: ContactM
       <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative shadow-lg">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600  cursor-pointer"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -104,7 +104,7 @@ export default function ContactModal({ isOpen, onClose, businessInfo }: ContactM
         <div className="mt-6 text-center">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300  cursor-pointer"
           >
             닫기
           </button>

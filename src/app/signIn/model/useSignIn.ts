@@ -40,9 +40,15 @@ export function useSignInForm() {
     }
   };
 
+  const handleTestSubmit = async () => {
+    const data = { username: "test123", password: "qwe123!@#" };
+    await onSubmit(data);
+  };
+
   return {
     register,
     handleSubmit,
+    handleTestSubmit,
     errors,
     isSubmitting,
     onSubmit,

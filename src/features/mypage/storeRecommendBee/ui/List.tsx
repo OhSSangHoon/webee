@@ -78,8 +78,15 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
         <div className="custom-box2-title w-full text-xl font-semibold">
           🐝 수정벌 추천 리스트
         </div>
-        <div className="flex justify-center items-center py-8">
-          <p className="text-gray-500">추천된 수정벌이 없습니다.</p>
+        <div className="flex flex-col justify-center items-center py-8">
+          <div className="text-center">
+            <div className="text-4xl mb-4">📂</div>
+          </div>
+
+          <p className="text-gray-500  mb-4">추천된 수정벌이 없습니다.</p>
+          <div className="text-gray-400 text-xs  mb-4">
+            수정벌 추천을 통해 내게 맞는 수정벌을 확인해보세요.
+          </div>
         </div>
       </div>
     );

@@ -1,20 +1,28 @@
-import { ForecastData, DailyForecast, WeatherData } from './types';
+import { ForecastData, DailyForecast, WeatherData } from "./types";
 
 /**
  * 날씨 상태에 따른 이모지 아이콘 반환
  */
 export const getWeatherIcon = (weatherMain: string): string => {
   switch (weatherMain.toLowerCase()) {
-    case "clear": return "☀️";
-    case "clouds": return "☁️";
-    case "rain": return "🌧️";
-    case "drizzle": return "🌦️";
-    case "thunderstorm": return "⛈️";
-    case "snow": return "❄️";
+    case "clear":
+      return "/weatherIcons/sun.png";
+    case "clouds":
+      return "/weatherIcons/cloud.png";
+    case "rain":
+      return "/weatherIcons/rain.png";
+    case "drizzle":
+      return "/weatherIcons/drizzle.png";
+    case "thunderstorm":
+      return "/weatherIcons/thunder.png";
+    case "snow":
+      return "/weatherIcons/snow.png";
     case "mist":
     case "fog":
-    case "haze": return "🌫️";
-    default: return "🌤️";
+    case "haze":
+      return "/weatherIcons/fog.png";
+    default:
+      return "/weatherIcons/default.png";
   }
 };
 
@@ -23,16 +31,24 @@ export const getWeatherIcon = (weatherMain: string): string => {
  */
 export const getWeatherKorean = (weatherMain: string): string => {
   switch (weatherMain.toLowerCase()) {
-    case "clear": return "맑음";
-    case "clouds": return "구름 많음";
-    case "rain": return "비";
-    case "drizzle": return "이슬비";
-    case "thunderstorm": return "뇌우";
-    case "snow": return "눈";
+    case "clear":
+      return "맑음";
+    case "clouds":
+      return "구름 많음";
+    case "rain":
+      return "비";
+    case "drizzle":
+      return "이슬비";
+    case "thunderstorm":
+      return "뇌우";
+    case "snow":
+      return "눈";
     case "mist":
     case "fog":
-    case "haze": return "안개";
-    default: return "흐림";
+    case "haze":
+      return "안개";
+    default:
+      return "흐림";
   }
 };
 
@@ -75,12 +91,14 @@ export const formatTime = (unix: number): string => {
 /**
  * 6일간의 일별 예보 데이터 처리
  */
-export const getDailyForecast = (forecastData: ForecastData | null): DailyForecast[] => {
+export const getDailyForecast = (
+  forecastData: ForecastData | null
+): DailyForecast[] => {
   if (!forecastData) return [];
 
   const dailyData: { [key: string]: DailyForecast } = {};
   const now = new Date();
-  
+
   // 현재 시간이 21시 이후라면 다음날부터 시작
   const startDate = new Date(now);
   if (now.getHours() >= 21) {
@@ -93,10 +111,10 @@ export const getDailyForecast = (forecastData: ForecastData | null): DailyForeca
 
   forecastData.list.forEach((item) => {
     const date = new Date(item.dt * 1000);
-    
+
     // 시작일 이전의 데이터는 제외
     if (date < startDate) return;
-    
+
     const dateKey = date.toDateString();
 
     if (!dailyData[dateKey]) {
@@ -107,8 +125,14 @@ export const getDailyForecast = (forecastData: ForecastData | null): DailyForeca
         weather: item.weather[0],
       };
     } else {
-      dailyData[dateKey].temp_min = Math.min(dailyData[dateKey].temp_min, item.main.temp_min);
-      dailyData[dateKey].temp_max = Math.max(dailyData[dateKey].temp_max, item.main.temp_max);
+      dailyData[dateKey].temp_min = Math.min(
+        dailyData[dateKey].temp_min,
+        item.main.temp_min
+      );
+      dailyData[dateKey].temp_max = Math.max(
+        dailyData[dateKey].temp_max,
+        item.main.temp_max
+      );
     }
   });
 
@@ -120,7 +144,9 @@ export const getDailyForecast = (forecastData: ForecastData | null): DailyForeca
 /**
  * 현재 날씨 상태에 따른 벌 관련 메시지 생성
  */
-export const getBeeMessage = (weatherData: WeatherData | null): string | null => {
+export const getBeeMessage = (
+  weatherData: WeatherData | null
+): string | null => {
   if (!weatherData) return null;
 
   const currentTime = Date.now() / 1000;
@@ -131,12 +157,12 @@ export const getBeeMessage = (weatherData: WeatherData | null): string | null =>
   const isClearWeather = ["clear", "clouds"].includes(weatherMain);
 
   if (!isDaytime) {
-    return "🌝벌들이 자러 갈 시간이에요!";
+    return "🌝 벌들이 자러 갈 시간이에요!";
   }
 
   if (isClearWeather) {
-    return "🐝벌들이 활동하기 좋은 날이에요. 벌통을 활짝 열어주세요!";
+    return "🐝 벌들이 활동하기 좋은 기상이에요. 벌통을 활짝 열어주세요!";
   }
 
-  return "⛈️날씨가 나빠요! 벌통을 닫아주세요!";
+  return "⛈️ 날씨가 나빠요! 벌통을 닫아주세요!";
 };

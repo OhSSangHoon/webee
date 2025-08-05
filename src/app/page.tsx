@@ -2,6 +2,7 @@
 
 import { Weather2 } from "@/features";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -22,13 +23,37 @@ export default function Home() {
       {/* 떠다니는 벌 효과 */}
       <div className="fixed inset-0 z-9 pointer-events-none">
         <div className="bee fly-1" style={{ top: "10%", right: "20%" }}>
-          🐝
+          <div className="relative w-12 h-12">
+            <Image
+              src="/bee.png"
+              alt="예시 꿀벌"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
         </div>
         <div className="bee fly-2" style={{ top: "40%", left: "20%" }}>
-          🐝
+          <div className="relative w-12 h-12">
+            <Image
+              src="/bee.png"
+              alt="예시 꿀벌"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
         </div>
         <div className="bee fly-3" style={{ top: "30%", right: "30%" }}>
-          🐝
+          <div className="relative w-8 h-8">
+            <Image
+              src="/bee.png"
+              alt="예시 꿀벌"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
         </div>
       </div>
 

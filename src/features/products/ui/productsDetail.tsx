@@ -70,7 +70,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         </p>
         <button
           onClick={handleGoBack}
-          className="mt-4 px-6 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+          className="mt-4 px-6 py-2 bg-gray-200 rounded-md hover:bg-gray-300  cursor-pointer"
         >
           뒤로 가기
         </button>
@@ -87,7 +87,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           <div className="flex-1 aspect-square bg-gray-200 rounded-lg overflow-hidden">
             {product.imageUrls && product.imageUrls.length > 0 ? (
               <Image
-                src={product.imageUrls[imagePositions[0]]} 
+                src={product.imageUrls[imagePositions[0]]}
                 alt={`${product.name} 메인 이미지`}
                 width={400}
                 height={400}
@@ -112,7 +112,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
 
                 if (!displayImageUrl) {
                   return (
-                    <div 
+                    <div
                       key={`empty-${thumbnailIndex}`}
                       className="aspect-square bg-gray-300 rounded-lg"
                     />
@@ -120,24 +120,24 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 }
 
                 return (
-                  <div 
-                    key={thumbnailIndex} 
+                  <div
+                    key={thumbnailIndex}
                     className="aspect-square bg-gray-200 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200 border-transparent opacity-70 hover:opacity-100"
                     onClick={() => {
                       // 교환 로직
                       const newPositions = [...imagePositions];
                       const currentMain = newPositions[0];
                       const clickedImage = newPositions[thumbnailIndex];
-                      
+
                       // 메인과 클릭한 썸네일 교환
                       newPositions[0] = clickedImage;
                       newPositions[thumbnailIndex] = currentMain;
-                      
+
                       setImagePositions(newPositions);
                     }}
                   >
                     <Image
-                      src={displayImageUrl} 
+                      src={displayImageUrl}
                       alt={`${product.name} 썸네일 ${thumbnailIndex + 1}`}
                       width={76}
                       height={76}
@@ -213,9 +213,9 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 <div className="flex">
                   <span className="w-20 text-gray-500">온라인스토어:</span>
                   {businessInfo.onlineStoreUrl ? (
-                    <a 
-                      href={businessInfo.onlineStoreUrl} 
-                      target="_blank" 
+                    <a
+                      href={businessInfo.onlineStoreUrl}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-500 hover:underline"
                     >
@@ -246,7 +246,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
             {businessInfo && (
               <button
                 onClick={() => setIsContactModalOpen(true)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm  cursor-pointer"
               >
                 문의하기
               </button>

@@ -137,7 +137,7 @@ export default function ReviewList({
         <div className="text-red-500 mb-4">에러: {error}</div>
         <button 
           onClick={loadMore}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors  cursor-pointer"
         >
           다시 시도
         </button>
@@ -188,13 +188,13 @@ export default function ReviewList({
                   <div className="flex space-x-2">
                     <button
                       onClick={() => startEdit(reviewId, content)}
-                      className="text-sm text-blue-500 hover:text-blue-700"
+                      className="text-sm text-blue-500 hover:text-blue-700  cursor-pointer"
                     >
                       수정
                     </button>
                     <button
                       onClick={() => handleDelete(reviewId)}
-                      className="text-sm text-red-500 hover:text-red-700"
+                      className="text-sm text-red-500 hover:text-red-700  cursor-pointer"
                     >
                       삭제
                     </button>
@@ -218,14 +218,14 @@ export default function ReviewList({
                     <div className="flex space-x-2">
                       <button
                         onClick={cancelEdit}
-                        className="px-3 py-1 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+                        className="px-3 py-1 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors  cursor-pointer"
                         disabled={isSubmitting}
                       >
                         취소
                       </button>
                       <button
                         onClick={() => handleEditSubmit(reviewId)}
-                        className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
+                        className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50  cursor-pointer"
                         disabled={isSubmitting || !editContent.trim()}
                       >
                         {isSubmitting ? '수정 중...' : '수정'}
