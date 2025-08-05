@@ -155,7 +155,7 @@ export default function WeatherUI() {
             {/*온도별 꿀벌 행동 */}
             <div className="relative group">
               <div className="bg-white/15 rounded-xl p-2 mt-2 text-center  text-white  text-sm font-base cursor-help">
-                {currentBeeMessage} (자세히보기)
+                {currentBeeMessage}(❓자세히보기)
               </div>
 
               {/* 툴팁: 마우스 호버 시 전체 리스트 표시 */}
