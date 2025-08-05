@@ -1,18 +1,26 @@
 "use client";
 
-
 import { useState, useEffect } from "react";
-import { CalendarDays, Sparkles, AlertCircle, Lightbulb, ShoppingCart } from "lucide-react";
+import {
+  CalendarDays,
+  Sparkles,
+  AlertCircle,
+  Lightbulb,
+  ShoppingCart,
+} from "lucide-react";
 import clsx from "clsx";
 import { useRecommendBee } from "../model/useRecommendation";
 import { useSaveRecommendation } from "../model/useSaveRecommendation";
 import { safeLocalStorage } from "@/shared/utils/localStorage";
 import { getProducts } from "@/features/products/api/api";
 import { product } from "@/features/products/model/model";
-import { filterProductsByBeeType, getBeeTypeKorean } from "@/shared/types/beeSwitch";
+import {
+  filterProductsByBeeType,
+  getBeeTypeKorean,
+} from "@/shared/types/beeSwitch";
 import Image from "next/image";
 import Link from "next/link";
-
+import { bumbleBeeText } from "../model/bumbleBeeText";
 
 export default function ResultBox() {
   const { resultData, isSuccess, loading } = useRecommendBee();
@@ -21,6 +29,7 @@ export default function ResultBox() {
   const [canSave, setCanSave] = useState(false);
   const [products, setProducts] = useState<product[]>([]);
   const [productsLoading, setProductsLoading] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const save = useSaveRecommendation(resultData, setIsSave);
 
@@ -84,6 +93,17 @@ export default function ResultBox() {
         </div>
       )}
       <h3 className="text-2xl font-bold">🐝 수정벌 상세 정보</h3>
+
+      {/* 호박벌 소개 팝업 */}
+      <div className="relative group inline-block text-blue-600 cursor-help select-none">
+        🖱️ 호박벌(뒤영벌)이란?
+        <div
+          className="w-full pointer-events-none absolute left-1/2 -translate-x-1/2 mt-2 max-h-52 overflow-y-auto rounded-md bg-white/90 p-4 text-black/90 shadow-2xl opacity-0 transition-opacity duration-400 group-hover:opacity-100 group-hover:pointer-events-auto text-sm z-10 whitespace-pre-line"
+          role="tooltip"
+        >
+          {bumbleBeeText}
+        </div>
+      </div>
 
       <div className="relative bg-indigo-50 border border-indigo-200 text-indigo-800 p-5 rounded-xl shadow-sm flex flex-col gap-1">
         <div className="flex flex-row justify-between items-center mb-2">
