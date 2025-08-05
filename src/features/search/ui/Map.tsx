@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { BusinessGroup, KakaoMapProps, Coordinates, MapState, MAP_CONFIG, ERROR_MESSAGES, LOADING_MESSAGES } from '../model/model';
 import { loadKakaoMapScript, geocodeAddress, initializeKakaoMap, isKakaoMapLoaded } from '../api/api';
 
 export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerClick }: KakaoMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [shouldLoadMap, setShouldLoadMap] = useState(false);
   
   // 맵 상태 관리
   const [mapState, setMapState] = useState<MapState>({
@@ -18,32 +17,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     loadError: null
   });
 
-  // Intersection Observer로 지연 로딩
+  // 카카오 맵 API 로드 (최적화됨)
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoadMap(true);
-          observer.disconnect();
-        }
-      },
-      { 
-        threshold: 0.1,
-        rootMargin: '100px' // 100px 미리 로딩
-      }
-    );
-
-    if (mapContainer.current) {
-      observer.observe(mapContainer.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // 카카오 맵 API 로드 (지연 로딩)
-  useEffect(() => {
-    if (!shouldLoadMap) return;
-
     const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
     
     if (!apiKey) {
@@ -51,6 +26,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       return;
     }
 
+    // 즉시 로딩 상태를 확인하고 빠르게 처리
     const initializeMap = async () => {
       try {
         if (isKakaoMapLoaded()) {
@@ -58,6 +34,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           return;
         }
 
+        // 병렬로 스크립트 로드 시작
         await loadKakaoMapScript(apiKey);
         setMapState(prev => ({ ...prev, isKakaoLoaded: true, loadError: null }));
       } catch (error) {
@@ -70,11 +47,11 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     };
 
     initializeMap();
-  }, [shouldLoadMap]);
+  }, []);
 
-  // 제품들을 업체별로 그룹화 (메모이제이션)
-  const businessGroups = useMemo(() => {
-    if (!products.length) return [];
+  // 제품들을 업체별로 그룹화
+  useEffect(() => {
+    if (!products.length) return;
 
     const groupedByBusiness = products.reduce((acc, product) => {
       const businessId = product.businessId;
@@ -92,13 +69,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       return acc;
     }, {} as Record<number, BusinessGroup>);
 
-    return Object.values(groupedByBusiness);
+    setMapState(prev => ({ ...prev, businessGroups: Object.values(groupedByBusiness) }));
   }, [products]);
-
-  // businessGroups가 변경될 때만 상태 업데이트
-  useEffect(() => {
-    setMapState(prev => ({ ...prev, businessGroups }));
-  }, [businessGroups]);
 
   // 맵 초기화
   useEffect(() => {
@@ -127,16 +99,17 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       MAP_CONFIG.MARKER_SIZE.MAX
     );
     
-    // 커스텀 마커 이미지 생성 (최적화된 SVG)
+    // 커스텀 마커 이미지 생성
     const markerColor = isSelected ? MAP_CONFIG.MARKER_COLORS.SELECTED : MAP_CONFIG.MARKER_COLORS.DEFAULT;
     const textColor = '#FFFFFF';
-    const fontSize = Math.max(10, markerSize/4);
-    
-    // SVG를 더 효율적으로 생성
-    const svgString = `<svg width="${markerSize}" height="${markerSize}" viewBox="0 0 ${markerSize} ${markerSize}" xmlns="http://www.w3.org/2000/svg"><circle cx="${markerSize/2}" cy="${markerSize/2}" r="${markerSize/2-2}" fill="${markerColor}" stroke="white" stroke-width="2"/><text x="${markerSize/2}" y="${markerSize/2+4}" text-anchor="middle" fill="${textColor}" font-size="${fontSize}" font-weight="bold">${productCount}</text></svg>`;
     
     const customMarkerImage = new window.kakao.maps.MarkerImage(
-      'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString),
+      'data:image/svg+xml;base64,' + btoa(`
+        <svg width="${markerSize}" height="${markerSize}" viewBox="0 0 ${markerSize} ${markerSize}" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="${markerSize/2}" cy="${markerSize/2}" r="${markerSize/2-2}" fill="${markerColor}" stroke="white" stroke-width="2"/>
+          <text x="${markerSize/2}" y="${markerSize/2+4}" text-anchor="middle" fill="${textColor}" font-size="${Math.max(10, markerSize/4)}" font-weight="bold">${productCount}</text>
+        </svg>
+      `),
       new window.kakao.maps.Size(markerSize, markerSize),
       { offset: new window.kakao.maps.Point(markerSize/2, markerSize/2) }
     );
@@ -156,85 +129,64 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     return marker;
   }, [selectedProductId, onMarkerClick]);
 
-  // 업체별 마커 생성 및 업데이트 (최적화)
+  // 업체별 마커 생성 및 업데이트
   useEffect(() => {
-    if (!mapState.map || !businessGroups.length) return;
-
-    let isCancelled = false;
+    if (!mapState.map || !mapState.businessGroups.length) return;
 
     const createBusinessMarkers = async () => {
-      // 기존 마커 제거
-      mapState.markers.forEach(marker => {
-        if (marker && typeof marker === 'object' && 'setMap' in marker) {
-          (marker as { setMap: (map: unknown | null) => void }).setMap(null);
-        }
+      // 기존 마커 제거 (현재 상태에서 가져오기)
+      setMapState(prev => {
+        prev.markers.forEach(marker => {
+          if (marker && typeof marker === 'object' && 'setMap' in marker) {
+            (marker as { setMap: (map: unknown | null) => void }).setMap(null);
+          }
+        });
+        return prev;
       });
 
       const newMarkers: unknown[] = [];
-      const newCoordinatesMap = new Map(mapState.businessCoordinates);
+      const newCoordinatesMap = new Map<number, Coordinates>();
 
-      // 병렬 처리로 성능 향상
-      const markerPromises = businessGroups.map(async (businessGroup) => {
+      for (const businessGroup of mapState.businessGroups) {
         if (!businessGroup.businessAddress) {
           console.warn('업체 주소 정보 없음:', businessGroup.companyName);
-          return null;
+          continue;
         }
 
         try {
-          // 기존 좌표가 있으면 재사용
-          let coordinates: Coordinates | undefined = newCoordinatesMap.get(businessGroup.businessId);
-          
-          if (!coordinates) {
-            const geocodeResult = await geocodeAddress(businessGroup.businessAddress);
-            if (geocodeResult) {
-              coordinates = geocodeResult;
-              newCoordinatesMap.set(businessGroup.businessId, coordinates);
-            }
-          }
+          const coordinates = await geocodeAddress(businessGroup.businessAddress);
           
           if (!coordinates) {
             console.warn(`좌표 변환 실패: ${businessGroup.companyName}`);
-            return null;
+            continue;
           }
 
+          // 좌표 저장
+          newCoordinatesMap.set(businessGroup.businessId, coordinates);
           businessGroup.coordinates = coordinates;
-          return { businessGroup, coordinates };
-        } catch (error) {
-          console.error(`업체 좌표 처리 실패 (${businessGroup.companyName}):`, error);
-          return null;
-        }
-      });
 
-      const results = await Promise.all(markerPromises);
-      
-      if (isCancelled) return;
-
-      // 마커 생성
-      results.forEach(result => {
-        if (result) {
-          const marker = createBusinessMarker(result.businessGroup, result.coordinates);
+          // 업체 마커 생성
+          const marker = createBusinessMarker(businessGroup, coordinates);
           if (marker && typeof marker === 'object' && 'setMap' in marker) {
             (marker as { setMap: (map: unknown) => void }).setMap(mapState.map);
           }
-          newMarkers.push(marker);
-        }
-      });
 
-      if (!isCancelled) {
-        setMapState(prev => ({
-          ...prev,
-          markers: newMarkers,
-          businessCoordinates: newCoordinatesMap
-        }));
+          newMarkers.push(marker);
+
+        } catch (error) {
+          console.error(`업체 마커 생성 실패 (${businessGroup.companyName}):`, error);
+        }
       }
+
+      setMapState(prev => ({
+        ...prev,
+        markers: newMarkers,
+        businessCoordinates: newCoordinatesMap
+      }));
     };
 
     createBusinessMarkers();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [mapState.map, businessGroups, createBusinessMarker, mapState.businessCoordinates, mapState.markers]);
+  }, [mapState.map, mapState.businessGroups, createBusinessMarker]);
 
   // 선택된 물품의 업체 위치로 지도 이동
   useEffect(() => {
@@ -281,8 +233,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     }
   }, [mapState.map, selectedProduct, mapState.businessCoordinates]);
 
-  // 지연 로딩 대기 중이거나 카카오 맵이 로드되지 않은 경우
-  if (!shouldLoadMap || !mapState.isKakaoLoaded) {
+  if (!mapState.isKakaoLoaded) {
     return (
       <div className="w-full h-full absolute inset-0 bg-gray-50" style={{ height: 'calc(100vh - 80px)' }}>
         {mapState.loadError ? (
@@ -367,7 +318,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           }}
           aria-label="지도 축소"
           type="button"
-          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg  cursor-pointer"
+          className="block w-full h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg  cursor-pointer"
         >
           -
         </button>
