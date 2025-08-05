@@ -1,7 +1,7 @@
 /**
  * 벌 종류 타입 (통합)
  */
-export type BeeType = 'HONEYBEE' | 'BUMBLEBEE' | 'MASON_BEE';
+export type BeeType = "HONEYBEE" | "BUMBLEBEE" | "MASON_BEE";
 
 /**
  * 벌 종류 한글 변환 함수
@@ -48,10 +48,10 @@ export const isSameBeeType = (type1: string, type2: string): boolean => {
  * 추천된 벌 타입과 매칭되는 상품들 필터링
  */
 export const filterProductsByBeeType = <T extends { beeType: string }>(
-  products: T[], 
+  products: T[],
   recommendedBeeType: string
 ): T[] => {
-  return products.filter(product => 
+  return products.filter((product) =>
     isSameBeeType(product.beeType, recommendedBeeType)
   );
 };
@@ -59,12 +59,16 @@ export const filterProductsByBeeType = <T extends { beeType: string }>(
 /**
  * 모든 벌 타입 목록 (한글)
  */
-export const ALL_BEE_TYPES_KR = ['꿀벌', '뒤영벌', '머리뿔가위벌'] as const;
+export const ALL_BEE_TYPES_KR = ["꿀벌", "뒤영벌", "머리뿔가위벌"] as const;
 
 /**
  * 모든 벌 타입 목록 (영어)
  */
-export const ALL_BEE_TYPES_EN: BeeType[] = ['HONEYBEE', 'BUMBLEBEE', 'MASON_BEE'];
+export const ALL_BEE_TYPES_EN: BeeType[] = [
+  "HONEYBEE",
+  "BUMBLEBEE",
+  "MASON_BEE",
+];
 
 //벌 질병 한글 변환 함수
 export const getBeeDiseaseKorean = (beeDisease: string): string => {
@@ -75,6 +79,8 @@ export const getBeeDiseaseKorean = (beeDisease: string): string => {
       return "유충 석고병";
     case "ADULT_VARROA_MITE":
       return "성충 응애";
+    case "LARVA_VARROA_MITE":
+      return "유충 응애";
     case "ADULT_WING_DEFORMITY_VIRUS":
       return "성충 날개불구바이러스감염증";
     default:
