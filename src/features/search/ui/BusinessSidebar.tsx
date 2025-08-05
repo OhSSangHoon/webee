@@ -88,7 +88,7 @@ export function BusinessSidebar({
               <h2 className="font-medium text-lg">{productName || '상품 이름'}</h2>
             <button 
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full"
+              className="p-2 hover:bg-gray-100 rounded-full  cursor-pointer"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -110,7 +110,7 @@ export function BusinessSidebar({
                 <p className="text-red-500 mb-2">{error}</p>
                 <button 
                   onClick={onClose}
-                  className="text-blue-500 hover:underline"
+                  className="text-blue-500 hover:underline  cursor-pointer"
                 >
                   닫기
                 </button>

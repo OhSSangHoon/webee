@@ -110,7 +110,7 @@ export default function ResultBox() {
           className={clsx(
             "px-4 py-2 text-sm font-semibold transition-colors",
             tab === "info"
-              ? "border-b-4 border-indigo-600 text-indigo-700"
+              ? "border-b-4 border-indigo-600 text-indigo-700  cursor-pointer"
               : "text-gray-400 hover:text-indigo-600"
           )}
         >
@@ -121,7 +121,7 @@ export default function ResultBox() {
           className={clsx(
             "px-4 py-2 text-sm font-semibold transition-colors",
             tab === "products"
-              ? "border-b-4 border-indigo-600 text-indigo-700"
+              ? "border-b-4 border-indigo-600 text-indigo-700  cursor-pointer"
               : "text-gray-400 hover:text-indigo-600"
           )}
         >
@@ -150,7 +150,7 @@ export default function ResultBox() {
             <button
               disabled={!canSave}
               onClick={save}
-              className="w-full border rounded border-indigo-600 text-indigo-600 hover:bg-indigo-50 mt-5 py-2"
+              className="w-full border rounded border-indigo-600 text-indigo-600 hover:bg-indigo-50 mt-5 py-2  cursor-pointer"
             >
               저장하기
             </button>
@@ -279,7 +279,11 @@ function ProductCard({ product }: { product: product }) {
   };
 
   return (
-    <Link href={`/products/${product.id}`} target="_blank" rel="noopener noreferrer">
+    <Link
+      href={`/products/${product.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <div className="border rounded-xl p-4 hover:shadow-md transition-shadow bg-white cursor-pointer">
         <div className="flex gap-4">
           {product.imageUrls && product.imageUrls.length > 0 && (

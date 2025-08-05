@@ -60,7 +60,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
         {isLoggedIn ? (
           <button 
             onClick={() => setShowForm(true)}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50  cursor-pointer"
             disabled={showForm}
           >
             후기작성

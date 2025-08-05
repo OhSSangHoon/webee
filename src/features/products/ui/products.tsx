@@ -239,7 +239,7 @@ export default function ProductsPage() {
                               />
                               <button 
                                   type="button"
-                                  className="absolute top-1 right-1 bg-gray-800 bg-opacity-50 rounded-full p-1"
+                                  className="absolute top-1 right-1 bg-gray-800 bg-opacity-50 rounded-full p-1  cursor-pointer"
                                   onClick={() => handleDeleteImage(index)}
                               >
                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -301,7 +301,7 @@ export default function ProductsPage() {
                   등록된 업체 정보가 없습니다. 먼저 업체를 등록해주세요.
                   <button
                     type="button"
-                    className="ml-2 text-blue-500 underline"
+                    className="ml-2 text-blue-500 underline  cursor-pointer"
                     onClick={() => router.push("/myprofile")}
                   >
                     업체 등록하기

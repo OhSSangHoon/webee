@@ -269,7 +269,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           }}
           aria-label="지도 확대"
           type="button"
-          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
+          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400  cursor-pointer hover:text-blue-600 transition-all duration-200 font-bold text-lg"
         >
           +
         </button>
@@ -282,7 +282,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           }}
           aria-label="지도 축소"
           type="button"
-          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg"
+          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg  cursor-pointer"
         >
           -
         </button>

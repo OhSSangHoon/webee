@@ -176,7 +176,7 @@ export default function PesticideTable() {
             </div>
             <button
               onClick={() => handleSearch(1, true)}
-              className="bg-yellow-400 text-black px-6 py-2 rounded-full font-bold hover:bg-yellow-300 transition"
+              className="bg-yellow-400 text-black px-6 py-2 rounded-full font-bold hover:bg-yellow-300 transition  cursor-pointer"
             >
               검색
             </button>
@@ -230,7 +230,7 @@ export default function PesticideTable() {
               {startPage > 1 && (
                 <button
                   onClick={() => handleSearch(startPage - 1, false)}
-                  className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200"
+                  className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200  cursor-pointer"
                 >
                   ◀
                 </button>
@@ -244,7 +244,7 @@ export default function PesticideTable() {
                     className={`px-3 py-1 rounded-full transition ${
                       page === pageNo
                         ? "bg-yellow-400 text-black font-bold"
-                        : "bg-white text-black hover:bg-gray-200"
+                        : "bg-white text-black hover:bg-gray-200 cursor-pointer"
                     }`}
                   >
                     {pageNo}
@@ -254,7 +254,7 @@ export default function PesticideTable() {
               {endPage < totalPages && (
                 <button
                   onClick={() => handleSearch(endPage + 1, false)}
-                  className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200"
+                  className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200  cursor-pointer"
                 >
                   ▶
                 </button>

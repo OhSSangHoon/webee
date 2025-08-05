@@ -14,7 +14,7 @@ export function BeeTypeFilter({ selectedBeeType, onBeeTypeChange }: BeeTypeFilte
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => onBeeTypeChange(null)}
-          className={`px-3 py-2 rounded-full text-xs transition-colors ${
+          className={`px-3 py-2 rounded-full text-xs transition-colors  cursor-pointer ${
             selectedBeeType === null 
               ? 'bg-blue-500 text-white font-medium' 
               : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -28,7 +28,7 @@ export function BeeTypeFilter({ selectedBeeType, onBeeTypeChange }: BeeTypeFilte
           <button
             key={beeType}
             onClick={() => onBeeTypeChange(beeType)}
-            className={`px-3 py-2 rounded-full text-xs transition-colors ${
+            className={`px-3 py-2 rounded-full text-xs transition-colors  cursor-pointer ${
               selectedBeeType === beeType 
                 ? 'bg-blue-500 text-white font-medium' 
                 : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
