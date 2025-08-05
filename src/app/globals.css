@@ -72,11 +72,11 @@ body {
 
 .blue-button {
   /*기본 블루 버튼*/
-  @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors;
+  @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors cursor-pointer;
 }
 
 .blue-button2 {
-  @apply bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md w-full;
+  @apply bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md w-full cursor-pointer;
 }
 
 .blue-button2.loading {
@@ -88,7 +88,7 @@ body {
 
 .white-button {
   /*기본 흰색 버튼*/
-  @apply px-4 py-2 text-[#2B7FFF] border bg-white border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
+  @apply px-4 py-2 text-[#2B7FFF] border bg-white border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors cursor-pointer;
 }
 
 .white-button.loading,
@@ -112,6 +112,7 @@ body {
   width: max-content;
   height: fit-content;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .custom-button:hover {
@@ -150,11 +151,11 @@ body {
 
 /*마이페이지 확인 버튼*/
 .custom-outline-button {
-  @apply w-fit px-4 py-2 text-[#2B7FFF] border border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors;
+  @apply w-fit px-4 py-2 text-[#2B7FFF] border border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors cursor-pointer;
 }
 
 .hover_start_button {
-  @apply transition-all duration-300 ease-in-out;
+  @apply transition-all duration-300 ease-in-out cursor-pointer;
 }
 
 .hover_start_button:hover {
@@ -255,7 +256,7 @@ body {
 
   /* 이미지 업로드 버튼 */
   .upload-button {
-    @apply w-25 h-25 flex flex-col items-center justify-center rounded-md cursor-pointer border-2 border-dashed border-[#E2E5EB];
+    @apply w-25 h-25 flex flex-col items-center justify-center rounded-md cursor-pointer border-2 border-dashed border-[#E2E5EB] cursor-pointer;
   }
 
   /* 인풋 박스 */
@@ -265,7 +266,7 @@ body {
 
   /* 등록 버튼 */
   .submit-button {
-    @apply w-1/4 h-10 bg-blue-500 text-white rounded-md mt-5 flex items-center justify-center;
+    @apply w-1/4 h-10 bg-blue-500 text-white rounded-md mt-5 flex items-center justify-center cursor-pointer;
   }
 }
 

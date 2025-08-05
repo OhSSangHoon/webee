@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { signUp } from "@/shared/auth/api";
 import { useState } from "react";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 export type SignUpFormValues = {
   username: string;
@@ -20,10 +21,9 @@ const schema = yup.object({
   password: yup
     .string()
     .required("비밀번호를 입력해주세요.")
-    .min(8, "8자 이상 입력해주세요.")
+    .min(6, "6자 이상 입력해주세요.")
     .matches(/[a-z]/, "소문자를 포함해야 합니다.")
-    .matches(/\d/, "숫자를 포함해야 합니다.")
-    .matches(/[@$!%*?&#]/, "특수문자를 포함해야 합니다."),
+    .matches(/\d/, "숫자를 포함해야 합니다."),
   passwordConfirm: yup
     .string()
     .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다.")
@@ -32,6 +32,9 @@ const schema = yup.object({
 
 export function useSignUpForm() {
   const [signUpError, setSignUpError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -45,13 +48,17 @@ export function useSignUpForm() {
   const onSubmit = async (data: SignUpFormValues) => {
     const { username, password, name } = data;
     try {
+      setLoading(true);
       await signUp({ username, password, name });
+      setLoading(false);
+      router.push("/");
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
       const errorMessage =
         axiosError.response?.data?.message ?? "회원가입에 실패했습니다.";
       console.log(axiosError);
       setSignUpError(errorMessage);
+      setLoading(false);
     }
   };
 
@@ -60,5 +67,6 @@ export function useSignUpForm() {
     handleSubmit: handleSubmit(onSubmit),
     errors,
     signUpError,
+    loading,
   };
 }
