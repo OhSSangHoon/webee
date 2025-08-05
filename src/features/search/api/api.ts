@@ -40,9 +40,15 @@ export async function getProductsWithPaging(params: {
     return response.data;
 }
 
-// 카카오맵 스크립트 로드
+// 카카오맵 스크립트 로드 (최적화된 버전)
 export const loadKakaoMapScript = (apiKey: string): Promise<void> => {
   return new Promise((resolve, reject) => {
+    // 이미 로드된 경우 즉시 반환
+    if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
+      resolve();
+      return;
+    }
+
     // 기존 스크립트가 있으면 제거
     const existingScript = document.querySelector('script[src*="dapi.kakao.com"]');
     if (existingScript) {
@@ -52,8 +58,14 @@ export const loadKakaoMapScript = (apiKey: string): Promise<void> => {
     const script = document.createElement('script');
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&libraries=services&autoload=false`;
     script.async = true;
+    script.defer = true;
+    
+    const timeoutId = setTimeout(() => {
+      reject(new Error('카카오 맵 로딩 타임아웃 (10초)'));
+    }, 10000);
     
     script.onload = () => {
+      clearTimeout(timeoutId);
       if (window.kakao && window.kakao.maps) {
         window.kakao.maps.load(() => {
           resolve();
@@ -64,6 +76,7 @@ export const loadKakaoMapScript = (apiKey: string): Promise<void> => {
     };
     
     script.onerror = () => {
+      clearTimeout(timeoutId);
       reject(new Error('카카오 맵 스크립트 로드 실패'));
     };
     
