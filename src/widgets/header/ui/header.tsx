@@ -117,6 +117,8 @@ export default function Header() {
                   <button 
                     onClick={() => handleMobileMenuClick("/search")} 
                     className="w-full text-left text-gray-800 hover:text-blue-600 font-medium transition-colors py-2"
+                    aria-label="업체 찾기 페이지로 이동"
+                    type="button"
                   >
                     업체 찾기
                   </button>
@@ -128,6 +130,8 @@ export default function Header() {
                       <button 
                         onClick={() => handleMobileMenuClick("/diagnosis")} 
                         className="w-full text-left text-gray-600 hover:text-blue-600 transition-colors py-1"
+                        aria-label="질병진단 페이지로 이동"
+                        type="button"
                       >
                         질병진단
                       </button>
@@ -136,6 +140,8 @@ export default function Header() {
                       <button 
                         onClick={() => handleMobileMenuClick("/recommend")} 
                         className="w-full text-left text-gray-600 hover:text-blue-600 transition-colors py-1"
+                        aria-label="수정벌추천 페이지로 이동"
+                        type="button"
                       >
                         수정벌추천
                       </button>
@@ -144,6 +150,8 @@ export default function Header() {
                       <button 
                         onClick={() => handleMobileMenuClick("/pesticide")} 
                         className="w-full text-left text-gray-600 hover:text-blue-600 transition-colors py-1"
+                        aria-label="맞춤농약찾기 페이지로 이동"
+                        type="button"
                       >
                         맞춤농약찾기
                       </button>
@@ -154,6 +162,8 @@ export default function Header() {
                   <button 
                     onClick={() => handleMobileMenuClick("/news")} 
                     className="w-full text-left text-gray-800 hover:text-blue-600 font-medium transition-colors py-2"
+                    aria-label="수정벌 뉴스 페이지로 이동"
+                    type="button"
                   >
                     수정벌 뉴스
                   </button>
@@ -163,6 +173,8 @@ export default function Header() {
                     <button 
                       onClick={() => handleMobileMenuClick("/mypage")} 
                       className="w-full text-left text-gray-800 hover:text-blue-600 font-medium transition-colors py-2"
+                      aria-label="마이페이지로 이동"
+                      type="button"
                     >
                       마이페이지
                     </button>
