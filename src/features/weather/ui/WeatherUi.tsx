@@ -1,6 +1,8 @@
 "use client";
 
 import { useWeatherData, useDetailWeather } from "../model/hooks";
+import { beeTemperatureData, getBeeBehaviorMessage } from "../model/temp";
+
 import {
   getWeatherIcon,
   getWeatherKorean,
@@ -63,6 +65,12 @@ export default function WeatherUI() {
       </div>
     );
   }
+
+  //날씨 기반 꿀벌 행동 상태메세지
+  const currentBeeMessage = getBeeBehaviorMessage(
+    Math.round(weatherData.main.temp),
+    beeTemperatureData
+  );
 
   const dailyForecast = getDailyForecast(forecastData);
 
@@ -138,9 +146,31 @@ export default function WeatherUI() {
             </div>
 
             {/* 벌 관련 메시지 */}
-            <div className="bg-white/15 rounded-xl p-4 text-center">
+            <div className="bg-white/15 rounded-xl p-2 text-center">
               <div className="text-white text-lg font-semibold">
                 {getBeeMessage(weatherData)}
+              </div>
+            </div>
+
+            {/*온도별 꿀벌 행동 */}
+            <div className="relative group">
+              <div className="bg-white/15 rounded-xl p-2 mt-2 text-center  text-white  text-sm font-base cursor-help">
+                {currentBeeMessage} (자세히보기)
+              </div>
+
+              {/* 툴팁: 마우스 호버 시 전체 리스트 표시 */}
+              <div className="absolute left-1/2 -translate-x-1/2 mt-2 bg-white/90 text-black p-4 rounded-lg shadow-xl w-full max-w-2xl z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none group-hover:pointer-events-auto">
+                <ul className="h-full overflow-y-auto space-y-2 text-sm">
+                  {beeTemperatureData.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between border-b pb-1"
+                    >
+                      <span className="font-medium">{item.range}</span>
+                      <span className="text-right">{item.behavior}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -178,10 +208,38 @@ export default function WeatherUI() {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white/10 rounded-lg p-3">
-                    <div className="text-white/70 text-xs mb-1">토양수분</div>
-                    <div className="text-white text-sm font-semibold">
-                      {detailData.soil_Wt}%
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <div className="text-white/70 text-xs mb-1">토양수분</div>
+                      <div className="text-white text-sm font-semibold">
+                        {detailData.soil_Wt}%
+                      </div>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <div className="text-white/70 text-xs mb-1">강수량</div>
+                      <div className="text-white text-sm font-semibold">
+                        {detailData.rain}mm
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 ">
+                    <div className="bg-white/10 rounded-l-lg p-3">
+                      <div className="text-white/70 text-xs mb-1">풍향</div>
+                      <div className="text-white text-sm font-semibold">
+                        {detailData.widdir}
+                      </div>
+                    </div>
+                    <div className="bg-white/10 p-3">
+                      <div className="text-white/70 text-xs mb-1">풍속</div>
+                      <div className="text-white text-sm font-semibold">
+                        {detailData.wind}m/s
+                      </div>
+                    </div>
+                    <div className="bg-white/10 rounded-r-lg p-3">
+                      <div className="text-white/70 text-xs mb-1">최대풍속</div>
+                      <div className="text-white text-sm font-semibold">
+                        {detailData.max_Wind}m/s{" "}
+                      </div>
                     </div>
                   </div>
                 </div>

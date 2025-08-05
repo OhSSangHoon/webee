@@ -135,7 +135,7 @@ export const getBeeMessage = (weatherData: WeatherData | null): string | null =>
   }
 
   if (isClearWeather) {
-    return "🐝벌들이 활동하기 좋은 날이에요. 벌통을 활짝 열어주세요!";
+    return "🐝벌들이 활동하기 좋은 기상이에요. 벌통을 활짝 열어주세요!";
   }
 
   return "⛈️날씨가 나빠요! 벌통을 닫아주세요!";
