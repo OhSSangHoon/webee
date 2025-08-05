@@ -2,6 +2,7 @@
 
 import { useWeatherData, useDetailWeather } from "../model/hooks";
 import { beeTemperatureData, getBeeBehaviorMessage } from "../model/temp";
+import Image from "next/image";
 
 import {
   getWeatherIcon,
@@ -100,8 +101,13 @@ export default function WeatherUI() {
 
                 {/* 현재 날씨 상태 */}
                 <div className="text-center">
-                  <div className="text-6xl mb-2">
-                    {getWeatherIcon(weatherData.weather[0].main)}
+                  <div className="w-18 h-18 relative mb-2">
+                    <Image
+                      src={getWeatherIcon(weatherData.weather[0].main)}
+                      alt={weatherData.weather[0].main}
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                   <div className="text-white text-lg font-semibold mb-1">
                     {getWeatherKorean(weatherData.weather[0].main)}
@@ -128,8 +134,16 @@ export default function WeatherUI() {
                           <div className="text-white/80 text-xs font-medium mb-2">
                             {formatDayShort(day.dt)}
                           </div>
-                          <div className="text-2xl mb-2">
-                            {getWeatherIcon(day.weather.main)}
+                          <div className="flex justify-center items-center">
+                            <div className="w-6 h-6 relative">
+                              <Image
+                                src={getWeatherIcon(day.weather.main)}
+                                alt={day.weather.main}
+                                height={40}
+                                width={40}
+                                className="object-contain"
+                              />
+                            </div>
                           </div>
                           <div className="text-white font-bold text-lg mb-1">
                             {temp}°
@@ -155,7 +169,7 @@ export default function WeatherUI() {
             {/*온도별 꿀벌 행동 */}
             <div className="relative group">
               <div className="bg-white/15 rounded-xl p-2 mt-2 text-center  text-white  text-sm font-base cursor-help">
-                {currentBeeMessage}(❓자세히보기)
+                🌡️ {currentBeeMessage} <span className="underline text-black/50">자세히보기 </span>
               </div>
 
               {/* 툴팁: 마우스 호버 시 전체 리스트 표시 */}
