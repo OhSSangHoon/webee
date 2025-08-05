@@ -26,10 +26,11 @@ export default function Home() {
           <div className="relative w-12 h-12">
             <Image
               src="/bee.png"
-              alt="예시 꿀벌"
-              fill
+              alt="장식용 꿀벌"
+              width={48}
+              height={48}
               className="object-cover"
-              priority
+              loading="lazy"
             />
           </div>
         </div>
@@ -37,10 +38,11 @@ export default function Home() {
           <div className="relative w-12 h-12">
             <Image
               src="/bee.png"
-              alt="예시 꿀벌"
-              fill
+              alt="장식용 꿀벌"
+              width={48}
+              height={48}
               className="object-cover"
-              priority
+              loading="lazy"
             />
           </div>
         </div>
@@ -48,10 +50,11 @@ export default function Home() {
           <div className="relative w-8 h-8">
             <Image
               src="/bee.png"
-              alt="예시 꿀벌"
-              fill
+              alt="장식용 꿀벌"
+              width={32}
+              height={32}
               className="object-cover"
-              priority
+              loading="lazy"
             />
           </div>
         </div>
