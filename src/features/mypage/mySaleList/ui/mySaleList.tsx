@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
 import { NavigationButton } from "./navButton";
@@ -8,6 +8,27 @@ import { NavigationButton } from "./navButton";
 export default function MySaleList() {
   const { myProducts, visibleProducts, slideInfo, isLoading, error, actions } =
     useMySaleList();
+  
+  const [itemsToShow, setItemsToShow] = useState(2);
+
+  // 화면 크기에 따른 아이템 개수 설정
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setItemsToShow(3);
+      } else {
+        setItemsToShow(2);
+      }
+    };
+
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // 가격 포맷팅 함수
   const formatPrice = useCallback((price: number) => {
@@ -65,39 +86,45 @@ export default function MySaleList() {
   }
 
   return (
-    <div className="custom-box2 flex flex-col">
+    <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden">
       <div className="custom-box2-title mb-4">
         <span className="custom-box2-icon">🛒</span> 내가 등록한 상품 목록
       </div>
 
-      {/* 슬라이드 컨테이너 */}
-      <div className="relative w-full px-10 py-4">
-        {/* 상품 슬라이드 */}
-        <div className="flex flex-row justify-between items-center w-full gap-2">
-          {visibleProducts.map((product, index) => (
-            <ProductCard
+      {/* 반응형 컨테이너 */}
+      <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
+          {visibleProducts.slice(0, itemsToShow).map((product, index) => (
+            <div
               key={product.id}
-              product={product}
-              index={index}
-              formatPrice={formatPrice}
-            />
+              className="w-full max-w-[280px] flex justify-center"
+            >
+              <ProductCard
+                product={product}
+                index={index}
+                formatPrice={formatPrice}
+              />
+            </div>
           ))}
         </div>
 
-        {/* 좌우 네비게이션 버튼 */}
-        {myProducts.length > 4 && (
-          <>
+        {/* 네비게이션 버튼 */}
+        {myProducts.length > visibleProducts.length && (
+          <div className="flex justify-between items-center mt-6">
+            {/* 이전 버튼 */}
             <NavigationButton
               direction="prev"
               onClick={actions.goPrev}
               disabled={!slideInfo.canGoPrev}
             />
+
+            {/* 다음 버튼 */}
             <NavigationButton
               direction="next"
               onClick={actions.goNext}
               disabled={!slideInfo.canGoNext}
             />
-          </>
+          </div>
         )}
       </div>
     </div>

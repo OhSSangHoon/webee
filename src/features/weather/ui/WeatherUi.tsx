@@ -30,9 +30,9 @@ export default function WeatherUI() {
   if (loading) {
     return (
       <div className="flex justify-center items-center">
-        <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10">
-          <div className="text-center text-gray-600 text-lg">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10 min-h-[24rem]">
+          <div className="text-center text-gray-600 text-lg flex flex-col items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
             불러오는 중...
           </div>
         </div>
@@ -44,8 +44,8 @@ export default function WeatherUI() {
   if (error) {
     return (
       <div className="flex justify-center items-center">
-        <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-center">
+        <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10 min-h-[24rem]">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-center flex items-center justify-center h-full">
             {error}
           </div>
         </div>
@@ -57,8 +57,8 @@ export default function WeatherUI() {
   if (!weatherData) {
     return (
       <div className="flex justify-center items-center">
-        <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10">
-          <div className="text-center text-gray-600 text-lg">
+        <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10 min-h-[24rem]">
+          <div className="text-center text-gray-600 text-lg flex items-center justify-center h-full">
             날씨 데이터를 불러올 수 없습니다.
           </div>
         </div>
@@ -76,7 +76,7 @@ export default function WeatherUI() {
 
   return (
     <div className="flex justify-center items-center">
-      <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10">
+      <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10 min-h-[24rem]">
         <div className="w-full flex flex-col lg:flex-row gap-6">
           {/* 메인 콘텐츠 영역 */}
           <div className="flex-1 flex flex-col justify-between min-h-96">

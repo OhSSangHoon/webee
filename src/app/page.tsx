@@ -37,12 +37,13 @@ export default function Home() {
         <main className="relative z-10 pb-20">
           <div className="container mx-auto px-5 text-center">
             <section className="mb-15">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 leading-tight">
-                농업인들의 든든한 파트너
-                <br />
-                <span className="text-yellow-300">webee</span>와 함께
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 leading-tight min-h-[6rem] sm:min-h-[8rem] md:min-h-[10rem] lg:min-h-[12rem] flex flex-col items-center justify-center">
+                <span>
+                  <span className="block">농업인의 든든한 파트너 </span>
+                  <span className="text-yellow-300 inline">webee</span>와 함께
+                </span>
               </h1>
-              <p className="text-xl text-gray-100 mb-6 opacity-90">
+              <p className="text-xl text-gray-100 mb-6 opacity-90 min-h-[3rem] flex items-center justify-center">
                 수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다.
               </p>
               <button

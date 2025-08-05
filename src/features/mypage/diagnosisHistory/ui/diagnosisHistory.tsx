@@ -31,15 +31,24 @@ export default function DiagnosisHistory() {
   const [diagnosisList, setDiagnosisList] = useState<DiagnosisItem[]>([]);
   const [detailModal, setDetailModal] = useState(false);
   const [detailContent, setDetailContent] = useState<DiagnosisDetail>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const listApi = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
       const response = await api.get("/bee/diagnosis");
       if (response.data?.data) {
         setDiagnosisList(response.data.data);
+      } else {
+        setDiagnosisList([]);
       }
     } catch (error) {
       console.error("질병진단결과 목록조회 오류", error);
+      setError("질병 진단 결과를 불러올 수 없습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,10 +72,66 @@ export default function DiagnosisHistory() {
     listApi();
   }, []);
 
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="custom-box2">
+        <div className="custom-box2-title">
+          <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+        </div>
+        <div className="flex items-center justify-center py-20">
+          <div className="flex flex-col items-center gap-3">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <div className="text-gray-500 text-sm">진단 결과를 불러오는 중...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className="custom-box2">
+        <div className="custom-box2-title">
+          <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+        </div>
+        <div className="flex items-center justify-center py-20">
+          <div className="text-center">
+            <div className="text-red-500 mb-3">{error}</div>
+            <button
+              onClick={listApi}
+              className="text-blue-500 hover:underline text-sm bg-blue-50 px-3 py-1 rounded transition-colors"
+            >
+              다시 시도
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 결과 없음 상태
+  if (diagnosisList.length === 0) {
+    return (
+      <div className="custom-box2">
+        <div className="custom-box2-title">
+          <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+        </div>
+        <div className="flex items-center justify-center py-20">
+          <div className="text-center">
+            <div className="text-4xl mb-4">🔬</div>
+            <div className="text-gray-500 text-sm mb-4">아직 진단 결과가 없습니다.</div>
+            <div className="text-gray-400 text-xs">질병 진단을 통해 결과를 확인해보세요.</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="custom-box2">
       <div className="custom-box2-title">
-        {" "}
         <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
       </div>
       {detailModal && detailContent && (
