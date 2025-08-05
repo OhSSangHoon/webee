@@ -17,7 +17,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     loadError: null
   });
 
-  // 카카오 맵 API 로드
+  // 카카오 맵 API 로드 (최적화됨)
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
     
@@ -26,17 +26,27 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       return;
     }
 
-    if (isKakaoMapLoaded()) {
-      setMapState(prev => ({ ...prev, isKakaoLoaded: true, loadError: null }));
-    } else {
-      loadKakaoMapScript(apiKey)
-        .then(() => {
+    // 즉시 로딩 상태를 확인하고 빠르게 처리
+    const initializeMap = async () => {
+      try {
+        if (isKakaoMapLoaded()) {
           setMapState(prev => ({ ...prev, isKakaoLoaded: true, loadError: null }));
-        })
-        .catch((error) => {
-          setMapState(prev => ({ ...prev, loadError: error.message }));
-        });
-    }
+          return;
+        }
+
+        // 병렬로 스크립트 로드 시작
+        await loadKakaoMapScript(apiKey);
+        setMapState(prev => ({ ...prev, isKakaoLoaded: true, loadError: null }));
+      } catch (error) {
+        console.error('카카오 맵 로딩 실패:', error);
+        setMapState(prev => ({ 
+          ...prev, 
+          loadError: error instanceof Error ? error.message : '알 수 없는 오류' 
+        }));
+      }
+    };
+
+    initializeMap();
   }, []);
 
   // 제품들을 업체별로 그룹화
@@ -226,21 +236,49 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
 
   if (!mapState.isKakaoLoaded) {
     return (
-      <div className="w-full h-full absolute inset-0 bg-gray-100">
-        <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
-          {mapState.loadError ? (
+      <div className="w-full h-full absolute inset-0 bg-gray-50" style={{ height: 'calc(100vh - 80px)' }}>
+        {mapState.loadError ? (
+          <div className="w-full h-full flex items-center justify-center">
             <div className="text-red-600 text-center">
               <div className="text-xl mb-2" aria-hidden="true">⚠️</div>
               <p className="font-medium mb-2">카카오 맵 로드 실패</p>
               <p className="text-sm mb-4">{mapState.loadError}</p>
             </div>
-          ) : (
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-              <p className="text-gray-600">{LOADING_MESSAGES.MAP_LOADING}</p>
+          </div>
+        ) : (
+          <div className="w-full h-full relative">
+            {/* 스켈레톤 지도 UI */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200">
+              {/* 가상 지도 타일들 */}
+              <div className="grid grid-cols-4 grid-rows-4 h-full gap-1 p-1">
+                {Array.from({ length: 16 }).map((_, i) => (
+                  <div 
+                    key={i} 
+                    className="bg-gray-300 animate-pulse rounded" 
+                    style={{ 
+                      animationDelay: `${i * 0.1}s`,
+                      animationDuration: '1.5s'
+                    }}
+                  />
+                ))}
+              </div>
+              
+              {/* 가상 마커들 */}
+              <div className="absolute top-1/4 left-1/3 w-6 h-6 bg-blue-400 rounded-full animate-pulse shadow-lg"></div>
+              <div className="absolute top-1/2 right-1/4 w-5 h-5 bg-red-400 rounded-full animate-pulse shadow-lg" style={{ animationDelay: '0.5s' }}></div>
+              <div className="absolute bottom-1/3 left-1/2 w-4 h-4 bg-green-400 rounded-full animate-pulse shadow-lg" style={{ animationDelay: '1s' }}></div>
             </div>
-          )}
-        </div>
+            
+            {/* 로딩 오버레이 */}
+            <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+              <div className="text-center bg-white rounded-lg p-4 shadow-lg">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                <p className="text-gray-600 font-medium">{LOADING_MESSAGES.MAP_LOADING}</p>
+                <p className="text-gray-400 text-sm mt-1">지도 데이터를 불러오는 중...</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -252,8 +290,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
         className="w-full h-full"
         style={{ 
           width: '100%', 
-          height: '100%',
-          minHeight: 'calc(100vh - 80px)'
+          height: 'calc(100vh - 80px)'
         }}
         role="application"
         aria-label="상품 위치 지도"
