@@ -50,8 +50,8 @@ html {
 }
 
 body {
-  /*폰트 프리텐다드 기본설정*/
-  font-family: "Pretendard", sans-serif;
+  /*폰트 프리텐다드 기본설정 - 시스템 폰트 우선*/
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
 }
 .text-black-custom {
   /* 기본 텍스트 색상 */
