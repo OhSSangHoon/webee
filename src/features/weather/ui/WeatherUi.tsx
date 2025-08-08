@@ -1,18 +1,11 @@
 "use client";
 
+
 import { useWeatherData, useDetailWeather } from "../model/hooks";
 import { beeTemperatureData, getBeeBehaviorMessage } from "../model/temp";
 import Image from "next/image";
+import { getWeatherIcon, getWeatherKorean, formatDateShort, formatDayShort, formatTime, getDailyForecast, getBeeMessage } from "../model/utils";
 
-import {
-  getWeatherIcon,
-  getWeatherKorean,
-  formatDateShort,
-  formatDayShort,
-  formatTime,
-  getDailyForecast,
-  getBeeMessage,
-} from "../model/utils";
 
 /**
  * 날씨 정보를 표시하는 메인 UI 컴포넌트
@@ -144,7 +137,7 @@ export default function WeatherUI() {
                                 height={24}
                                 width={24}
                                 className="object-contain"
-                                loading="lazy"
+                                priority
                               />
                             </div>
                           </div>
