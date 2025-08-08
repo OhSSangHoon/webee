@@ -188,9 +188,9 @@ export default function WeatherUI() {
           {/* 농업기상 정보 사이드바 */}
           <div className="w-full lg:w-80 bg-white/20 border border-white/10 rounded-xl p-4 flex flex-col">
             <div className="flex-1">
-              <h3 className="text-white text-lg font-bold mb-4 flex items-center gap-2">
+              <h2 className="text-white text-lg font-bold mb-4 flex items-center gap-2">
                 🌾 농업기상 정보
-              </h3>
+              </h2>
 
               {detailError && (
                 <p className="text-red-300 text-xs mb-2">{detailError}</p>
