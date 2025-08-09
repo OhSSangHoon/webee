@@ -17,28 +17,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     loadError: null
   });
 
-  // 초기 렌더링 최적화를 위한 플래그
-  const [shouldRenderMap, setShouldRenderMap] = useState(false);
-
-  // 브라우저 idle 시간에 맵 로드 (LCP 최적화)
+  // 카카오 맵 초기화
   useEffect(() => {
-    const loadMap = () => {
-      setShouldRenderMap(true);
-    };
-
-    // requestIdleCallback이 지원되면 사용, 아니면 setTimeout 폴백
-    if ('requestIdleCallback' in window) {
-      const idleCallbackId = requestIdleCallback(loadMap, { timeout: 2000 });
-      return () => cancelIdleCallback(idleCallbackId);
-    } else {
-      const timer = setTimeout(loadMap, 300);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!shouldRenderMap) return;
-
     const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
     
     if (!apiKey) {
@@ -46,28 +26,23 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       return;
     }
 
-    // 비동기 지도 초기화
-    const initializeMap = async () => {
-      try {
-        if (isKakaoMapLoaded()) {
-          setMapState(prev => ({ ...prev, isKakaoLoaded: true, loadError: null }));
-          return;
-        }
+    if (isKakaoMapLoaded()) {
+      setMapState(prev => ({ ...prev, isKakaoLoaded: true }));
+      return;
+    }
 
-        // 백그라운드에서 스크립트 로드
-        await loadKakaoMapScript(apiKey);
-        setMapState(prev => ({ ...prev, isKakaoLoaded: true, loadError: null }));
-      } catch (error) {
+    loadKakaoMapScript(apiKey)
+      .then(() => {
+        setMapState(prev => ({ ...prev, isKakaoLoaded: true }));
+      })
+      .catch((error) => {
         console.error('카카오 맵 로딩 실패:', error);
         setMapState(prev => ({ 
           ...prev, 
-          loadError: error instanceof Error ? error.message : '알 수 없는 오류' 
+          loadError: error instanceof Error ? error.message : '지도 로드 실패' 
         }));
-      }
-    };
-
-    initializeMap();
-  }, [shouldRenderMap]);
+      });
+  }, []);
 
   // 제품들을 업체별로 그룹화
   useEffect(() => {
@@ -149,7 +124,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     return marker;
   }, [selectedProductId, onMarkerClick]);
 
-  // 업체별 마커 생성 및 업데이트 (점진적 로딩)
+  // 업체별 마커 생성 및 업데이트
   useEffect(() => {
     if (!mapState.map || !mapState.businessGroups.length) return;
 
@@ -253,63 +228,37 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     }
   }, [mapState.map, selectedProduct, mapState.businessCoordinates]);
 
-  if (!shouldRenderMap || !mapState.isKakaoLoaded) {
+  // 간단한 로딩 상태
+  if (!mapState.isKakaoLoaded) {
     return (
-      <div className="w-full h-full relative bg-gray-100" style={{ height: 'calc(100vh - 80px)' }}>
-        {mapState.loadError ? (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-red-600 text-center">
-              <div className="text-xl mb-2" aria-hidden="true">⚠️</div>
+      <div className="w-full h-full flex items-center justify-center bg-gray-100" style={{ height: 'calc(100vh - 80px)' }}>
+        <div className="text-center">
+          {mapState.loadError ? (
+            <>
+              <div className="text-xl mb-2">⚠️</div>
               <p className="font-medium mb-2">카카오 맵 로드 실패</p>
-              <p className="text-sm mb-4">{mapState.loadError}</p>
-            </div>
-          </div>
-        ) : (
-          <div className="w-full h-full relative">
-            {/* 간단한 지도 플레이스홀더 */}
-            <div className="absolute inset-0 bg-gray-200">
-              {/* 최소한의 가상 마커들만 표시 */}
-              <div className="absolute top-1/3 left-1/3 w-4 h-4 bg-blue-400 rounded-full"></div>
-              <div className="absolute top-1/2 right-1/3 w-4 h-4 bg-blue-400 rounded-full"></div>
-              <div className="absolute bottom-1/3 left-1/2 w-4 h-4 bg-blue-400 rounded-full"></div>
-            </div>
-            
-            {/* 간단한 로딩 표시 */}
-            {shouldRenderMap && (
-              <div className="absolute inset-0 bg-white/90 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                  <p className="text-gray-600 text-sm">{LOADING_MESSAGES.MAP_LOADING}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+              <p className="text-sm">{mapState.loadError}</p>
+            </>
+          ) : (
+            <>
+              <div 
+                className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"
+                style={{ willChange: 'transform' }}
+              />
+              <p className="text-gray-600 text-sm">{LOADING_MESSAGES.MAP_LOADING}</p>
+            </>
+          )}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-full relative">
-      {/* LCP 회피를 위한 가시적 플레이스홀더 */}
-      <div className="absolute inset-0 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
-        <div className="w-full h-full flex items-center justify-center">
-          <div className="text-center text-gray-600">
-            <div className="text-2xl mb-2">🗺️</div>
-            <p className="text-sm">지도 로딩 중...</p>
-          </div>
-        </div>
-      </div>
-      
+    <div className="w-full h-full relative">      
       <div 
         ref={mapContainer} 
-        className="w-full h-full relative z-10"
-        style={{ 
-          width: '100%', 
-          height: 'calc(100vh - 80px)',
-          opacity: mapState.isKakaoLoaded && mapState.map ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out'
-        }}
+        className="w-full h-full"
+        style={{ height: 'calc(100vh - 80px)' }}
         role="application"
         aria-label="상품 위치 지도"
       />
@@ -324,7 +273,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           }}
           aria-label="지도 확대"
           type="button"
-          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400  cursor-pointer hover:text-blue-600 transition-all duration-200 font-bold text-lg"
+          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-200 font-bold text-lg"
         >
           +
         </button>
@@ -337,7 +286,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           }}
           aria-label="지도 축소"
           type="button"
-          className="block w-full h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg  cursor-pointer"
+          className="block w-10 h-10 bg-white border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600 transition-all duration-200 font-bold text-lg cursor-pointer"
         >
           -
         </button>

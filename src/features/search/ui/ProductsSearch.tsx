@@ -6,10 +6,14 @@ import Image from 'next/image';
 import { getAllProducts } from '@/features/search/api/api';
 import { BusinessDetail, getBusinessDetail } from '@/shared/business/api';
 import { product } from '@/features/products/model/model';
-import { BusinessSidebar } from './BusinessSidebar';
 import { BeeTypeFilter } from './BeeTypeFilter';
 import { ProductWithBusiness } from '@/features/search/model/model';
-import { Maps } from './Map';
+import { BusinessSidebar } from './BusinessSidebar';
+import dynamic from 'next/dynamic';
+
+
+const Maps = dynamic(() => import('./Map').then(mod => ({ default: mod.Maps })), { ssr: false });
+
 
 // 업체 정보 타입 정의
 interface BusinessInfo {
