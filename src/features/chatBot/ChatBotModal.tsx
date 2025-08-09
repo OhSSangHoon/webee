@@ -106,11 +106,7 @@ export default function ChatbotLauncher() {
           width={120} 
           height={80} 
           className="w-full h-full object-contain"
-          style={{ 
-            aspectRatio: '3/2',
-            containIntrinsicSize: '120px 80px',
-            contentVisibility: 'auto'
-          }}
+          style={{ aspectRatio: '3/2' }}
           loading={isSearchPage ? "eager" : "lazy"}
           priority={!isSearchPage}
           fetchPriority={isSearchPage ? "low" : "auto"}
