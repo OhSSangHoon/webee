@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/widgets";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
 import ChatBot from "@/features/chatBot/ChatBotModal";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -81,7 +70,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://d96w70pr33mqi.cloudfront.net" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased" // 폰트 로딩 완료 후 제거
       >
         <HydrationProvider>
           <Header />
