@@ -42,7 +42,7 @@
   src: url("../../public/font/PretendardVariable.woff2") format("woff2");
   font-weight: 45 920; /* variable 지원 범위 */
   font-style: normal;
-  font-display: block;
+  font-display: fallback;
 }
 
 html {
@@ -50,8 +50,8 @@ html {
 }
 
 body {
-  /*폰트 프리텐다드 기본설정*/
-  font-family: "Pretendard", sans-serif;
+  /*폰트 프리텐다드 기본설정 - 시스템 폰트 우선*/
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
 }
 .text-black-custom {
   /* 기본 텍스트 색상 */
@@ -256,7 +256,7 @@ body {
 
   /* 이미지 업로드 버튼 */
   .upload-button {
-    @apply w-25 h-25 flex flex-col items-center justify-center rounded-md cursor-pointer border-2 border-dashed border-[#E2E5EB] cursor-pointer;
+    @apply w-25 h-25 flex flex-col items-center justify-center rounded-md border-2 border-dashed border-[#E2E5EB] cursor-pointer;
   }
 
   /* 인풋 박스 */

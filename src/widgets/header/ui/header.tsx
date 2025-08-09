@@ -50,7 +50,9 @@ export default function Header() {
             <li>
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
-                  <div className={`${getNavStyle()} font-medium transition-colors`}>수정벌 솔루션</div>
+                  <button className={`${getNavStyle()} font-medium transition-colors bg-transparent border-none cursor-pointer`} type="button">
+                    수정벌 솔루션
+                  </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-white rounded-xl shadow-lg border border-gray-200 p-2">
                   <DropdownMenuItem 

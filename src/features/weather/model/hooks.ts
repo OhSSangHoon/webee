@@ -6,68 +6,69 @@ import { WeatherState, DetailWeatherState, DetailWeatherData } from './types';
  * 위치 기반 날씨 정보를 가져오는 커스텀 훅
  * OpenWeatherMap API와 Nominatim API를 사용하여 현재 날씨, 예보, 한글 주소를 가져옵니다.
  */
-export const useWeatherData = (): WeatherState => {
-  const [state, setState] = useState<WeatherState>({
+export const useWeatherData = () => {
+  const [state, setState] = useState<WeatherState & { hasRequested: boolean }>({
     weatherData: null,
     forecastData: null,
     koreanAddress: "",
-    loading: true,
+    loading: false,
     error: "",
+    hasRequested: false,
   });
 
-  useEffect(() => {
-    const fetchWeatherData = async () => {
-      if (!navigator.geolocation) {
-        setState(prev => ({
-          ...prev,
-          error: "이 브라우저는 위치 정보를 지원하지 않습니다.",
-          loading: false,
-        }));
-        return;
-      }
+  const requestLocationData = async () => {
+    if (!navigator.geolocation) {
+      setState(prev => ({
+        ...prev,
+        error: "이 브라우저는 위치 정보를 지원하지 않습니다.",
+        loading: false,
+        hasRequested: true,
+      }));
+      return;
+    }
 
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
+    setState(prev => ({ ...prev, loading: true, hasRequested: true }));
 
-          try {
-            // 병렬로 API 호출하여 성능 최적화
-            const [weatherData, forecastData, koreanAddress] = await Promise.all([
-              weatherApi.getCurrentWeather(latitude, longitude),
-              weatherApi.getForecast(latitude, longitude),
-              weatherApi.getKoreanAddress(latitude, longitude),
-            ]);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
 
-            setState(prev => ({
-              ...prev,
-              weatherData,
-              forecastData,
-              koreanAddress,
-              loading: false,
-            }));
-          } catch (error) {
-            setState(prev => ({
-              ...prev,
-              error: "데이터를 가져오는 데 실패했습니다.",
-              loading: false,
-            }));
-            console.error("데이터 오류:", error);
-          }
-        },
-        () => {
+        try {
+          // 병렬로 API 호출하여 성능 최적화
+          const [weatherData, forecastData, koreanAddress] = await Promise.all([
+            weatherApi.getCurrentWeather(latitude, longitude),
+            weatherApi.getForecast(latitude, longitude),
+            weatherApi.getKoreanAddress(latitude, longitude),
+          ]);
+
           setState(prev => ({
             ...prev,
-            error: "위치 정보를 가져오는 데 실패했습니다.",
+            weatherData,
+            forecastData,
+            koreanAddress,
+            loading: false,
+            error: "",
+          }));
+        } catch (error) {
+          setState(prev => ({
+            ...prev,
+            error: "데이터를 가져오는 데 실패했습니다.",
             loading: false,
           }));
+          console.error("데이터 오류:", error);
         }
-      );
-    };
+      },
+      () => {
+        setState(prev => ({
+          ...prev,
+          error: "위치 정보를 가져오는 데 실패했습니다.",
+          loading: false,
+        }));
+      }
+    );
+  };
 
-    fetchWeatherData();
-  }, []);
-
-  return state;
+  return { ...state, requestLocationData };
 };
 
 /**

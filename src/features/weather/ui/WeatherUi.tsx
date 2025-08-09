@@ -1,25 +1,18 @@
 "use client";
 
+
 import { useWeatherData, useDetailWeather } from "../model/hooks";
 import { beeTemperatureData, getBeeBehaviorMessage } from "../model/temp";
 import Image from "next/image";
+import { getWeatherIcon, getWeatherKorean, formatDateShort, formatDayShort, formatTime, getDailyForecast, getBeeMessage } from "../model/utils";
 
-import {
-  getWeatherIcon,
-  getWeatherKorean,
-  formatDateShort,
-  formatDayShort,
-  formatTime,
-  getDailyForecast,
-  getBeeMessage,
-} from "../model/utils";
 
 /**
  * 날씨 정보를 표시하는 메인 UI 컴포넌트
  * 현재 날씨, 7일 예보, 농업기상 정보를 포함합니다.
  */
 export default function WeatherUI() {
-  const { weatherData, forecastData, koreanAddress, loading, error } =
+  const { weatherData, forecastData, koreanAddress, loading, error, hasRequested, requestLocationData } =
     useWeatherData();
   const {
     data: detailData,
@@ -27,14 +20,44 @@ export default function WeatherUI() {
     loading: detailLoading,
   } = useDetailWeather(koreanAddress);
 
+  // 위치 권한 요청 전 UI
+  if (!hasRequested) {
+    return (
+      <div className="flex justify-center items-center">
+        <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10 min-h-[24rem]">
+          <div className="text-center text-white text-lg flex flex-col items-center justify-center h-full">
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-yellow-400/20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                <svg className="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold mb-2">날씨 정보</h2>
+              <p className="text-white/80 mb-6">
+                현재 위치의 날씨와 농업기상 정보를 확인하세요
+              </p>
+            </div>
+            <button 
+              onClick={requestLocationData}
+              className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              내 위치의 날씨 보기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // 로딩 상태 UI
   if (loading) {
     return (
       <div className="flex justify-center items-center">
         <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10 min-h-[24rem]">
-          <div className="text-center text-gray-600 text-lg flex flex-col items-center justify-center h-full">
+          <div className="text-center text-white text-lg flex flex-col items-center justify-center h-full">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-            불러오는 중...
+            위치 정보를 가져오는 중...
           </div>
         </div>
       </div>
@@ -46,8 +69,16 @@ export default function WeatherUI() {
     return (
       <div className="flex justify-center items-center">
         <div className="w-full max-w-6xl p-8 shadow-xl rounded-2xl bg-white/10 min-h-[24rem]">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-center flex items-center justify-center h-full">
-            {error}
+          <div className="text-center text-white flex flex-col items-center justify-center h-full">
+            <div className="bg-red-500/20 border border-red-400/50 text-red-200 px-6 py-4 rounded-lg mb-4">
+              {error}
+            </div>
+            <button 
+              onClick={requestLocationData}
+              className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              다시 시도
+            </button>
           </div>
         </div>
       </div>
@@ -144,7 +175,7 @@ export default function WeatherUI() {
                                 height={24}
                                 width={24}
                                 className="object-contain"
-                                loading="lazy"
+                                priority
                               />
                             </div>
                           </div>
