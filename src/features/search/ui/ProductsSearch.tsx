@@ -9,10 +9,7 @@ import { product } from '@/features/products/model/model';
 import { BeeTypeFilter } from './BeeTypeFilter';
 import { ProductWithBusiness } from '@/features/search/model/model';
 import { BusinessSidebar } from './BusinessSidebar';
-import dynamic from 'next/dynamic';
-
-
-const Maps = dynamic(() => import('./Map').then(mod => ({ default: mod.Maps })), { ssr: false });
+import { Maps } from './Map';
 
 
 // 업체 정보 타입 정의
@@ -173,13 +170,51 @@ export default function Search() {
     return address.length > 15 ? address.slice(0, 15) + '···' : address;
   };
 
+  // 스켈레톤 로더 컴포넌트
+  const ProductSkeleton = () => (
+    <div className="w-full border-b border-[#EEF2FF] px-5 py-3" style={{ height: '110px' }}>
+      <div className="animate-pulse" style={{ willChange: 'opacity' }}>
+        <div className="flex justify-between items-center mb-2">
+          <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-300 rounded w-4"></div>
+        </div>
+        <div className="flex items-center">
+          <div className="h-3 w-3 bg-gray-300 rounded mr-1"></div>
+          <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+        </div>
+      </div>
+    </div>
+  );
+
   if (loading) {
     return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <div className="text-center" style={{ minHeight: '120px' }}>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-          <p className="text-lg">상품 정보를 불러오는 중...</p>
-          <p className="text-sm text-gray-500 mt-2">업체 정보도 함께 조회하고 있습니다.</p>
+      <div className="flex flex-row relative pt-20">
+        {/* 검색 영역 스켈레톤 */}
+        <div className="w-[20%] min-w-[300px] h-[calc(100vh-80px)] flex flex-col items-start border-r border-[#E5E7EB] relative z-20 bg-white">
+          {/* 벌 타입 필터 스켈레톤 */}
+          <div className="w-full p-4 border-b border-gray-200 flex-shrink-0 h-[80px] flex items-center">
+            <div className="flex gap-2 animate-pulse">
+              <div className="h-8 bg-gray-300 rounded-full w-12"></div>
+              <div className="h-8 bg-gray-300 rounded-full w-16"></div>
+              <div className="h-8 bg-gray-300 rounded-full w-14"></div>
+            </div>
+          </div>
+
+          {/* 상품 리스트 스켈레톤 */}
+          <div className="w-full flex-1 overflow-hidden">
+            {[...Array(6)].map((_, index) => (
+              <ProductSkeleton key={index} />
+            ))}
+          </div>
+        </div>
+        
+        {/* 지도 스켈레톤 */}
+        <div className="w-[80%] h-[calc(100vh-80px)] relative bg-gray-100 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-2xl mb-2">🗺️</div>
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
+            <p className="text-gray-600 text-sm">지도와 상품 정보를 불러오는 중...</p>
+          </div>
         </div>
       </div>
     );

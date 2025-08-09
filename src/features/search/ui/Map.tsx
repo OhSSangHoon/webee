@@ -228,19 +228,29 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     }
   }, [mapState.map, selectedProduct, mapState.businessCoordinates]);
 
-  // 간단한 로딩 상태
-  if (!mapState.isKakaoLoaded) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100" style={{ height: 'calc(100vh - 80px)' }}>
+  return (
+    <div className="w-full h-full relative" style={{ height: 'calc(100vh - 80px)' }}>
+      {/* 고정 크기 플레이스홀더 - Layout Shift 방지 */}
+      <div 
+        className="absolute inset-0 bg-gray-50 border border-gray-200 flex items-center justify-center"
+        style={{ 
+          width: '100%', 
+          height: '100%',
+          zIndex: !mapState.isKakaoLoaded ? 10 : 0,
+          opacity: !mapState.isKakaoLoaded ? 1 : 0,
+          transition: 'opacity 0.3s ease-in-out'
+        }}
+      >
         <div className="text-center">
           {mapState.loadError ? (
             <>
               <div className="text-xl mb-2">⚠️</div>
-              <p className="font-medium mb-2">카카오 맵 로드 실패</p>
-              <p className="text-sm">{mapState.loadError}</p>
+              <p className="font-medium mb-2 text-gray-700">카카오 맵 로드 실패</p>
+              <p className="text-sm text-gray-500">{mapState.loadError}</p>
             </>
           ) : (
             <>
+              <div className="text-2xl mb-2">🗺️</div>
               <div 
                 className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"
                 style={{ willChange: 'transform' }}
@@ -250,15 +260,16 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
           )}
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="w-full h-full relative">      
+      
       <div 
         ref={mapContainer} 
         className="w-full h-full"
-        style={{ height: 'calc(100vh - 80px)' }}
+        style={{ 
+          width: '100%', 
+          height: '100%',
+          opacity: mapState.isKakaoLoaded && mapState.map ? 1 : 0,
+          transition: 'opacity 0.3s ease-in-out'
+        }}
         role="application"
         aria-label="상품 위치 지도"
       />
