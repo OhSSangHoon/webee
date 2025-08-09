@@ -208,12 +208,29 @@ export default function Search() {
           </div>
         </div>
         
-        {/* 지도 스켈레톤 */}
-        <div className="w-[80%] h-[calc(100vh-80px)] relative bg-gray-100 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-2xl mb-2">🗺️</div>
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
-            <p className="text-gray-600 text-sm">지도와 상품 정보를 불러오는 중...</p>
+        {/* 지도 영역 큰 콘텐츠 - LCP 우선순위 확보 */}
+        <div className="w-[80%] h-[calc(100vh-80px)] relative bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center">
+          {/* 대형 로고/브랜딩 콘텐츠 */}
+          <div className="text-center max-w-md mx-auto mb-8">
+            <div className="text-6xl mb-4">🗺️</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">상품 위치 지도</h2>
+            <p className="text-lg text-gray-600 mb-4">전국의 수정벌 상품을 지도에서 확인하세요</p>
+            <div className="flex items-center justify-center space-x-2">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+              <p className="text-gray-600">로딩 중...</p>
+            </div>
+          </div>
+          
+          {/* 추가 정보 카드들 */}
+          <div className="grid grid-cols-2 gap-4 max-w-lg">
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <div className="text-2xl mb-2">📍</div>
+              <p className="text-sm text-gray-600">위치 기반<br/>상품 검색</p>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <div className="text-2xl mb-2">🏪</div>
+              <p className="text-sm text-gray-600">업체 정보<br/>한눈에 보기</p>
+            </div>
           </div>
         </div>
       </div>

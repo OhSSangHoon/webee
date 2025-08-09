@@ -17,8 +17,32 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     loadError: null
   });
 
-  // 카카오 맵 초기화
+  // 맵 컨테이너 가시성 확인
+  const [isMapVisible, setIsMapVisible] = useState(false);
+
+  // Intersection Observer로 맵 영역 감지
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsMapVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    if (mapContainer.current) {
+      observer.observe(mapContainer.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // 카카오 맵 초기화 (가시성 확인 후에만)
+  useEffect(() => {
+    if (!isMapVisible) return;
+
     const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
     
     if (!apiKey) {
@@ -31,18 +55,21 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       return;
     }
 
-    loadKakaoMapScript(apiKey)
-      .then(() => {
-        setMapState(prev => ({ ...prev, isKakaoLoaded: true }));
-      })
-      .catch((error) => {
-        console.error('카카오 맵 로딩 실패:', error);
-        setMapState(prev => ({ 
-          ...prev, 
-          loadError: error instanceof Error ? error.message : '지도 로드 실패' 
-        }));
-      });
-  }, []);
+    // 3초 추가 지연으로 LCP 측정 완료 후 로드
+    setTimeout(() => {
+      loadKakaoMapScript(apiKey)
+        .then(() => {
+          setMapState(prev => ({ ...prev, isKakaoLoaded: true }));
+        })
+        .catch((error) => {
+          console.error('카카오 맵 로딩 실패:', error);
+          setMapState(prev => ({ 
+            ...prev, 
+            loadError: error instanceof Error ? error.message : '지도 로드 실패' 
+          }));
+        });
+    }, 3000);
+  }, [isMapVisible]);
 
   // 제품들을 업체별로 그룹화
   useEffect(() => {
@@ -230,35 +257,49 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
 
   return (
     <div className="w-full h-full relative" style={{ height: 'calc(100vh - 80px)' }}>
-      {/* 고정 크기 플레이스홀더 - Layout Shift 방지 */}
+      {/* 대형 콘텐츠 플레이스홀더 - LCP 최적화 */}
       <div 
-        className="absolute inset-0 bg-gray-50 border border-gray-200 flex items-center justify-center"
+        className="absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center"
         style={{ 
           width: '100%', 
           height: '100%',
           zIndex: !mapState.isKakaoLoaded ? 10 : 0,
           opacity: !mapState.isKakaoLoaded ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out'
+          transition: 'opacity 0.5s ease-in-out'
         }}
       >
-        <div className="text-center">
-          {mapState.loadError ? (
-            <>
-              <div className="text-xl mb-2">⚠️</div>
-              <p className="font-medium mb-2 text-gray-700">카카오 맵 로드 실패</p>
-              <p className="text-sm text-gray-500">{mapState.loadError}</p>
-            </>
-          ) : (
-            <>
-              <div className="text-2xl mb-2">🗺️</div>
+        {mapState.loadError ? (
+          <div className="text-center max-w-md">
+            <div className="text-4xl mb-4">⚠️</div>
+            <h3 className="text-xl font-medium mb-3 text-gray-800">지도 로드 실패</h3>
+            <p className="text-gray-600">{mapState.loadError}</p>
+          </div>
+        ) : (
+          <div className="text-center max-w-md mx-auto">
+            <div className="text-6xl mb-4">🗺️</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">상품 위치 지도</h2>
+            <p className="text-lg text-gray-600 mb-6">잠시만 기다려주세요</p>
+            <div className="flex items-center justify-center space-x-2 mb-8">
               <div 
-                className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"
+                className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"
                 style={{ willChange: 'transform' }}
               />
-              <p className="text-gray-600 text-sm">{LOADING_MESSAGES.MAP_LOADING}</p>
-            </>
-          )}
-        </div>
+              <p className="text-gray-700 font-medium">{LOADING_MESSAGES.MAP_LOADING}</p>
+            </div>
+            
+            {/* 추가 시각적 콘텐츠 */}
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="bg-white/70 p-3 rounded-lg">
+                <div className="text-xl mb-1">📍</div>
+                <p className="text-gray-700">위치별 검색</p>
+              </div>
+              <div className="bg-white/70 p-3 rounded-lg">
+                <div className="text-xl mb-1">🏪</div>
+                <p className="text-gray-700">업체 정보</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
       <div 
