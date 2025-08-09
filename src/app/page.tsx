@@ -30,7 +30,8 @@ export default function Home() {
               width={48}
               height={48}
               className="object-cover"
-              loading="lazy"
+              loading="eager"
+              priority={true}
             />
           </div>
         </div>
@@ -42,7 +43,8 @@ export default function Home() {
               width={48}
               height={48}
               className="object-cover"
-              loading="lazy"
+              loading="eager"
+              priority={true}
             />
           </div>
         </div>
@@ -54,7 +56,8 @@ export default function Home() {
               width={32}
               height={32}
               className="object-cover"
-              loading="lazy"
+              loading="eager"
+              priority={true}
             />
           </div>
         </div>
