@@ -16,8 +16,8 @@ export function BeeTypeFilter({ selectedBeeType, onBeeTypeChange }: BeeTypeFilte
           onClick={() => onBeeTypeChange(null)}
           className={`px-3 py-2 rounded-full text-xs transition-colors  cursor-pointer ${
             selectedBeeType === null 
-              ? 'bg-blue-500 text-white font-medium' 
-              : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+              ? 'bg-blue-700 text-white font-medium' 
+              : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
           }`}
           aria-label="전체 벌 종류 보기"
           type="button"
@@ -30,8 +30,8 @@ export function BeeTypeFilter({ selectedBeeType, onBeeTypeChange }: BeeTypeFilte
             onClick={() => onBeeTypeChange(beeType)}
             className={`px-3 py-2 rounded-full text-xs transition-colors  cursor-pointer ${
               selectedBeeType === beeType 
-                ? 'bg-blue-500 text-white font-medium' 
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                ? 'bg-blue-700 text-white font-medium' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
             }`}
             aria-label={`${getBeeTypeKorean(beeType)} 필터 적용`}
             type="button"
