@@ -20,14 +20,20 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
   // 초기 렌더링 최적화를 위한 플래그
   const [shouldRenderMap, setShouldRenderMap] = useState(false);
 
-  // 지연된 카카오 맵 API 로드 (LCP 최적화)
+  // 브라우저 idle 시간에 맵 로드 (LCP 최적화)
   useEffect(() => {
-    // 컴포넌트 마운트 후 약간의 지연을 두고 지도 렌더링 시작
-    const timer = setTimeout(() => {
+    const loadMap = () => {
       setShouldRenderMap(true);
-    }, 100); // 100ms 지연으로 초기 페이지 렌더링 우선
+    };
 
-    return () => clearTimeout(timer);
+    // requestIdleCallback이 지원되면 사용, 아니면 setTimeout 폴백
+    if ('requestIdleCallback' in window) {
+      const idleCallbackId = requestIdleCallback(loadMap, { timeout: 2000 });
+      return () => cancelIdleCallback(idleCallbackId);
+    } else {
+      const timer = setTimeout(loadMap, 300);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   useEffect(() => {
@@ -143,7 +149,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     return marker;
   }, [selectedProductId, onMarkerClick]);
 
-  // 업체별 마커 생성 및 업데이트
+  // 업체별 마커 생성 및 업데이트 (점진적 로딩)
   useEffect(() => {
     if (!mapState.map || !mapState.businessGroups.length) return;
 

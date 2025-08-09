@@ -84,8 +84,8 @@ export const MAP_CONFIG = {
     lat: 35.8714,
     lng: 128.6014
   },
-  // 기본 줌 레벨 (대한민국 전체 보기)
-  DEFAULT_LEVEL: 12,
+  // 기본 줌 레벨 (성능 최적화를 위해 더 높은 레벨)
+  DEFAULT_LEVEL: 13,
   // 상품 선택 시 줌 레벨
   SELECTED_LEVEL: 4,
   // 마커 크기 범위
