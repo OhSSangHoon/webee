@@ -3,9 +3,18 @@
 import { Weather2 } from "@/features";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const [showBee, setShowBee] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowBee(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClick = (link?: string) => {
     if (!link) return;
@@ -21,47 +30,49 @@ export default function Home() {
   return (
     <div className="relative">
       {/* 떠다니는 벌 효과 */}
+      {showBee && (
       <div className="fixed inset-0 z-9 pointer-events-none">
         <div className="bee fly-1" style={{ top: "10%", right: "20%" }}>
           <div className="relative w-12 h-12">
             <Image
-              src="/bee.png"
-              alt="장식용 꿀벌"
+              src="/bee.webp"
+              alt=""
               width={48}
               height={48}
               className="object-cover"
-              loading="eager"
-              priority={true}
+              loading="lazy"
+              quality={80}
             />
           </div>
         </div>
         <div className="bee fly-2" style={{ top: "40%", left: "20%" }}>
           <div className="relative w-12 h-12">
             <Image
-              src="/bee.png"
-              alt="장식용 꿀벌"
+              src="/bee.webp"
+              alt=""
               width={48}
               height={48}
               className="object-cover"
-              loading="eager"
-              priority={true}
+              loading="lazy"
+              quality={80}
             />
           </div>
         </div>
         <div className="bee fly-3" style={{ top: "30%", right: "30%" }}>
           <div className="relative w-8 h-8">
             <Image
-              src="/bee.png"
-              alt="장식용 꿀벌"
+              src="/bee.webp"
+              alt=""
               width={32}
               height={32}
               className="object-cover"
-              loading="eager"
-              priority={true}
+              loading="lazy"
+              quality={80}
             />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 랜딩 섹션 */}
       <section className="relative h-full bg-gradient-to-br from-[#667eea] to-[#764ba2] overflow-hidden pt-30">
