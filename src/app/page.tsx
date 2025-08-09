@@ -65,11 +65,9 @@ export default function Home() {
         <main className="relative z-10 pb-20">
           <div className="container mx-auto px-5 text-center">
             <section className="mb-15">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 leading-tight min-h-[6rem] sm:min-h-[8rem] md:min-h-[10rem] lg:min-h-[12rem] flex flex-col items-center justify-center">
-                <div className="flex flex-col items-center justify-center">
-                  <span>농업인의 든든한 파트너</span>
-                  <span><span className="text-yellow-300">webee</span>와 함께</span>
-                </div>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 leading-tight flex flex-col items-center justify-center" style={{contain: 'layout style', contentVisibility: 'auto'}}>
+                <span>농업인의 든든한 파트너</span>
+                <span><span className="text-yellow-300">webee</span>와 함께</span>
               </h1>
               <p className="text-xl text-gray-100 mb-6 opacity-90 min-h-[3rem] flex items-center justify-center">
                 수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다.
