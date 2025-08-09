@@ -4,6 +4,7 @@ import { Weather2 } from "@/features";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 
 export default function Home() {
   const router = useRouter();
@@ -28,7 +29,12 @@ export default function Home() {
   };
 
   return (
-    <div className="relative">
+    <>
+      <Head>
+        <link rel="canonical" href="https://webee-ten.vercel.app/" />
+        <meta name="description" content="수정벌과 관련된 모든 정보! AI 질병진단, 맞춤 수정벌 추천, 거래 연결, 농약 정보까지 농업인의 든든한 파트너 webee와 함께하세요." />
+      </Head>
+      <div className="relative">
       {/* 떠다니는 벌 효과 */}
       {showBee && (
       <div className="fixed inset-0 z-9 pointer-events-none">
@@ -184,5 +190,6 @@ export default function Home() {
         </article>
       </section>
     </div>
+    </>
   );
 }

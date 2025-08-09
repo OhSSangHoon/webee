@@ -21,9 +21,6 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL('https://webee-ten.vercel.app/'),
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     title: "webee - 수정벌 전문 플랫폼",
     description: "수정벌과 관련된 모든 정보! AI 질병진단, 맞춤 수정벌 추천, 거래 연결까지",
