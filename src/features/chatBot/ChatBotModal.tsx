@@ -15,7 +15,27 @@ export default function ChatbotLauncher() {
   const [input, setInput] = useState("");
   const [responses, setResponses] = useState<QuestionResponse[]>([]);
   const [loading, setLoading] = useState(false);
+  const [shouldShow, setShouldShow] = useState(false);
+  const [isSearchPage, setIsSearchPage] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // 페이지 타입 확인 및 표시 제어
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    const searchPage = pathname.includes('/search');
+    setIsSearchPage(searchPage);
+    
+    if (searchPage) {
+      // search 페이지에서는 5초 후에 표시
+      const timer = setTimeout(() => {
+        setShouldShow(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    } else {
+      // 다른 페이지에서는 즉시 표시
+      setShouldShow(true);
+    }
+  }, []);
 
   const exampleQuestions = [
     "수정벌 사용 시 주의사항은 무엇인가요?",
@@ -68,14 +88,17 @@ export default function ChatbotLauncher() {
     }
   }, [responses, loading]);
 
+  if (!shouldShow) {
+    return null;
+  }
+
   return (
     <>
       {/* 챗봇 열기 버튼 */}
-
       <button
         aria-label="챗봇 열기"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 rounded-full z-50 hover:scale-110 transition-transform duration-100 w-[120px] h-[80px]"
+        className="fixed bottom-6 right-6 rounded-full z-50 hover:scale-110 transition-transform duration-100 w-[120px] h-[80px] animate-fade-in"
       >
         <Image 
           src="/chatbot.svg" 
@@ -83,9 +106,14 @@ export default function ChatbotLauncher() {
           width={120} 
           height={80} 
           className="w-full h-full object-contain"
-          style={{ aspectRatio: '3/2' }}
-          loading="lazy"
-          priority={false}
+          style={{ 
+            aspectRatio: '3/2',
+            containIntrinsicSize: '120px 80px',
+            contentVisibility: 'auto'
+          }}
+          loading={isSearchPage ? "eager" : "lazy"}
+          priority={!isSearchPage}
+          fetchPriority={isSearchPage ? "low" : "auto"}
         />
       </button>
 
