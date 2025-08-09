@@ -66,6 +66,8 @@ export default function RootLayout({
         <link rel="preload" href="/bee.webp" as="image" type="image/png" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://dapi.kakao.com" />
         <link rel="dns-prefetch" href="https://dapi.kakao.com" />
+        <link rel="preconnect" href="https://mts.daumcdn.net" />
+        <link rel="dns-prefetch" href="https://mts.daumcdn.net" />
         <link rel="preconnect" href="https://api.webee.sbs" />
         <link rel="dns-prefetch" href="https://d96w70pr33mqi.cloudfront.net" />
       </head>

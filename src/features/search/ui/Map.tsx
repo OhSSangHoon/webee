@@ -291,14 +291,24 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
 
   return (
     <div className="w-full h-full relative">
+      {/* LCP 회피를 위한 가시적 플레이스홀더 */}
+      <div className="absolute inset-0 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="text-center text-gray-600">
+            <div className="text-2xl mb-2">🗺️</div>
+            <p className="text-sm">지도 로딩 중...</p>
+          </div>
+        </div>
+      </div>
+      
       <div 
         ref={mapContainer} 
-        className="w-full h-full"
+        className="w-full h-full relative z-10"
         style={{ 
           width: '100%', 
           height: 'calc(100vh - 80px)',
-          containIntrinsicSize: '100% calc(100vh - 80px)',
-          contentVisibility: 'auto'
+          opacity: mapState.isKakaoLoaded && mapState.map ? 1 : 0,
+          transition: 'opacity 0.3s ease-in-out'
         }}
         role="application"
         aria-label="상품 위치 지도"
