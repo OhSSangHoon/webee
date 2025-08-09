@@ -17,8 +17,32 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
     loadError: null
   });
 
-  // 카카오 맵 지연 초기화 (LCP 최적화)
+  // 맵 컨테이너 가시성 확인
+  const [isMapVisible, setIsMapVisible] = useState(false);
+
+  // Intersection Observer로 맵 영역 감지
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsMapVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    if (mapContainer.current) {
+      observer.observe(mapContainer.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // 카카오 맵 초기화 (가시성 확인 후에만)
+  useEffect(() => {
+    if (!isMapVisible) return;
+
     const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
     
     if (!apiKey) {
@@ -31,8 +55,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
       return;
     }
 
-    // 5초 지연으로 LCP 측정 완료 후 로드
-    const timer = setTimeout(() => {
+    // 3초 추가 지연으로 LCP 측정 완료 후 로드
+    setTimeout(() => {
       loadKakaoMapScript(apiKey)
         .then(() => {
           setMapState(prev => ({ ...prev, isKakaoLoaded: true }));
@@ -44,10 +68,8 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
             loadError: error instanceof Error ? error.message : '지도 로드 실패' 
           }));
         });
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
+    }, 3000);
+  }, [isMapVisible]);
 
   // 제품들을 업체별로 그룹화
   useEffect(() => {
