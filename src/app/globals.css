@@ -42,7 +42,7 @@
   src: url("../../public/font/PretendardVariable.woff2") format("woff2");
   font-weight: 45 920; /* variable 지원 범위 */
   font-style: normal;
-  font-display: fallback;
+  font-display: swap;
 }
 
 html {
@@ -51,7 +51,7 @@ html {
 
 body {
   /*폰트 프리텐다드 기본설정 - 시스템 폰트 우선*/
-  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+  font-family: "Pretendard";
 }
 .text-black-custom {
   /* 기본 텍스트 색상 */
@@ -311,6 +311,7 @@ body {
   font-size: 2.5rem;
   transition: transform 0.2s ease;
   will-change: transform;
+  transform: translateZ(0);
 }
 
 /* 벌 1 경로 */
