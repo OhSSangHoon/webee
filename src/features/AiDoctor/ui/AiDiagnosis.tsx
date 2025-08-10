@@ -124,7 +124,7 @@ export default function AiDiagnosisUI({
           <div className="flex flex-row justify-center items-center w-full h-full gap-10">
             <div className="w-2/3 h-40 relative">
               <Image
-                src="/images/bee1.jpg"
+                src="/images/bee1.webp"
                 alt="예시 꿀벌1"
                 priority
                 sizes="(max-width: 768px) 100vw, 66vw"
@@ -134,7 +134,7 @@ export default function AiDiagnosisUI({
             </div>
             <div className="w-2/3 h-40 relative">
               <Image
-                src="/images/bee2.jpg"
+                src="/images/bee2.webp"
                 alt="예시 꿀벌2"
                 sizes="(max-width: 768px) 100vw, 66vw"
                 fill
@@ -143,7 +143,7 @@ export default function AiDiagnosisUI({
             </div>
             <div className="w-2/3 h-40 relative">
               <Image
-                src="/images/bee3.jpg"
+                src="/images/bee3.webp"
                 alt="예시 꿀벌3"
                 sizes="(max-width: 768px) 100vw, 66vw"
                 fill
