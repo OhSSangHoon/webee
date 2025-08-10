@@ -38,7 +38,6 @@ export default function AiDiagnosisUI({
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response.data);
       setResult(response.data.data);
     } catch (error) {
       console.error("진단 요청 실패:", error);
@@ -75,8 +74,8 @@ export default function AiDiagnosisUI({
   return (
     <div className="flex flex-col justify-start items-start w-full gap-4 ">
       <header className="font-semibold flex flex-row items-end space-x-2 text-[20px] w-full">
-        <div className="text-blue-500 ">Step 1</div> 꿀벌 사진 업로드
-        <div className="text-blue-500 text-[13px] mb-1 mx-2 font-medium ">
+        <div className="text-blue-700 font-semibold">Step 1</div> 꿀벌 사진 업로드
+        <div className="text-blue-700 text-[13px] mb-1 mx-2 font-medium">
           꿀벌 사진을 업로드하여 응애, 부저병, 날개불구바이러스감염증, 석고병
           질병 여부를 진단받을 수 있어요!
         </div>
@@ -100,8 +99,8 @@ export default function AiDiagnosisUI({
               />
             ) : (
               <>
-                <Camera className="w-8 h-8 text-gray-500" />
-                <p className="text-gray-500 text-sm mt-2">
+                <Camera className="w-8 h-8 text-gray-700" />
+                <p className="text-gray-700 text-sm mt-2">
                   사진을 선택해주세요
                 </p>
               </>
@@ -151,8 +150,8 @@ export default function AiDiagnosisUI({
               />
             </div>
           </div>
-          <div className="flex justify-end items-end text-sm text-gray-600">
-            ※위의 예시 이미지를 참고해주세요.
+          <div className="flex justify-end items-end text-sm text-gray-700">
+            <span className="">※ 위의 예시 이미지를 참고해주세요.</span>
           </div>
         </div>
       </div>
@@ -170,11 +169,11 @@ export default function AiDiagnosisUI({
         <div className="p-8 bg-[#ffebf6] rounded-lg w-full">
           <div className="flex flex-col gap-7">
             <header className="flex flex-col items-start justify-start">
-              <h1 className="text-lg font-semibold">병명 - {result.name}</h1>
-              <h2 className="text-sm">{result.description}</h2>
-              <h3 className="text-sm text-pink-500">
+              <h2 className="text-lg font-semibold">병명 - {result.name}</h2>
+              <h3 className="text-sm">{result.description}</h3>
+              <div className="text-sm text-pink-600 font-medium">
                 정확도: {result.confidence}
-              </h3>
+              </div>
             </header>
 
             {Array.isArray(result.symptoms) && (
