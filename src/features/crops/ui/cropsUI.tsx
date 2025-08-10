@@ -1,6 +1,6 @@
 // features/crops/Crops.tsx
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Crop } from "@/shared/types/crop";
 import { useCrops } from "../model/useCrops";
 import CropModal from "./cropModal";
@@ -28,10 +28,15 @@ export default function Crops({ onSelect }: Props) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
-  const hasAccessToken =
-    typeof window !== "undefined"
-      ? !!localStorage.getItem("accessToken")
-      : false;
+  const [hasAccessToken, setHasAccessToken] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== "undefined") {
+      setHasAccessToken(!!localStorage.getItem("accessToken"));
+    }
+  }, []);
 
   const openModal = () => {
     setIsOpen(true);
@@ -60,11 +65,11 @@ export default function Crops({ onSelect }: Props) {
     <div className="w-full">
       <button
         onClick={openModal}
-        disabled={!hasAccessToken} // 중복 막기
-        className={`relative w-full px-4 py-2 rounded-sm border text-blue-500 ${
-          hasAccessToken
+        disabled={!hasAccessToken || undefined}
+        className={`relative w-full px-4 py-2 rounded-sm border text-blue-700 ${
+          isMounted && hasAccessToken
             ? "white-button"
-            : "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "border-gray-300 bg-gray-100 text-gray-700 cursor-not-allowed"
         }`}
       >
         작물 정보 가져오기

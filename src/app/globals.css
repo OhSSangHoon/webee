@@ -76,7 +76,7 @@ body {
 }
 
 .blue-button2 {
-  @apply bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md w-full cursor-pointer;
+  @apply bg-blue-600 hover:bg-blue-700 transition-colors text-white px-4 py-2 rounded-md w-full cursor-pointer;
 }
 
 .blue-button2.loading {
@@ -88,7 +88,7 @@ body {
 
 .white-button {
   /*기본 흰색 버튼*/
-  @apply px-4 py-2 text-[#2B7FFF] border bg-white border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors cursor-pointer;
+  @apply px-4 py-2 text-blue-700 border bg-white border-blue-700 rounded-[8px] hover:bg-blue-700 hover:text-white transition-colors cursor-pointer;
 }
 
 .white-button.loading,

@@ -7,7 +7,6 @@ import { Crop } from "@/shared/types/crop";
 export const getCropInfo = async (): Promise<Crop[]> => {
   try {
     const res = await api.get("/profile/crops");
-    console.log("작물 정보 조회 성공:", res.data);
     return res.data.data;
   } catch (e) {
     console.error("작물 정보 조회 오류:", e);
