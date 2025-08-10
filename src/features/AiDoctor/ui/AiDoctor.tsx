@@ -68,8 +68,8 @@ export default function AiDoctorUi({
   return (
     <div className=" flex flex-col justify-start items-stretch w-full h-full gap-4 text-[#333333]">
       <header className="font-semibold flex flex-row items-end space-x-2 text-[20px]">
-        <div className="text-blue-500 ">Step 2</div> AI 꿀벌 닥터
-        <div className="text-blue-500 text-[13px] mb-1 mx-2 font-medium ">
+        <div className="text-blue-700 font-semibold">Step 2</div> AI 꿀벌 닥터
+        <div className="text-blue-700 text-[13px] mb-1 mx-2 font-medium">
           꿀벌 이미지 질병 판단 결과와 사용자 농지 정보를 바탕으로 AI가 맞춤형
           대처 방안을 응답합니다.
         </div>
@@ -83,7 +83,7 @@ export default function AiDoctorUi({
         <div className="flex flex-col">
           <label htmlFor="disease" className="text-[#4B5563] font-medium mb-1">
             질병 선택 <span className="text-red-500 ">*</span>
-            <span className="text-gray-400 text-sm">
+            <span className="text-gray-700 text-sm">
               {" "}
               (사진 진단 후 이용할 수 있습니다.)
             </span>

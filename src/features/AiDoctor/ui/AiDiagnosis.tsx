@@ -126,7 +126,7 @@ export default function AiDiagnosisUI({
                 src="/images/bee1.webp"
                 alt="예시 꿀벌1"
                 priority
-                sizes="(max-width: 768px) 100vw, 66vw"
+                sizes="(max-width: 768px) 100vw, 33vw"
                 fill
                 className="object-cover rounded-lg border"
               />
@@ -135,7 +135,8 @@ export default function AiDiagnosisUI({
               <Image
                 src="/images/bee2.webp"
                 alt="예시 꿀벌2"
-                sizes="(max-width: 768px) 100vw, 66vw"
+                priority
+                sizes="(max-width: 768px) 100vw, 33vw"
                 fill
                 className="object-cover rounded-lg border"
               />
@@ -144,7 +145,8 @@ export default function AiDiagnosisUI({
               <Image
                 src="/images/bee3.webp"
                 alt="예시 꿀벌3"
-                sizes="(max-width: 768px) 100vw, 66vw"
+                priority
+                sizes="(max-width: 768px) 100vw, 33vw"
                 fill
                 className="object-cover rounded-lg border"
               />

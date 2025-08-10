@@ -66,10 +66,10 @@ export default function Crops({ onSelect }: Props) {
       <button
         onClick={openModal}
         disabled={!hasAccessToken || undefined}
-        className={`relative w-full px-4 py-2 rounded-sm border text-blue-500 ${
+        className={`relative w-full px-4 py-2 rounded-sm border text-blue-700 ${
           isMounted && hasAccessToken
             ? "white-button"
-            : "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "border-gray-300 bg-gray-100 text-gray-700 cursor-not-allowed"
         }`}
       >
         작물 정보 가져오기
