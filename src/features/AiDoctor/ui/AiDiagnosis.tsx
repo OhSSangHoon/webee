@@ -120,35 +120,41 @@ export default function AiDiagnosisUI({
         {/* 예시 이미지 안내 영역 */}
         <div className="p-5 border-2 border-[#ececec] rounded-lg w-full min-h-[15rem] flex flex-col justify-center items-start ">
           <div>꿀벌이 잘 보이도록 확대해서 찍어주세요. </div>
-          <div className="flex flex-row justify-center items-center w-full h-full gap-10">
-            <div className="w-2/3 h-40 relative">
+          <div className="flex flex-row justify-center items-center w-full h-full gap-4 lg:gap-10">
+            <div className="flex-1 h-40">
               <Image
                 src="/images/bee1.webp"
                 alt="예시 꿀벌1"
                 priority
-                sizes="(max-width: 768px) 100vw, 33vw"
-                fill
-                className="object-cover rounded-lg border"
+                fetchPriority="high"
+                width={200}
+                height={160}
+                sizes="(max-width: 768px) 33vw, 200px"
+                className="w-full h-full object-cover rounded-lg border"
               />
             </div>
-            <div className="w-2/3 h-40 relative">
+            <div className="flex-1 h-40">
               <Image
                 src="/images/bee2.webp"
                 alt="예시 꿀벌2"
                 priority
-                sizes="(max-width: 768px) 100vw, 33vw"
-                fill
-                className="object-cover rounded-lg border"
+                fetchPriority="high"
+                width={200}
+                height={160}
+                sizes="(max-width: 768px) 33vw, 200px"
+                className="w-full h-full object-cover rounded-lg border"
               />
             </div>
-            <div className="w-2/3 h-40 relative">
+            <div className="flex-1 h-40">
               <Image
                 src="/images/bee3.webp"
                 alt="예시 꿀벌3"
                 priority
-                sizes="(max-width: 768px) 100vw, 33vw"
-                fill
-                className="object-cover rounded-lg border"
+                fetchPriority="high"
+                width={200}
+                height={160}
+                sizes="(max-width: 768px) 33vw, 200px"
+                className="w-full h-full object-cover rounded-lg border"
               />
             </div>
           </div>
