@@ -59,11 +59,23 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <link
-          rel="stylesheet"
+          rel="preload"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css"
-          media="print"
-          onLoad={(e) => { (e.currentTarget as HTMLLinkElement).media = 'all'; }}
+          as="style"
+          id="pretendard-css"
         />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              var link = document.getElementById('pretendard-css');
+              if (link) {
+                link.onload = function() {
+                  link.rel = 'stylesheet';
+                };
+              }
+            })();
+          `
+        }} />
         <noscript>
           <link
             rel="stylesheet"

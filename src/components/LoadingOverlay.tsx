@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function LoadingOverlay() {
   const [isVisible, setIsVisible] = useState(true);
@@ -27,7 +28,7 @@ export default function LoadingOverlay() {
         <div className="mb-8">
           <div className="relative w-24 h-24 mx-auto">
             <div className="absolute inset-0 animate-bounce">
-              <img 
+              <Image 
                 src="/bee.webp" 
                 alt="로딩 중..." 
                 className="w-full h-full object-contain filter drop-shadow-lg"
