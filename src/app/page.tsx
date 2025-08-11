@@ -85,7 +85,7 @@ export default function Home() {
         <main className="relative z-10 pb-20">
           <div className="container mx-auto px-5 text-center">
             <section className="mb-15">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 leading-tight flex flex-col items-center justify-center" style={{contain: 'layout style', contentVisibility: 'auto'}}>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-black text-white mb-3 leading-tight flex flex-col items-center justify-center" style={{contain: 'layout style', contentVisibility: 'auto'}}>
                 <span>농업인의 든든한 파트너</span>
                 <span><span className="text-yellow-300">webee</span>와 함께</span>
               </h1>
