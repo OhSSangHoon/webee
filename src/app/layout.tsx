@@ -58,18 +58,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link
-          rel="preload"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css"
-          as="style"
-          id="pretendard-css"
-        />
-        {/* <noscript>
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css"
-          />
-        </noscript> */}
         <link rel="preload" href="/images/bee1.webp" as="image" type="image/webp" crossOrigin="anonymous" />
         <link rel="preload" href="/images/bee2.webp" as="image" type="image/webp" crossOrigin="anonymous" />
         <link rel="preload" href="/images/bee3.webp" as="image" type="image/webp" crossOrigin="anonymous" />
