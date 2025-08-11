@@ -1,6 +1,11 @@
 "use client";
 
-import { Weather2 } from "@/features";
+import dynamic from "next/dynamic";
+
+const Weather2 = dynamic(() => import("@/features").then(mod => ({ default: mod.Weather2 })), {
+  loading: () => <div className="h-40 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl animate-pulse"></div>,
+  ssr: false
+});
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -13,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowBee(true);
-    }, 100);
+    }, 1000); // 1초 후에 벌 애니메이션 시작
     return () => clearTimeout(timer);
   }, []);
 
