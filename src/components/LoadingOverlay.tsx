@@ -31,7 +31,10 @@ export default function LoadingOverlay() {
               <Image 
                 src="/bee.webp" 
                 alt="로딩 중..." 
+                width={96}
+                height={96}
                 className="w-full h-full object-contain filter drop-shadow-lg"
+                priority
               />
             </div>
             {/* 날개 플래핑 효과 */}
