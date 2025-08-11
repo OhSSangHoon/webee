@@ -9,23 +9,8 @@ import Head from "next/head";
 export default function Home() {
   const router = useRouter();
   const [showBee, setShowBee] = useState(false);
-  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
-    // 폰트 로딩 감지
-    const checkFont = () => {
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => {
-          setFontLoaded(true);
-        });
-      } else {
-        // fallback: 1초 후 로딩된 것으로 간주
-        setTimeout(() => setFontLoaded(true), 1000);
-      }
-    };
-
-    checkFont();
-
     const timer = setTimeout(() => {
       setShowBee(true);
     }, 100);
@@ -100,16 +85,10 @@ export default function Home() {
         <main className="relative z-10 pb-20">
           <div className="container mx-auto px-5 text-center">
             <section className="mb-15">
-              {fontLoaded ? (
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-3 leading-tight flex flex-col items-center justify-center" style={{contain: 'layout style', contentVisibility: 'auto'}}>
-                  <span>농업인의 든든한 파트너</span>
-                  <span><span className="text-yellow-300">webee</span>와 함께</span>
-                </h1>
-              ) : (
-                <div className="h-24 sm:h-28 md:h-32 lg:h-40 flex items-center justify-center">
-                  <div className="animate-pulse bg-white/20 rounded-lg w-3/4 h-16"></div>
-                </div>
-              )}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 leading-tight flex flex-col items-center justify-center" style={{contain: 'layout style', contentVisibility: 'auto'}}>
+                <span>농업인의 든든한 파트너</span>
+                <span><span className="text-yellow-300">webee</span>와 함께</span>
+              </h1>
               <p className="text-xl text-gray-100 mb-6 opacity-90 min-h-[3rem] flex items-center justify-center">
                 수정벌과 관련된 모든 정보! 거래부터 관리까지 제공합니다.
               </p>

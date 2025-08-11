@@ -4,6 +4,7 @@ import { Header } from "@/widgets";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
 import ChatBot from "@/features/chatBot/ChatBotModal";
+import FontLoadingOverlay from "@/components/FontLoadingOverlay";
 
 export const metadata: Metadata = {
   title: {
@@ -73,6 +74,7 @@ export default function RootLayout({
       <body
         className="antialiased" // 폰트 로딩 완료 후 제거
       >
+        <FontLoadingOverlay />
         <HydrationProvider>
           <Header />
           <Providers>
