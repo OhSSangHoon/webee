@@ -50,8 +50,8 @@ html {
 }
 
 body {
-  /*시스템 폰트 우선, Pretendard는 점진적 향상*/
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Pretendard", sans-serif;
+  /*Pretendard 로드 후 시스템 폰트로 fallback*/
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
   transition: font-family 0.3s ease;
 }
 .text-black-custom {
