@@ -43,5 +43,12 @@
     "tailwindcss": "^4.1.5",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not < 0.25%",
+    "not IE 11",
+    "not op_mini all"
+  ]
 }
