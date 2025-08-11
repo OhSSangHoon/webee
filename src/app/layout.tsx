@@ -4,7 +4,7 @@ import { Header } from "@/widgets";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
 import ChatBot from "@/features/chatBot/ChatBotModal";
-import FontLoadingOverlay from "@/components/FontLoadingOverlay";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
 export const metadata: Metadata = {
   title: {
@@ -58,8 +58,18 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link
+          rel="preload"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css"
+        />
+        <link
+          rel="stylesheet"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css"
+        />
         <link rel="preload" href="/images/bee1.webp" as="image" type="image/webp" crossOrigin="anonymous" />
         <link rel="preload" href="/images/bee2.webp" as="image" type="image/webp" crossOrigin="anonymous" />
         <link rel="preload" href="/images/bee3.webp" as="image" type="image/webp" crossOrigin="anonymous" />
@@ -73,7 +83,7 @@ export default function RootLayout({
       <body
         className="antialiased" // 폰트 로딩 완료 후 제거
       >
-        <FontLoadingOverlay />
+        <LoadingOverlay />
         <HydrationProvider>
           <Header />
           <Providers>

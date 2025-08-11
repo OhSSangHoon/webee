@@ -50,8 +50,8 @@ html {
 }
 
 body {
-  /*시스템 폰트만 사용*/
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  /*Pretendard Dynamic Subset 사용*/
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
 }
 .text-black-custom {
   /* 기본 텍스트 색상 */
