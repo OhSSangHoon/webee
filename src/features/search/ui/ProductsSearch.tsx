@@ -8,17 +8,8 @@ import { BusinessDetail, getBusinessDetail } from '@/shared/business/api';
 import { product } from '@/features/products/model/model';
 import { BeeTypeFilter } from './BeeTypeFilter';
 import { ProductWithBusiness } from '@/features/search/model/model';
-const BusinessSidebar = dynamic(() => import('./BusinessSidebar').then(mod => ({ default: mod.BusinessSidebar })), {
-  loading: () => <div className="w-full h-full bg-gray-50 animate-pulse"></div>,
-});
-import dynamic from 'next/dynamic';
-
-const Maps = dynamic(() => import('./Map').then(mod => ({ default: mod.Maps })), {
-  loading: () => <div className="w-full h-96 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
-    <p className="text-gray-500">지도 로딩 중...</p>
-  </div>,
-  ssr: false
-});
+import { BusinessSidebar } from './BusinessSidebar';
+import { Maps } from './Map';
 
 
 // 업체 정보 타입 정의

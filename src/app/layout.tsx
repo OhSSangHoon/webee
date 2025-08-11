@@ -57,24 +57,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link rel="preload" href="/font/PretendardVariable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            @font-face {
-              font-family: "Pretendard";
-              src: url("/font/PretendardVariable.woff2") format("woff2");
-              font-weight: 45 920;
-              font-style: normal;
-              font-display: swap;
-            }
-            body {
-              font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
-            }
-            .font-black { font-weight: 900 !important; }
-          `
-        }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preload" href="/font/PretendardVariable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/images/bee1.webp" as="image" type="image/webp" crossOrigin="anonymous" />
         <link rel="preload" href="/images/bee2.webp" as="image" type="image/webp" crossOrigin="anonymous" />
         <link rel="preload" href="/images/bee3.webp" as="image" type="image/webp" crossOrigin="anonymous" />
