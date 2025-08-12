@@ -130,7 +130,7 @@ export default function DiagnosisHistory() {
   }
 
   return (
-    <div className="custom-box2">
+    <div className="custom-box2 isolate">
       <div className="custom-box2-title">
         <span className="custom-box2-icon">💉</span>질병 진단 결과
       </div>
@@ -206,30 +206,30 @@ export default function DiagnosisHistory() {
         </div>
       )}
 
-      {/* 진단 결과 목록 */}
-      <div className="flex flex-col-reverse max-h-150">
+      {/* 진단 결과 목록 - layout shift 방지 */}
+      <div className="flex flex-col-reverse max-h-150 min-h-[200px] isolate transform-gpu">
         {diagnosisList.map((item) => (
           <div
             key={item.beeDiagnosisId}
-            className="flex flex-row justify-start items-start gap-10 rounded-b-xl hover:bg-blue-50 px-10 py-5 hover:shadow-md transition-all duration-300 group "
+            className="flex flex-row justify-start items-start gap-10 rounded-b-xl hover:bg-blue-50 px-10 py-5 hover:shadow-md transition-all duration-300 group min-h-[100px] transform-gpu will-change-transform"
             onClick={() => openDetailModal(item.beeDiagnosisId)}
           >
-            <div className="relative w-22 h-22 min-w-[88px] min-h-[88px] aspect-square">
+            <div className="relative w-22 h-22 min-w-[88px] min-h-[88px] aspect-square overflow-hidden isolate">
               <Image
                 src={item.imageUrl}
                 alt={item.diseaseType}
                 fill
-                className="object-cover rounded-md hover:scale-105"
+                className="object-cover rounded-md hover:scale-105 transform-gpu"
                 sizes="88px"
                 loading="lazy"
               />
             </div>
 
-            <div className="flex flex-col gap-3">
-              <div className="text-sm font-semibold">
+            <div className="flex flex-col gap-3 flex-1 min-w-0 isolate">
+              <div className="text-sm font-semibold truncate">
                 {getBeeDiseaseKorean(item.diseaseType)} ({item.createdAt})
               </div>
-              <div className="text-xs text-[#4B5563] whitespace-pre-line">
+              <div className="text-xs text-[#4B5563] whitespace-pre-line overflow-hidden">
                 {item.situationAnalysis}
               </div>
             </div>

@@ -93,17 +93,16 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   }
 
   return (
-    <div className="custom-box2 rounded bg-white shadow-lg" style={{contain: 'layout style'}}>
+    <div className="custom-box2 rounded bg-white shadow-lg isolate transform-gpu">
       <header className="custom-box2-title w-full text-base font-medium">
-        <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
+        <span className="custom-box2-icon">🐝</span> 저장된 수정벌 추천 리스트
       </header>
-      <div className="px-10 py-4" style={{contain: 'layout'}}>
-        <ul className="flex flex-row p-4 gap-4 min-h-[200px]" style={{contain: 'layout'}}>
+      <div className="px-10 py-4 isolate">
+        <ul className="flex flex-row p-4 gap-4 min-h-[200px] isolate transform-gpu">
           {list.map((item: BeeRecommendation) => (
             <li
               key={item.beeRecommendationId}
-              className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between items-start hover:scale-105 transform cursor-pointer"
-              style={{contain: 'layout style'}}
+              className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between items-start hover:scale-105 transform cursor-pointer isolate transform-gpu will-change-transform"
               onClick={(e) => {
                 e.stopPropagation();
                 onSelect(item.beeRecommendationId);
