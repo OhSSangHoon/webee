@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useState, useEffect } from "react";
+import Head from "next/head";
 import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
 import { NavigationButton } from "./navButton";
@@ -85,11 +86,27 @@ export default function MySaleList() {
     );
   }
 
+  // 첫 3개 상품 이미지 preload
+  const preloadImages = visibleProducts.slice(0, 3)
+    .map(product => product?.imageUrls?.[0])
+    .filter(Boolean);
+
   return (
-    <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
-      <div className="custom-box2-title mb-4">
-        <span className="custom-box2-icon">🛒</span> 내 상품 목록
-      </div>
+    <>
+      {preloadImages.map((imageUrl, index) => (
+        <Head key={index}>
+          <link
+            rel="preload"
+            as="image"
+            href={imageUrl}
+            fetchPriority="high"
+          />
+        </Head>
+      ))}
+      <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
+        <div className="custom-box2-title mb-4">
+          <span className="custom-box2-icon">🛒</span> 내 상품 목록
+        </div>
 
       {/* 반응형 컨테이너 - layout shift 방지 */}
       <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate">
@@ -128,5 +145,6 @@ export default function MySaleList() {
         )}
       </div>
     </div>
+    </>
   );
 }

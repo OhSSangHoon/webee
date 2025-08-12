@@ -36,7 +36,7 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   // 로딩 상태
   if (loading) {
     return (
-      <div className="custom-box2 rounded-xl bg-white shadow-lg">
+      <div className="custom-box2 shadow-lg">
         <div className="custom-box2-title w-full text-xl font-semibold">
           🐝 수정벌 추천 리스트
         </div>
@@ -51,7 +51,7 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   // 에러 상태
   if (error) {
     return (
-      <div className="custom-box2 rounded-xl bg-white shadow-lg">
+      <div className="custom-box2 shadow-lg">
         <div className="custom-box2-title w-full text-xl font-semibold">
           🐝 수정벌 추천 리스트
         </div>
@@ -74,7 +74,7 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   // 데이터 없음
   if (!list || list.length === 0) {
     return (
-      <div className="custom-box2 rounded-xl bg-white shadow-lg">
+      <div className="custom-box2 shadow-lg">
         <div className="custom-box2-title w-full text-xl font-semibold">
           🐝 수정벌 추천 리스트
         </div>
@@ -93,7 +93,7 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   }
 
   return (
-    <div className="custom-box2 rounded bg-white shadow-lg isolate transform-gpu">
+    <div className="custom-box2 shadow-lg isolate transform-gpu">
       <header className="custom-box2-title w-full text-base font-medium">
         <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
       </header>
