@@ -75,7 +75,7 @@ export const ProductCard = memo<ProductCardProps>(
               fetchPriority={index < 3 ? "high" : "auto"}
               onLoad={handleImageLoad}
               onError={handleImageError}
-              sizes="(max-width: 640px) 280px, (max-width: 768px) 140px, 280px"
+              sizes="(max-width: 640px) 280px, (max-width: 1024px) 240px, 280px"
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg"
             />

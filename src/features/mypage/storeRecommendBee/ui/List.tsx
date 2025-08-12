@@ -98,11 +98,11 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
         <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
       </header>
       <div className="px-2 py-2 isolate overflow-hidden">
-        <ul className="flex flex-row overflow-x-auto p-4 gap-4 min-h-[200px] isolate transform-gpu">
+        <ul className="flex flex-row overflow-x-auto p-4 gap-4 isolate transform-gpu">
           {list.map((item: BeeRecommendation) => (
             <li
               key={item.beeRecommendationId}
-              className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between items-start hover:scale-105 transform cursor-pointer isolate transform-gpu will-change-transform"
+              className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md border border-transparent hover:border-pink-300 hover:bg-pink-50/30 transition-colors duration-300 flex flex-col justify-between items-start cursor-pointer isolate"
               onClick={(e) => {
                 e.stopPropagation();
                 onSelect(item.beeRecommendationId);
