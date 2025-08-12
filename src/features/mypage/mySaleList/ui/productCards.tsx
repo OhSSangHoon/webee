@@ -69,7 +69,7 @@ export const ProductCard = memo<ProductCardProps>(
               src={product.imageUrls[0]}
               alt={`${product.name} 상품 이미지`}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu"
               priority={index === 0} // 첫 번째 상품은 우선 로딩 
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
@@ -78,7 +78,6 @@ export const ProductCard = memo<ProductCardProps>(
               sizes="(max-width: 640px) 280px, (max-width: 768px) 140px, 280px"
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg"
-              className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu"
             />
           ) : (
             <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400 isolate">
