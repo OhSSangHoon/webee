@@ -86,18 +86,19 @@ export default function MySaleList() {
   }
 
   return (
-    <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden">
+    <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden" style={{contain: 'layout style'}}>
       <div className="custom-box2-title mb-4">
-        <span className="custom-box2-icon">🛒</span> 내가 등록한 상품 목록
+        <span className="custom-box2-icon">🛒</span> 내 상품 목록
       </div>
 
-      {/* 반응형 컨테이너 */}
-      <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
+      {/* 반응형 컨테이너 - layout shift 방지 */}
+      <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4" style={{contain: 'layout'}}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center min-h-[250px]" style={{contain: 'layout'}}>
           {visibleProducts.slice(0, itemsToShow).map((product, index) => (
             <div
               key={product.id}
               className="w-full max-w-[280px] flex justify-center"
+              style={{contain: 'layout'}}
             >
               <ProductCard
                 product={product}

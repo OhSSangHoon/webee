@@ -77,7 +77,7 @@ export default function DiagnosisHistory() {
     return (
       <div className="custom-box2">
         <div className="custom-box2-title">
-          <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+          <span className="custom-box2-icon">💉</span>질병 진단 결과
         </div>
         <div className="flex items-center justify-center py-20">
           <div className="flex flex-col items-center gap-3">
@@ -94,7 +94,7 @@ export default function DiagnosisHistory() {
     return (
       <div className="custom-box2">
         <div className="custom-box2-title">
-          <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+          <span className="custom-box2-icon">💉</span>질병 진단 결과
         </div>
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
@@ -116,7 +116,7 @@ export default function DiagnosisHistory() {
     return (
       <div className="custom-box2">
         <div className="custom-box2-title">
-          <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+          <span className="custom-box2-icon">💉</span>질병 진단 결과
         </div>
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
@@ -132,7 +132,7 @@ export default function DiagnosisHistory() {
   return (
     <div className="custom-box2">
       <div className="custom-box2-title">
-        <span className="custom-box2-icon">💉</span>질병 진단 결과 히스토리
+        <span className="custom-box2-icon">💉</span>질병 진단 결과
       </div>
       {detailModal && detailContent && (
         <div

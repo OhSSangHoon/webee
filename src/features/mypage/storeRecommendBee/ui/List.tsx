@@ -93,16 +93,17 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   }
 
   return (
-    <div className="custom-box2 rounded bg-white shadow-lg ">
+    <div className="custom-box2 rounded bg-white shadow-lg" style={{contain: 'layout style'}}>
       <header className="custom-box2-title w-full text-base font-medium">
-        <span className="custom-box2-icon">🐝</span> 저장된 수정벌 추천 리스트
+        <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
       </header>
-      <div className="px-10 py-4">
-        <ul className="flex flex-row overflow-x-auto p-4 gap-4 min-h-[200px]">
+      <div className="px-10 py-4" style={{contain: 'layout'}}>
+        <ul className="flex flex-row p-4 gap-4 min-h-[200px]" style={{contain: 'layout'}}>
           {list.map((item: BeeRecommendation) => (
             <li
               key={item.beeRecommendationId}
               className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between items-start hover:scale-105 transform cursor-pointer"
+              style={{contain: 'layout style'}}
               onClick={(e) => {
                 e.stopPropagation();
                 onSelect(item.beeRecommendationId);
@@ -141,9 +142,6 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
                 </span>
               </div>
 
-              <button className="mt-3 w-full py-2 bg-white border border-pink-400 text-pink-500 rounded text-sm font-medium hover:bg-pink-50 transition-colors duration-200 active:scale-95 cursor-pointer">
-                상세 보기
-              </button>
             </li>
           ))}
         </ul>
