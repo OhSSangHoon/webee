@@ -79,7 +79,7 @@ export default function DiagnosisHistory() {
         <div className="custom-box2-title">
           <span className="custom-box2-icon">💉</span>질병 진단 결과
         </div>
-        <div className="flex items-center justify-center py-20">
+        <div className="flex items-center justify-center min-h-[250px]">
           <div className="flex flex-col items-center gap-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
             <div className="text-gray-500 text-sm">진단 결과를 불러오는 중...</div>
@@ -96,7 +96,7 @@ export default function DiagnosisHistory() {
         <div className="custom-box2-title">
           <span className="custom-box2-icon">💉</span>질병 진단 결과
         </div>
-        <div className="flex items-center justify-center py-20">
+        <div className="flex items-center justify-center min-h-[250px]">
           <div className="text-center">
             <div className="text-red-500 mb-3">{error}</div>
             <button
@@ -118,7 +118,7 @@ export default function DiagnosisHistory() {
         <div className="custom-box2-title">
           <span className="custom-box2-icon">💉</span>질병 진단 결과
         </div>
-        <div className="flex items-center justify-center py-20">
+        <div className="flex items-center justify-center min-h-[250px]">
           <div className="text-center">
             <div className="text-4xl mb-4">🔬</div>
             <div className="text-gray-500 text-sm mb-4">아직 진단 결과가 없습니다.</div>
@@ -207,7 +207,7 @@ export default function DiagnosisHistory() {
       )}
 
       {/* 진단 결과 목록 - layout shift 방지 */}
-      <div className="flex flex-col-reverse max-h-150 min-h-[200px] isolate transform-gpu">
+      <div className="flex flex-col-reverse max-h-150 min-h-[250px] isolate transform-gpu">
         {diagnosisList.map((item) => (
           <div
             key={item.beeDiagnosisId}

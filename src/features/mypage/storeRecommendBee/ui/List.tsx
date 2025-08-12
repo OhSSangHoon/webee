@@ -95,10 +95,10 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   return (
     <div className="custom-box2 rounded bg-white shadow-lg isolate transform-gpu">
       <header className="custom-box2-title w-full text-base font-medium">
-        <span className="custom-box2-icon">🐝</span> 저장된 수정벌 추천 리스트
+        <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
       </header>
-      <div className="px-10 py-4 isolate">
-        <ul className="flex flex-row p-4 gap-4 min-h-[200px] isolate transform-gpu">
+      <div className="px-2 py-2 isolate overflow-hidden">
+        <ul className="flex flex-row overflow-x-auto p-4 gap-4 min-h-[200px] isolate transform-gpu">
           {list.map((item: BeeRecommendation) => (
             <li
               key={item.beeRecommendationId}
