@@ -165,6 +165,7 @@ export default function DiagnosisHistory() {
                 alt={detailContent.diseaseType}
                 fill
                 className="object-contain rounded-lg"
+                sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
 
@@ -205,19 +206,22 @@ export default function DiagnosisHistory() {
         </div>
       )}
 
-      <div className="flex flex-col-reverse max-h-150 overflow-scroll">
+      {/* 진단 결과 목록 */}
+      <div className="flex flex-col-reverse max-h-150">
         {diagnosisList.map((item) => (
           <div
             key={item.beeDiagnosisId}
-            className="flex flex-row justify-start items-start gap-10 hover:bg-blue-50 px-10 py-5 hover:shadow-md transition-all duration-300 group "
+            className="flex flex-row justify-start items-start gap-10 rounded-b-xl hover:bg-blue-50 px-10 py-5 hover:shadow-md transition-all duration-300 group "
             onClick={() => openDetailModal(item.beeDiagnosisId)}
           >
-            <div className="relative w-22 h-22 min-w-[88px] min-h-[88px]">
+            <div className="relative w-22 h-22 min-w-[88px] min-h-[88px] aspect-square">
               <Image
                 src={item.imageUrl}
                 alt={item.diseaseType}
                 fill
                 className="object-cover rounded-md hover:scale-105"
+                sizes="88px"
+                loading="lazy"
               />
             </div>
 

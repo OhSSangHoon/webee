@@ -52,7 +52,7 @@ export const ProductCard = memo<ProductCardProps>(
         aria-label={`${product.name} 상품 상세보기`}
       >
         {/* 상품 이미지 영역 */}
-        <div className="relative w-full h-[200px] sm:h-[180px] lg:h-[160px] overflow-hidden rounded-t-lg bg-gray-100">
+        <div className="relative w-full h-[200px] sm:h-[180px] lg:h-[160px] min-h-[160px] overflow-hidden rounded-t-lg bg-gray-100">
           {/* 로딩 상태 */}
           {isImageLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -70,11 +70,11 @@ export const ProductCard = memo<ProductCardProps>(
               alt={`${product.name} 상품 이미지`}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
-              priority={index < 4}
+              priority={index === 0} // 첫 번째 상품은 우선 로딩
               loading={index < 4 ? "eager" : "lazy"}
               onLoad={handleImageLoad}
               onError={handleImageError}
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 280px"
+              sizes="(max-width: 640px) 280px, (max-width: 768px) 140px, 280px"
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg"
             />
