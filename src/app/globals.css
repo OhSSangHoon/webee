@@ -131,6 +131,7 @@ body {
 * 프로필 수정 페이지용 섹션 박스*/
 .custom-box2 {
   @apply bg-white border rounded-xl border-gray-200 text-[#333333] text-[14px];
+  will-change: transform;
 }
 
 /*타이틀*/
