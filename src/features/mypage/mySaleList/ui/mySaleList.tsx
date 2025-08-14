@@ -6,7 +6,7 @@ import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
 import { NavigationButton } from "./navButton";
 
-// 스켈레톤 카드 컴포넌트
+// 스켈레톤 카드 컴포넌트 - 실제 ProductCard와 동일한 크기 보장
 const SkeletonProductCard: React.FC = () => (
   <div className="w-full max-w-[280px] flex justify-center isolate transform-gpu">
     <div className="w-full h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm animate-pulse">
@@ -59,15 +59,19 @@ const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, o
 
 export default function MySaleList() {
   const { myProducts, visibleProducts, slideInfo, isLoading, error, actions } = useMySaleList();
-  const [itemsToShow, setItemsToShow] = useState(2);
+  const [itemsToShow, setItemsToShow] = useState(1); // 기본값을 1로 변경
 
-  // 화면 크기에 따른 아이템 개수 설정
+  // 개선된 반응형 설정: sm(1개), md(2개), lg+(3개)
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
+      const width = window.innerWidth;
+      
+      if (width >= 1024) {        // lg: 1024px 이상 -> 3개
         setItemsToShow(3);
-      } else {
+      } else if (width >= 768) {  // md: 768px 이상 -> 2개  
         setItemsToShow(2);
+      } else {                    // sm: 768px 미만 -> 1개
+        setItemsToShow(1);
       }
     };
 
@@ -88,6 +92,11 @@ export default function MySaleList() {
   const preloadImages = visibleProducts.slice(0, 3)
     .map(product => product?.imageUrls?.[0])
     .filter(Boolean);
+
+  // 반응형 그리드 클래스 생성
+  const getGridClasses = () => {
+    return "grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+  };
 
   return (
     <>
@@ -111,13 +120,10 @@ export default function MySaleList() {
 
         {/* 컨텐츠 영역 - 최소 높이 보장으로 layout shift 방지 */}
         <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate flex-1">
-          {/* 그리드 컨테이너 - 고정 최소 높이와 그리드 구조 */}
+          {/* 반응형 그리드 컨테이너 - 고정 최소 높이 */}
           <div 
-            className="grid gap-4 justify-items-center isolate transform-gpu"
-            style={{
-              gridTemplateColumns: `repeat(${itemsToShow}, 1fr)`,
-              minHeight: '250px'
-            }}
+            className={`${getGridClasses()} isolate transform-gpu`}
+            style={{ minHeight: '280px' }} // 카드 높이에 맞춰 조정
           >
             {/* 로딩 상태 */}
             {isLoading && (
@@ -154,11 +160,11 @@ export default function MySaleList() {
                   </div>
                 ))}
                 
-                {/* 빈 슬롯 채우기 - 그리드 구조 유지 */}
-                {visibleProducts.length < itemsToShow && (
+                {/* 빈 슬롯 채우기 - 그리드 구조 유지 (모바일에서는 필요 없음) */}
+                {itemsToShow > 1 && visibleProducts.length < itemsToShow && (
                   <>
                     {Array.from({ length: itemsToShow - visibleProducts.length }, (_, index) => (
-                      <div key={`empty-${index}`} className="w-full max-w-[280px]"></div>
+                      <div key={`empty-${index}`} className="w-full max-w-[280px] hidden md:block"></div>
                     ))}
                   </>
                 )}
@@ -166,7 +172,7 @@ export default function MySaleList() {
             )}
           </div>
 
-          {/* 네비게이션 버튼 - 상품이 있고 더 많은 상품이 있을 때만 표시 */}
+          {/* 네비게이션 버튼 */}
           {!isLoading && !error && myProducts.length > itemsToShow && (
             <div className="flex justify-between items-center mt-6">
               {/* 이전 버튼 */}
