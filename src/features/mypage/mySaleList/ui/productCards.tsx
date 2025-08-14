@@ -53,7 +53,7 @@ export const ProductCard = memo<ProductCardProps>(
       >
         {/* 상품 이미지 영역 */}
         <div className="relative w-full h-[200px] sm:h-[180px] lg:h-[160px] min-h-[160px] overflow-hidden rounded-t-lg bg-gray-100 isolate transform-gpu">
-          {/* 로딩 상태 - 고정 크기로 layout shift 방지 */}
+          {/* 로딩 상태 */}
           {isImageLoading && (
             <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-gray-100 isolate">
               <div className="flex flex-col items-center space-y-2">
@@ -63,7 +63,7 @@ export const ProductCard = memo<ProductCardProps>(
             </div>
           )}
 
-          {/* 이미지 영역 - layout shift 방지를 위한 고정 크기 */}
+          {/* 이미지 영역 */}
           {product.imageUrls && product.imageUrls.length > 0 && !imageError ? (
             <Image
               src={product.imageUrls[0]}
@@ -89,7 +89,7 @@ export const ProductCard = memo<ProductCardProps>(
         )}
         </div>
 
-        {/* 상품 정보 영역 - 고정 높이로 layout shift 방지 */}
+        {/* 상품 정보 영역 */}
         <div className="p-3 sm:p-4 h-[120px] sm:h-[120px] lg:h-[120px] flex flex-col justify-between isolate">
           <div className="space-y-1 sm:space-y-2">
             {/* 상품명 */}
