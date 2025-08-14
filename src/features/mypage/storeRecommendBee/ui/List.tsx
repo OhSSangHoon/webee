@@ -33,16 +33,34 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
     loadList();
   }, [loadList]);
 
-  // 로딩 상태
+  // 로딩 상태 - 스켈레톤 UI로 layout shift 방지
   if (loading) {
     return (
-      <div className="custom-box2 shadow-lg">
-        <div className="custom-box2-title w-full text-xl font-semibold">
-          🐝 수정벌 추천 리스트
-        </div>
-        <div className="flex justify-center items-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
-          <p className="ml-2 text-gray-600">불러오는 중...</p>
+      <div className="custom-box2 shadow-lg isolate transform-gpu">
+        <header className="custom-box2-title w-full text-base font-medium">
+          <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
+        </header>
+        <div className="px-2 py-2 isolate overflow-hidden">
+          <ul className="flex flex-row overflow-x-auto p-4 gap-4 isolate transform-gpu">
+            {[1, 2, 3].map((index) => (
+              <li
+                key={index}
+                className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md border border-transparent flex flex-col justify-between items-start isolate"
+              >
+                <div className="flex items-center justify-between w-full mb-2">
+                  <div className="h-6 bg-gray-200 rounded animate-pulse w-20"></div>
+                  <div className="h-5 bg-gray-200 rounded-full animate-pulse w-12"></div>
+                </div>
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-32 mb-1"></div>
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-40 mb-1"></div>
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-28"></div>
+                <div className="flex gap-2 mt-2">
+                  <div className="h-6 bg-gray-200 rounded-full animate-pulse w-16"></div>
+                  <div className="h-6 bg-gray-200 rounded-full animate-pulse w-20"></div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     );
@@ -51,11 +69,11 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   // 에러 상태
   if (error) {
     return (
-      <div className="custom-box2 shadow-lg">
-        <div className="custom-box2-title w-full text-xl font-semibold">
-          🐝 수정벌 추천 리스트
-        </div>
-        <div className="flex justify-center items-center py-8">
+      <div className="custom-box2 shadow-lg isolate transform-gpu">
+        <header className="custom-box2-title w-full text-base font-medium">
+          <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
+        </header>
+        <div className="px-2 py-2 isolate overflow-hidden min-h-[200px] flex justify-center items-center">
           <div className="text-red-500 text-center">
             <p className="font-semibold">오류 발생</p>
             <p className="text-sm mt-1">{error}</p>
@@ -74,17 +92,16 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   // 데이터 없음
   if (!list || list.length === 0) {
     return (
-      <div className="custom-box2 shadow-lg">
-        <div className="custom-box2-title w-full text-xl font-semibold">
-          🐝 수정벌 추천 리스트
-        </div>
-        <div className="flex flex-col justify-center items-center py-8">
+      <div className="custom-box2 shadow-lg isolate transform-gpu">
+        <header className="custom-box2-title w-full text-base font-medium">
+          <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
+        </header>
+        <div className="px-2 py-2 isolate overflow-hidden min-h-[200px] flex flex-col justify-center items-center">
           <div className="text-center">
             <div className="text-4xl mb-4">📂</div>
           </div>
-
-          <p className="text-gray-500  mb-4">추천된 수정벌이 없습니다.</p>
-          <div className="text-gray-400 text-xs  mb-4">
+          <p className="text-gray-500 mb-4">추천된 수정벌이 없습니다.</p>
+          <div className="text-gray-400 text-xs mb-4">
             수정벌 추천을 통해 내게 맞는 수정벌을 확인해보세요.
           </div>
         </div>
@@ -97,7 +114,7 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
       <header className="custom-box2-title w-full text-base font-medium">
         <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
       </header>
-      <div className="px-2 py-2 isolate overflow-hidden">
+      <div className="px-2 py-2 isolate overflow-hidden min-h-[200px]">
         <ul className="flex flex-row overflow-x-auto p-4 gap-4 isolate transform-gpu">
           {list.map((item: BeeRecommendation) => (
             <li
