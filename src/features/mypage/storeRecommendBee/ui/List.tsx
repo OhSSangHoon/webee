@@ -97,12 +97,21 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
       <header className="custom-box2-title w-full text-base font-medium">
         <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
       </header>
+<<<<<<< HEAD
       <div className="px-2 py-2 isolate overflow-hidden">
         <ul className="flex flex-row overflow-x-auto p-4 gap-4 isolate transform-gpu">
           {list.map((item: BeeRecommendation) => (
             <li
               key={item.beeRecommendationId}
               className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md border border-transparent hover:border-pink-300 hover:bg-pink-50/30 transition-colors duration-300 flex flex-col justify-between items-start cursor-pointer isolate"
+=======
+      <div className="px-10 py-4">
+        <ul className="flex flex-row overflow-x-auto p-4 gap-4 min-h-[250px]">
+          {list.map((item: BeeRecommendation) => (
+            <li
+              key={item.beeRecommendationId}
+              className="min-w-[280px] min-h-[200px] bg-white rounded-2xl p-4 drop-shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between items-start cursor-pointer will-change-transform"
+>>>>>>> ec459200862298f61a4db1c9da558b84289ac0c6
               onClick={(e) => {
                 e.stopPropagation();
                 onSelect(item.beeRecommendationId);
