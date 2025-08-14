@@ -10,7 +10,7 @@ import {
 export const useBeeRecommendationStore = () => {
   const [list, setList] = useState<BeeRecommendation[] | null>(null);
   const [detailMap, setDetailMap] = useState<Record<number, BeeRecommendationDetail>>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadList = async () => {

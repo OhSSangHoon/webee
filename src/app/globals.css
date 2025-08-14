@@ -15,12 +15,74 @@
   .animate-fade-in {
     animation: fadeIn 0.1s ease-out;
   }
+
+  /* Layout Shift 방지를 위한 유틸리티 클래스들 */
+  .aspect-ratio-preserve {
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .aspect-ratio-16-9 {
+    padding-bottom: 56.25%; /* 16:9 비율 */
+  }
+
+  .aspect-ratio-4-3 {
+    padding-bottom: 75%; /* 4:3 비율 */
+  }
+
+  .aspect-ratio-square {
+    padding-bottom: 100%; /* 1:1 비율 */
+  }
+
+  /* 고정 크기 컨테이너 */
+  .fixed-height-container {
+    min-height: var(--min-height, 200px);
+    contain: layout style;
+  }
+
+  /* 스켈레톤 애니메이션 최적화 */
+  .skeleton-pulse {
+    animation: skeleton-loading 1.5s ease-in-out infinite alternate;
+    background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+    background-size: 200% 100%;
+  }
+
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* GPU 가속 최적화 */
+  .gpu-accelerated {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* 컨텐츠 시프트 방지 */
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 200px;
+  }
 }
 
 :root {
   --background: #ffffff;
   --foreground: #ffffff;
   width: 100%;
+  
+  /* Layout Shift 방지를 위한 기본 크기 변수들 */
+  --card-min-height: 280px;
+  --card-image-height: 160px;
+  --card-content-height: 120px;
+  --list-min-height: 220px;
 }
 
 @theme inline {
@@ -40,9 +102,9 @@
 @font-face {
   font-family: "Pretendard";
   src: url("/font/PretendardVariable.woff2") format("woff2");
-  font-weight: 45 920; /* variable 지원 범위 */
+  font-weight: 45 920;
   font-style: normal;
-  font-display: swap;
+  font-display: swap; /* 폰트 로딩 최적화 */
 }
 
 html {
@@ -52,25 +114,21 @@ html {
 body {
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
 }
+
 .text-black-custom {
-  /* 기본 텍스트 색상 */
   color: #333333;
 }
+
 .text-gray-custom {
-  /* 기본 텍스트 색상 */
   color: #6b7280;
 }
 
 .custom-Input {
-  /*기본 인풋 박스*/
-  @apply border border-gray-300 placeholder-gray-300  px-4 py-2 lg:w-full h-fit rounded-sm mt-2;
+  @apply border border-gray-300 placeholder-gray-300 px-4 py-2 lg:w-full h-fit rounded-sm mt-2;
 }
 
-/*
-*버튼 디자인*/
-
+/* 버튼 디자인 */
 .blue-button {
-  /*기본 블루 버튼*/
   @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors cursor-pointer;
 }
 
@@ -82,11 +140,10 @@ body {
   background-color: #f0f0f0;
   color: #999;
   cursor: not-allowed;
-  pointer-events: none; /* 클릭 막기 */
+  pointer-events: none;
 }
 
 .white-button {
-  /*기본 흰색 버튼*/
   @apply px-4 py-2 text-blue-700 border bg-white border-blue-700 rounded-[8px] hover:bg-blue-700 hover:text-white transition-colors cursor-pointer;
 }
 
@@ -95,11 +152,10 @@ body {
   background-color: #f0f0f0;
   color: #999;
   cursor: not-allowed;
-  pointer-events: none; /* 클릭 막기 */
+  pointer-events: none;
 }
 
 .custom-button {
-  /* 작은 흰색 버튼*/
   background-color: #ffffff;
   color: #333333;
   border: 1px solid #d9d9d9;
@@ -111,7 +167,6 @@ body {
   width: max-content;
   height: fit-content;
   font-size: 12px;
-  cursor: pointer;
 }
 
 .custom-button:hover {
@@ -120,42 +175,44 @@ body {
   border-color: #2b7fff;
 }
 
-/*
-*기본 흰색 박스*/
+/* 기본 흰색 박스 - Layout Shift 방지 최적화 */
 .custom-box {
   @apply basis-[30%] bg-white border rounded-xl border-gray-200 p-4 text-[#333333] text-[14px] font-medium;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  min-height: var(--card-min-height);
+  contain: layout style;
 }
 
-/*
-* 프로필 수정 페이지용 섹션 박스*/
+/* 프로필 수정 페이지용 섹션 박스 - 고정 높이 보장 */
 .custom-box2 {
   @apply bg-white border rounded-xl border-gray-200 text-[#333333] text-[14px];
-  will-change: transform;
+  min-height: var(--list-min-height);
+  contain: layout style;
+  will-change: auto; /* GPU 가속 최적화 */
 }
 
-/*타이틀*/
 .custom-box2-title {
   @apply w-full bg-[#EEF2FF] h-[60px] rounded-t-xl font-semibold text-[16px] flex items-center p-5;
+  flex-shrink: 0; /* 크기 고정 */
 }
 
-/*타이틀 앞쪽 아이콘*/
 .custom-box2-icon {
   @apply bg-white rounded-lg p-1 mr-3;
+  flex-shrink: 0;
 }
 
 .custom-box2-title2 {
-  @apply w-full bg-[#FCE7F3]
- h-[60px] rounded-t-xl font-semibold  text-[16px] flex items-center p-5;
+  @apply w-full bg-[#FCE7F3] h-[60px] rounded-t-xl font-semibold text-[16px] flex items-center p-5;
+  flex-shrink: 0;
 }
 
-/*마이페이지 확인 버튼*/
 .custom-outline-button {
   @apply w-fit px-4 py-2 text-[#2B7FFF] border border-[#2B7FFF] rounded-[8px] hover:bg-[#2B7FFF] hover:text-white transition-colors cursor-pointer;
 }
 
 .hover_start_button {
   @apply transition-all duration-300 ease-in-out cursor-pointer;
+  transform: translateZ(0); /* GPU 가속 */
 }
 
 .hover_start_button:hover {
@@ -163,7 +220,6 @@ body {
 }
 
 .text-grey-tag {
-  /* 마이페이지 태그 */
   background-color: #f3f4f6;
   width: fit-content;
   height: fit-content;
@@ -175,29 +231,25 @@ body {
 
 /* 수정벌 추천 페이지 */
 .card-section {
-  @apply w-full  bg-white/90 p-6 sm:p-8 rounded-2xl  text-gray-800 space-y-6;
+  @apply w-full bg-white/90 p-6 sm:p-8 rounded-2xl text-gray-800 space-y-6;
+  min-height: 400px; /* 최소 높이 보장 */
 }
 
-/*질병진단 페이지*/
+/* 질병진단 페이지 */
 .card-section-2 {
-  @apply min-h-screen w-full bg-white/90  rounded-2xl shadow-xl text-gray-800 space-y-6;
+  @apply min-h-screen w-full bg-white/90 rounded-2xl shadow-xl text-gray-800 space-y-6;
 }
 
-/*
-*auth 용 디자인
-*/
+/* auth 용 디자인 */
 .auth-input {
-  /*auth 인풋 박스*/
   @apply border border-[#E2E5EB] rounded-md h-8;
 }
 
 .auth-label {
-  /*auth 인풋 라벨*/
-  @appply "mb-1 text-sm font-medium ";
+  @apply mb-1 text-sm font-medium;
 }
 
-/*투명 스크롤바 디자인*/
-/* 기본 상태: 스크롤바 투명 */
+/* 투명 스크롤바 디자인 - 성능 최적화 */
 .scrollbar-hide::-webkit-scrollbar {
   width: 10px;
   height: 5px;
@@ -208,13 +260,12 @@ body {
   background-color: transparent;
 }
 
-/* hover 시: 스크롤바 보이게 */
 .group:hover::-webkit-scrollbar {
   opacity: 1;
 }
 
 .group:hover::-webkit-scrollbar-thumb {
-  background-color: #3b82f6; /*blue-500*/
+  background-color: #3b82f6;
   border-radius: 4px;
 }
 
@@ -268,6 +319,64 @@ body {
   .submit-button {
     @apply w-1/4 h-10 bg-blue-500 text-white rounded-md mt-5 flex items-center justify-center cursor-pointer;
   }
+
+  /* Layout Shift 방지를 위한 컴포넌트 스타일 */
+  .fixed-aspect-card {
+    @apply relative w-full;
+    aspect-ratio: 280 / 320; /* 카드 비율 고정 */
+    min-height: var(--card-min-height);
+  }
+
+  .fixed-image-container {
+    @apply relative w-full overflow-hidden rounded-t-lg bg-gray-100;
+    height: var(--card-image-height);
+    flex-shrink: 0;
+  }
+
+  .fixed-content-container {
+    @apply flex flex-col justify-between;
+    height: var(--card-content-height);
+    flex-shrink: 0;
+  }
+
+  /* 스켈레톤 카드 최적화 */
+  .skeleton-card {
+    @apply bg-white rounded-2xl border border-transparent;
+    min-width: 280px;
+    height: 180px;
+    contain: layout style;
+  }
+
+  /* 리스트 컨테이너 최적화 */
+  .list-container {
+    @apply isolate overflow-hidden;
+    min-height: var(--list-min-height);
+    contain: layout style;
+  }
+
+  /* 그리드 컨테이너 최적화 */
+  .responsive-grid {
+    @apply grid gap-4 justify-items-center;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    min-height: 250px;
+    contain: layout;
+  }
+
+  /* 텍스트 잘림 방지 */
+  .text-ellipsis-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+    max-height: 2.8em;
+  }
+
+  .text-ellipsis-1-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 /* 작물정보 인풋 박스*/
@@ -289,7 +398,7 @@ body {
   background-clip: text;
 }
 
-/*챗봇 열기 모션*/
+/* 챗봇 열기 모션 */
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -305,77 +414,74 @@ body {
   animation: fadeInUp 0.3s ease-out;
 }
 
-/* 공통 벌 스타일 */
+/* 공통 벌 스타일 - GPU 가속 최적화 */
 .bee {
   position: absolute;
   font-size: 2.5rem;
   transition: transform 0.2s ease;
   will-change: transform;
   transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-/* 벌 1 경로 */
+/* 벌 애니메이션 경로들 - 성능 최적화 */
 @keyframes fly-path-1 {
   0% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
   25% {
-    transform: translate(1000px, -20px) rotate(25deg);
+    transform: translate3d(1000px, -20px, 0) rotate(25deg);
   }
   50% {
-    transform: translate(-50px, 15px) rotate(-15deg);
+    transform: translate3d(-50px, 15px, 0) rotate(-15deg);
   }
   75% {
-    transform: translate(20px, -10px) rotate(10deg);
+    transform: translate3d(20px, -10px, 0) rotate(10deg);
   }
   100% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
 }
 
-/* 벌 2 경로 */
 @keyframes fly-path-2 {
   0% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
   20% {
-    transform: translate(150px, -10px) rotate(20deg);
+    transform: translate3d(150px, -10px, 0) rotate(20deg);
   }
   50% {
-    transform: translate(250px, 20px) rotate(-30deg);
+    transform: translate3d(250px, 20px, 0) rotate(-30deg);
   }
-
   80% {
-    transform: translate(100px, 10px) rotate(20deg);
+    transform: translate3d(100px, 10px, 0) rotate(20deg);
   }
   100% {
-    transform: translate(0, 0) rotate(-10deg);
+    transform: translate3d(0, 0, 0) rotate(-10deg);
   }
 }
 
-/* 벌 3 경로 */
 @keyframes fly-path-3 {
   0% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
   20% {
-    transform: translate(40px, -25px) rotate(20deg);
+    transform: translate3d(40px, -25px, 0) rotate(20deg);
   }
   50% {
-    transform: translate(-70px, 20px) rotate(-20deg);
+    transform: translate3d(-70px, 20px, 0) rotate(-20deg);
   }
   70% {
-    transform: translate(30px, -25px) rotate(15deg);
+    transform: translate3d(30px, -25px, 0) rotate(15deg);
   }
   100% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
 }
 
-/* 공통 투명도 펄스 */
+/* 투명도 펄스 최적화 */
 @keyframes pulse-opacity {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
   }
   50% {
@@ -396,4 +502,21 @@ body {
 .fly-3 {
   animation: fly-path-3 16s ease-in-out infinite 1s,
     pulse-opacity 7s ease-in-out infinite 0.5s;
+}
+
+/* 반응형 최적화 */
+@media (max-width: 640px) {
+  :root {
+    --card-min-height: 300px;
+    --card-image-height: 180px;
+    --card-content-height: 120px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --card-min-height: 280px;
+    --card-image-height: 160px;
+    --card-content-height: 120px;
+  }
 }
