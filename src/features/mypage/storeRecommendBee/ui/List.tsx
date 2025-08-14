@@ -33,8 +33,8 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
     loadList();
   }, [loadList]);
 
-  // 로딩 상태 - 스켈레톤 UI로 layout shift 방지
-  if (loading) {
+  // 로딩 상태 - 스켈레톤 UI로 layout shift 방지 (list가 null이고 로딩 중일 때)
+  if (loading && list === null) {
     return (
       <div className="custom-box2 shadow-lg isolate transform-gpu">
         <header className="custom-box2-title w-full text-base font-medium">

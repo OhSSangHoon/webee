@@ -36,15 +36,28 @@ export default function MySaleList() {
     return new Intl.NumberFormat("ko-KR").format(price) + "원";
   }, []);
 
-  // 로딩 상태
+  // 로딩 상태 - 스켈레톤 UI로 layout shift 방지
   if (isLoading) {
     return (
-      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center pb-10">
-        <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
-        <div className="flex items-center justify-center flex-1">
-          <div className="flex items-center gap-2">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-            <div className="text-gray-500">상품 목록을 불러오는 중...</div>
+      <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
+        <div className="custom-box2-title mb-4">
+          <span className="custom-box2-icon">🛒</span> 내 상품 목록
+        </div>
+        <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center min-h-[250px] isolate transform-gpu">
+            {[1, 2, 3].slice(0, itemsToShow).map((index) => (
+              <div
+                key={index}
+                className="w-full max-w-[280px] flex justify-center isolate transform-gpu"
+              >
+                <div className="w-full bg-white rounded-2xl p-4 drop-shadow-md border border-transparent">
+                  <div className="h-40 bg-gray-200 rounded-lg animate-pulse mb-3"></div>
+                  <div className="h-5 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse mb-2 w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -54,9 +67,11 @@ export default function MySaleList() {
   // 에러 상태
   if (error) {
     return (
-      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center pb-10">
-        <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
-        <div className="flex items-center justify-center flex-1">
+      <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
+        <div className="custom-box2-title mb-4">
+          <span className="custom-box2-icon">🛒</span> 내 상품 목록
+        </div>
+        <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate min-h-[250px] flex items-center justify-center">
           <div className="text-center">
             <div className="text-red-500 mb-3">{error}</div>
             <button
@@ -74,9 +89,11 @@ export default function MySaleList() {
   // 상품이 없는 경우
   if (!isLoading && myProducts.length === 0) {
     return (
-      <div className="custom-box2 w-full h-full flex flex-col justify-center items-center">
-        <div className="custom-box2-title mb-4">내가 등록한 상품 목록</div>
-        <div className="flex items-center justify-center flex-1">
+      <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
+        <div className="custom-box2-title mb-4">
+          <span className="custom-box2-icon">🛒</span> 내 상품 목록
+        </div>
+        <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate min-h-[250px] flex items-center justify-center">
           <div className="text-center">
             <div className="text-4xl mb-4">📦</div>
             <div className="text-gray-500 mb-4">등록한 상품이 없습니다.</div>
