@@ -88,10 +88,8 @@ export default function MySaleList() {
     return new Intl.NumberFormat("ko-KR").format(price) + "원";
   }, []);
 
-  // 첫 3개 상품 이미지 preload
-  const preloadImages = visibleProducts.slice(0, 3)
-    .map(product => product?.imageUrls?.[0])
-    .filter(Boolean);
+  // 첫 번째 상품 이미지만 preload (LCP 최적화)
+  const firstImage = visibleProducts[0]?.imageUrls?.[0];
 
   // 반응형 그리드 클래스 생성
   const getGridClasses = () => {
@@ -100,17 +98,17 @@ export default function MySaleList() {
 
   return (
     <>
-      {/* 이미지 preload */}
-      {preloadImages.map((imageUrl, index) => (
-        <Head key={index}>
+      {/* 첫 번째 이미지 preload */}
+      {firstImage && (
+        <Head>
           <link
             rel="preload"
             as="image"
-            href={imageUrl}
+            href={firstImage}
             fetchPriority="high"
           />
         </Head>
-      ))}
+      )}
       
       <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
         {/* 헤더 - 고정 높이 */}

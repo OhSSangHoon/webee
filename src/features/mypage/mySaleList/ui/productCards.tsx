@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ProductWithBusiness } from "@/features/search/model/model";
 import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
@@ -20,6 +20,8 @@ export const ProductCard = memo<ProductCardProps>(
   ({ product, index, formatPrice }) => {
     const [imageError, setImageError] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);
+    const [shouldLoadImage, setShouldLoadImage] = useState(index === 0); // 첫 번째만 즉시 로드
+    const cardRef = useRef<HTMLElement>(null);
     const router = useRouter();
 
     const handleImageLoad = useCallback(() => {
@@ -42,8 +44,35 @@ export const ProductCard = memo<ProductCardProps>(
       }
     }, [handleCardClick]);
 
+    // Intersection Observer로 뷰포트 진입 감지
+    useEffect(() => {
+      if (index === 0 || shouldLoadImage) return; // 첫 번째는 이미 로드됨
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setShouldLoadImage(true);
+              observer.disconnect();
+            }
+          });
+        },
+        { 
+          rootMargin: '50px', // 50px 전에 미리 로드
+          threshold: 0.1 
+        }
+      );
+
+      if (cardRef.current) {
+        observer.observe(cardRef.current);
+      }
+
+      return () => observer.disconnect();
+    }, [index, shouldLoadImage]);
+
     return (
       <article 
+        ref={cardRef}
         className="group relative w-full max-w-[280px] h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 mx-auto isolate transform-gpu will-change-transform"
         onClick={handleCardClick}
         onKeyDown={handleKeyPress}
@@ -64,27 +93,33 @@ export const ProductCard = memo<ProductCardProps>(
           )}
 
           {/* 이미지 영역 - layout shift 방지를 위한 고정 크기 */}
-          {product.imageUrls && product.imageUrls.length > 0 && !imageError ? (
+          {shouldLoadImage && product.imageUrls && product.imageUrls.length > 0 && !imageError ? (
             <Image
               src={product.imageUrls[0]}
               alt={`${product.name} 상품 이미지`}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu"
-              priority={index < 3} // 첫 3개 상품은 우선 로딩 
-              loading={index < 3 ? "eager" : "lazy"}
-              fetchPriority={index < 3 ? "high" : "auto"}
+              priority={index === 0} // 첫 번째 상품만 최우선 처리
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
               onLoad={handleImageLoad}
               onError={handleImageError}
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 280px"
+              sizes="(max-width: 640px) 280px, (max-width: 768px) 280px, (max-width: 1024px) 280px, 280px"
               placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg"
+              unoptimized={false}
+              quality={75}
             />
-          ) : (
+          ) : shouldLoadImage ? (
             <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400 isolate">
               <svg className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               <span className="text-xs font-medium">이미지 없음</span>
+            </div>
+          ) : (
+            <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-gray-100 isolate">
+              <div className="w-8 h-8 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
             </div>
         )}
         </div>
