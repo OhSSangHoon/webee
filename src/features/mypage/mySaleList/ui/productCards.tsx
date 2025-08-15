@@ -1,6 +1,5 @@
 import React, { useState, useCallback, memo } from "react";
 import Image from "next/image";
-import Head from "next/head";
 import { ProductWithBusiness } from "@/features/search/model/model";
 import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 import { useRouter } from "next/navigation";
@@ -42,20 +41,7 @@ export const ProductCard = memo<ProductCardProps>(
     const optimizedImageUrl = product.imageUrls?.[0];
 
     return (
-      <>
-        {/* Above-the-fold 이미지들에 대한 preload */}
-        {isAboveFold && optimizedImageUrl && (
-          <Head>
-            <link
-              rel="preload"
-              as="image"
-              href={optimizedImageUrl}
-              fetchPriority="high"
-            />
-          </Head>
-        )}
-        
-        <article 
+      <article 
           className="group relative w-full max-w-[280px] h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 mx-auto isolate transform-gpu will-change-transform"
           onClick={handleCardClick}
           onKeyDown={handleKeyPress}
@@ -69,16 +55,18 @@ export const ProductCard = memo<ProductCardProps>(
               <Image
                 src={optimizedImageUrl}
                 alt={`${product.name} 상품 이미지`}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu"
+                width={280}
+                height={200}
+                className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu w-full h-full"
                 priority={isAboveFold}
                 loading={isAboveFold ? "eager" : "lazy"}
                 fetchPriority={isAboveFold ? "high" : "auto"}
                 onError={handleImageError}
-                sizes="(max-width: 640px) 280px, (max-width: 768px) 280px, (max-width: 1024px) 280px, 280px"
-                placeholder="empty"
+                sizes="280px"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 unoptimized={true}
-                quality={85}
+                quality={60}
               />
             ) : (
               // 이미지 없음 또는 에러 상태
@@ -124,7 +112,6 @@ export const ProductCard = memo<ProductCardProps>(
           {/* 호버 오버레이 */}
           <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none" />
         </article>
-      </>
     );
   }
 );

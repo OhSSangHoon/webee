@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
 import { NavigationButton } from "./navButton";
@@ -93,8 +93,10 @@ export default function MySaleList() {
     return new Intl.NumberFormat("ko-KR").format(price) + "원";
   }, []);
 
-  // 반응형 그리드 클래스
-  const gridClasses = "grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+  // 반응형 그리드 클래스 - 메모이제이션
+  const gridClasses = useMemo(() => 
+    "grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3", 
+  []);
 
   return (
     <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
