@@ -37,7 +37,6 @@ export default function BusinessProfileForm() {
 
     try {
       const res = await postBusinessProfile(payload);
-      console.log("성공:", res);
       alert("등록 완료되었습니다!");
     } catch (error) {
       console.error(error);
@@ -201,7 +200,6 @@ export default function BusinessProfileForm() {
                 <PostcodeModal
                   setIsOpen={setIsOpen}
                   onComplete={(address) => {
-                    console.log("선택된 주소:", address);
                     setSelectedAddress(address);
                   }}
                 />

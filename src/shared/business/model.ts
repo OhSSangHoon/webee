@@ -46,7 +46,6 @@ export const useBusinessStore = create<BusinessStore>((set, get) => ({
         },
         selectedDetail: data,
       }));
-      console.log("업체 상세조회 성공:", data);
     } catch (error) {
       console.error("업체 상세 조회 실패:", error);
     }

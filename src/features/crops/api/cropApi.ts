@@ -14,7 +14,7 @@ export const getCropInfo = async (): Promise<Crop[]> => {
   }
 };
 
-// 작물 상세 정보 조회 - 사용 안 함
+// 작물 상세 정보 조회
 export const getCropInfoById = async (id: number): Promise<Crop | null> => {
   try {
     const res = await api.get(`/profile/crops/${id}`);

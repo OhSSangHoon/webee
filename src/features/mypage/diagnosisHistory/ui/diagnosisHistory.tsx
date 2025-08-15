@@ -174,7 +174,6 @@ export default function DiagnosisHistory() {
       const response = await api.get(`/bee/diagnosis/${beeDiagnosisId}`);
       setDetailContent(response.data.data);
     } catch (error) {
-      console.log("질병진단결과 세부내용 조회 오류", error);
       setDetailModal(false);
     }
   };

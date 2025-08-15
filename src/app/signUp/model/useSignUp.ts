@@ -56,7 +56,6 @@ export function useSignUpForm() {
       const axiosError = error as AxiosError<{ message: string }>;
       const errorMessage =
         axiosError.response?.data?.message ?? "회원가입에 실패했습니다.";
-      console.log(axiosError);
       setSignUpError(errorMessage);
       setLoading(false);
     }

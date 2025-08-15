@@ -5,22 +5,19 @@ import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 import { useRouter } from "next/navigation";
 
 /**
- * LCP 최적화된 상품 카드 컴포넌트
+ * 상품 카드 컴포넌트
  */
 interface ProductCardProps {
   product: ProductWithBusiness;
   index: number;
   formatPrice: (price: number) => string;
-  itemsToShow: number; // 현재 화면에 표시되는 아이템 수
 }
 
 export const ProductCard = memo<ProductCardProps>(
-  ({ product, index, formatPrice, itemsToShow }) => {
+  ({ product, index, formatPrice }) => {
     const [imageError, setImageError] = useState(false);
     const router = useRouter();
 
-    // Above-the-fold 이미지 판단
-    const isAboveFold = index < itemsToShow;
     
     const handleImageError = useCallback(() => {
       setImageError(true);
@@ -37,40 +34,38 @@ export const ProductCard = memo<ProductCardProps>(
       }
     }, [handleCardClick]);
 
-    // 이미지 URL 최적화
+    // 이미지 URL
     const optimizedImageUrl = product.imageUrls?.[0];
 
     return (
-      <article 
-          className="group relative w-full max-w-[280px] h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 mx-auto isolate transform-gpu will-change-transform"
-          onClick={handleCardClick}
-          onKeyDown={handleKeyPress}
-          role="button"
-          tabIndex={0}
-          aria-label={`${product.name} 상품 상세보기`}
-        >
+      <article
+        className="group relative w-full max-w-[280px] h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 mx-auto"
+        onClick={handleCardClick}
+        onKeyDown={handleKeyPress}
+        role="button"
+        tabIndex={0}
+        aria-label={`${product.name} 상품 상세보기`}
+      >
           {/* 상품 이미지 영역 */}
-          <div className="relative w-full h-[200px] sm:h-[180px] lg:h-[160px] min-h-[160px] overflow-hidden rounded-t-lg bg-gray-100 isolate transform-gpu">
+          <div className="relative w-full h-[200px] sm:h-[180px] lg:h-[160px] min-h-[160px] overflow-hidden rounded-t-lg bg-gray-100">
             {optimizedImageUrl && !imageError ? (
               <Image
                 src={optimizedImageUrl}
                 alt={`${product.name} 상품 이미지`}
-                width={280}
-                height={200}
-                className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu w-full h-full"
-                priority={isAboveFold}
-                loading={isAboveFold ? "eager" : "lazy"}
-                fetchPriority={isAboveFold ? "high" : "auto"}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : "auto"}
                 onError={handleImageError}
-                sizes="280px"
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                sizes="(max-width: 640px) 280px, (max-width: 768px) 280px, (max-width: 1024px) 280px, 280px"
+                placeholder="empty"
                 unoptimized={true}
-                quality={60}
+                quality={85}
               />
             ) : (
               // 이미지 없음 또는 에러 상태
-              <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400 isolate">
+              <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400">
                 <svg className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 002 2v12a2 2 0 002 2z" />
                 </svg>
@@ -80,10 +75,10 @@ export const ProductCard = memo<ProductCardProps>(
           </div>
 
           {/* 상품 정보 영역 */}
-          <div className="p-3 sm:p-4 h-[120px] sm:h-[120px] lg:h-[120px] flex flex-col justify-between isolate">
+          <div className="p-3 sm:p-4 h-[120px] sm:h-[120px] lg:h-[120px] flex flex-col justify-between">
             <div className="space-y-1 sm:space-y-2">
               {/* 상품명 */}
-              <h3 
+              <h3
                 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis group-hover:text-blue-600 transition-colors duration-200"
                 title={product.name}
               >

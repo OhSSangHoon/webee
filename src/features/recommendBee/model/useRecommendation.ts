@@ -56,10 +56,8 @@ export const useRecommendBee = create<RecommendBeeState>((set) => ({
       const response = await postRecommendation(formData);
       if (response?.data) {
         set({ resultData: response.data, isSuccess: true });
-        console.log("수정벌 추천 성공:", response.data);
       }
     } catch (error) {
-      console.log("수정벌 추천 실패:", error);
       set({ error: "수정벌 추천에 실패했습니다." });
     } finally {
       set({ loading: false });

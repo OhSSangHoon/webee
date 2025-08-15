@@ -14,7 +14,6 @@ export const PostCropInfo = () => {
         cultivationArea: Number(data.area),
         plantingDate: data.plantingDate,
       });
-      console.log("작물 정보 등록 성공:", response.data);
       return response.data;
     } catch (error) {
       console.error("작물 정보 등록 오류:", error);

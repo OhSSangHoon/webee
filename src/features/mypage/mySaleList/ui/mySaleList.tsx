@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useCallback, useState, useEffect, useMemo } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
 import { NavigationButton } from "./navButton";
 
-// 스켈레톤 카드 컴포넌트 - 단순화
+// 스켈레톤 카드 컴포넌트
 const SkeletonProductCard: React.FC = () => (
-  <div className="w-full max-w-[280px] flex justify-center isolate transform-gpu">
+  <div className="w-full max-w-[280px] flex justify-center">
     <div className="w-full h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm">
       {/* 이미지 영역 */}
       <div className="w-full h-[200px] sm:h-[180px] lg:h-[160px] bg-gray-200 rounded-t-lg animate-pulse"></div>
@@ -39,7 +39,10 @@ const EmptyState: React.FC = () => (
 );
 
 // 에러 상태 컴포넌트
-const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, onRetry }) => (
+const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({
+  error,
+  onRetry
+}) => (
   <div className="col-span-full flex items-center justify-center min-h-[250px]">
     <div className="text-center">
       <div className="text-red-500 mb-3">{error}</div>
@@ -54,10 +57,17 @@ const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, o
 );
 
 export default function MySaleList() {
-  const { myProducts, visibleProducts, slideInfo, isLoading, error, actions } = useMySaleList();
+  const {
+    myProducts,
+    visibleProducts,
+    slideInfo,
+    isLoading,
+    error,
+    actions
+  } = useMySaleList();
   const [itemsToShow, setItemsToShow] = useState(1);
 
-  // 반응형 설정 - 최적화
+  // 반응형 설정
   useEffect(() => {
     const updateItemsToShow = () => {
       const width = window.innerWidth;
@@ -93,13 +103,11 @@ export default function MySaleList() {
     return new Intl.NumberFormat("ko-KR").format(price) + "원";
   }, []);
 
-  // 반응형 그리드 클래스 - 메모이제이션
-  const gridClasses = useMemo(() => 
-    "grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3", 
-  []);
+  // 반응형 그리드 클래스
+  const gridClasses = "grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
 
   return (
-    <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
+    <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden">
       {/* 헤더 */}
       <div className="custom-box2-title mb-4 flex-shrink-0">
         <span className="custom-box2-icon">🛒</span> 내 상품 목록
@@ -108,8 +116,8 @@ export default function MySaleList() {
       {/* 컨텐츠 영역 */}
       <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate flex-1">
         {/* 반응형 그리드 컨테이너 */}
-        <div 
-          className={`${gridClasses} isolate transform-gpu`}
+        <div
+          className={gridClasses}
           style={{ minHeight: '280px' }}
         >
           {/* 로딩 상태 */}
@@ -135,13 +143,12 @@ export default function MySaleList() {
               {visibleProducts.slice(0, itemsToShow).map((product, index) => (
                 <div
                   key={product.id}
-                  className="w-full max-w-[280px] flex justify-center isolate transform-gpu"
+                  className="w-full max-w-[280px] flex justify-center"
                 >
                   <ProductCard
                     product={product}
                     index={index}
                     formatPrice={formatPrice}
-                    itemsToShow={itemsToShow}
                   />
                 </div>
               ))}
