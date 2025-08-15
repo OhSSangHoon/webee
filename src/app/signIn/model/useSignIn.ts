@@ -33,6 +33,7 @@ export function useSignInForm() {
       await signIn(data);
       router.push("/ ");
     } catch (error) {
+      console.error(error);
       setError("password", {
         message: "로그인에 실패했습니다.",
       });

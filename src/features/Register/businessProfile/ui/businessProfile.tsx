@@ -36,7 +36,7 @@ export default function BusinessProfileForm() {
     };
 
     try {
-      const res = await postBusinessProfile(payload);
+      await postBusinessProfile(payload);
       alert("등록 완료되었습니다!");
     } catch (error) {
       console.error(error);

@@ -174,6 +174,7 @@ export default function DiagnosisHistory() {
       const response = await api.get(`/bee/diagnosis/${beeDiagnosisId}`);
       setDetailContent(response.data.data);
     } catch (error) {
+      console.error(error);
       setDetailModal(false);
     }
   };

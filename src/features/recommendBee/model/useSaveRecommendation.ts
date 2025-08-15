@@ -52,6 +52,7 @@ export const useSaveRecommendation = (
       const response = await saveRecommendation(mappedData);
       setIsSave(response);
     } catch (error) {
+      console.error(error);
     }
   };
 

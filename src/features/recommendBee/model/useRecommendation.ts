@@ -58,6 +58,7 @@ export const useRecommendBee = create<RecommendBeeState>((set) => ({
         set({ resultData: response.data, isSuccess: true });
       }
     } catch (error) {
+      console.error(error);
       set({ error: "수정벌 추천에 실패했습니다." });
     } finally {
       set({ loading: false });
