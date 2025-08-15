@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useState, useEffect } from "react";
-import Head from "next/head";
 import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
 import { NavigationButton } from "./navButton";
