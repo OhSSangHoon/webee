@@ -1,6 +1,5 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useEffect } from "react";
 import Image from "next/image";
-import Head from "next/head";
 import { ProductWithBusiness } from "@/features/search/model/model";
 import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 import { useRouter } from "next/navigation";
@@ -23,6 +22,30 @@ export const ProductCard = memo<ProductCardProps>(
     // Above-the-fold 이미지 판단 (현재 화면에 보이는 아이템들)
     const isAboveFold = index < itemsToShow;
     
+    // CloudFront 도메인 preconnect (최초 렌더링 시 한 번만)
+    useEffect(() => {
+      if (isAboveFold && index === 0) {
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = 'https://d96w70pr33mqi.cloudfront.net';
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+        
+        const dnsLink = document.createElement('link');
+        dnsLink.rel = 'dns-prefetch';
+        dnsLink.href = 'https://d96w70pr33mqi.cloudfront.net';
+        document.head.appendChild(dnsLink);
+      }
+    }, [isAboveFold, index]);
+    
+    // 첫 번째 이미지 preload
+    useEffect(() => {
+      if (isAboveFold && product.imageUrls?.[0]) {
+        const img = new window.Image();
+        img.src = product.imageUrls[0];
+      }
+    }, [isAboveFold, product.imageUrls]);
+    
     const handleImageError = useCallback(() => {
       setImageError(true);
     }, []);
@@ -42,20 +65,7 @@ export const ProductCard = memo<ProductCardProps>(
     const optimizedImageUrl = product.imageUrls?.[0];
 
     return (
-      <>
-        {/* Above-the-fold 이미지들에 대한 preload */}
-        {isAboveFold && optimizedImageUrl && (
-          <Head>
-            <link
-              rel="preload"
-              as="image"
-              href={optimizedImageUrl}
-              fetchPriority="high"
-            />
-          </Head>
-        )}
-        
-        <article 
+      <article 
           className="group relative w-full max-w-[280px] h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 mx-auto isolate transform-gpu will-change-transform"
           onClick={handleCardClick}
           onKeyDown={handleKeyPress}
@@ -77,8 +87,7 @@ export const ProductCard = memo<ProductCardProps>(
                 onError={handleImageError}
                 sizes="(max-width: 640px) 280px, (max-width: 768px) 280px, (max-width: 1024px) 280px, 280px"
                 placeholder="empty"
-                unoptimized={true}
-                quality={85}
+                quality={75}
               />
             ) : (
               // 이미지 없음 또는 에러 상태
@@ -124,7 +133,6 @@ export const ProductCard = memo<ProductCardProps>(
           {/* 호버 오버레이 */}
           <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none" />
         </article>
-      </>
     );
   }
 );
