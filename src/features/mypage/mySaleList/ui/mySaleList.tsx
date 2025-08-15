@@ -6,7 +6,7 @@ import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
 import { NavigationButton } from "./navButton";
 
-// 스켈레톤 카드 컴포넌트 - 실제 ProductCard와 동일한 크기 보장
+// 스켈레톤 카드 컴포넌트
 const SkeletonProductCard: React.FC = () => (
   <div className="w-full max-w-[280px] flex justify-center isolate transform-gpu">
     <div className="w-full h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm animate-pulse">
@@ -88,9 +88,6 @@ export default function MySaleList() {
     return new Intl.NumberFormat("ko-KR").format(price) + "원";
   }, []);
 
-  // 첫 번째 상품 이미지만 preload (LCP 최적화)
-  const firstImage = visibleProducts[0]?.imageUrls?.[0];
-
   // 반응형 그리드 클래스 생성
   const getGridClasses = () => {
     return "grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
@@ -98,27 +95,16 @@ export default function MySaleList() {
 
   return (
     <>
-      {/* 첫 번째 이미지 preload */}
-      {firstImage && (
-        <Head>
-          <link
-            rel="preload"
-            as="image"
-            href={firstImage}
-            fetchPriority="high"
-          />
-        </Head>
-      )}
       
       <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden isolate transform-gpu">
-        {/* 헤더 - 고정 높이 */}
+        {/* 헤더 */}
         <div className="custom-box2-title mb-4 flex-shrink-0">
           <span className="custom-box2-icon">🛒</span> 내 상품 목록
         </div>
 
-        {/* 컨텐츠 영역 - 최소 높이 보장으로 layout shift 방지 */}
+        {/* 컨텐츠 영역*/}
         <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate flex-1">
-          {/* 반응형 그리드 컨테이너 - 고정 최소 높이 */}
+          {/* 반응형 그리드 컨테이너 */}
           <div 
             className={`${getGridClasses()} isolate transform-gpu`}
             style={{ minHeight: '280px' }} // 카드 높이에 맞춰 조정
