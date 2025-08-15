@@ -66,6 +66,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://mts.daumcdn.net" />
         <link rel="dns-prefetch" href="https://mts.daumcdn.net" />
         <link rel="preconnect" href="https://api.webee.sbs" />
+        <link rel="preconnect" href="https://d96w70pr33mqi.cloudfront.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://d96w70pr33mqi.cloudfront.net" />
       </head>
       <body

@@ -79,14 +79,16 @@ export const ProductCard = memo<ProductCardProps>(
               <Image
                 src={optimizedImageUrl}
                 alt={`${product.name} 상품 이미지`}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu"
+                width={280}
+                height={200}
+                className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu w-full h-full"
                 priority={isAboveFold}
                 loading={isAboveFold ? "eager" : "lazy"}
                 fetchPriority={isAboveFold ? "high" : "auto"}
                 onError={handleImageError}
                 sizes="(max-width: 640px) 280px, (max-width: 768px) 280px, (max-width: 1024px) 280px, 280px"
                 placeholder="empty"
+                unoptimized={true}
                 quality={75}
               />
             ) : (
