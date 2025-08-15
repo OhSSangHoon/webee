@@ -22,7 +22,7 @@ export const ProductCard = memo<ProductCardProps>(
     // Above-the-fold 이미지 판단 (현재 화면에 보이는 아이템들)
     const isAboveFold = index < itemsToShow;
     
-    // CloudFront 도메인 preconnect (최초 렌더링 시 한 번만)
+    // CloudFront 도메인 preconnect
     useEffect(() => {
       if (isAboveFold && index === 0) {
         const link = document.createElement('link');
@@ -61,8 +61,10 @@ export const ProductCard = memo<ProductCardProps>(
       }
     }, [handleCardClick]);
 
-    // 이미지 URL 최적화 (CloudFront 직접 사용)
-    const optimizedImageUrl = product.imageUrls?.[0];
+    // 이미지 URL 최적화
+    const optimizedImageUrl = product.imageUrls?.[0] 
+      ? `${product.imageUrls[0]}?w=280&h=200&q=60&f=webp`
+      : undefined;
 
     return (
       <article 
