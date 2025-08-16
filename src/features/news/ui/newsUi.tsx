@@ -1,9 +1,15 @@
 "use client";
 
 import { useNews } from "../model/hooks";
+import type { NewsItem } from "../model/types";
+import NewsContent from "./NewsContent";
 
-export default function BeeNews() {
-  const { loading, error, keyword, currentItems, currentPage, totalPages, setKeyword, setCurrentPage, refresh } = useNews();
+interface BeeNewsProps {
+  initialData?: NewsItem[];
+}
+
+export default function BeeNews({ initialData = [] }: BeeNewsProps) {
+  const { loading, error, keyword, currentItems, currentPage, totalPages, setKeyword, setCurrentPage, refresh } = useNews(initialData);
 
   // 스켈레톤 컴포넌트
   const SkeletonCard = () => (
@@ -21,7 +27,45 @@ export default function BeeNews() {
   return (
     <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] pt-40 pb-20 w-full min-h-screen">
       <main className="max-w-[75%] mx-auto gap-6 flex lg:flex-row flex-col">
-        <section className="w-full lg:w-2/4">
+        {/* 뉴스 컨텐츠를 우선 표시 */}
+        <section className="w-full lg:w-3/4 lg:order-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+            {loading ? (
+              // 로딩 스켈레톤
+              Array.from({ length: 6 }).map((_, index) => (
+                <SkeletonCard key={`skeleton-${index}`} />
+              ))
+            ) : error ? (
+              // 에러 상태
+              <div className="col-span-full text-center">
+                <div className="bg-red-100/20 border border-red-300 text-white p-6 rounded-2xl">
+                  <h2 className="text-xl font-bold mb-2">⚠️ 오류 발생</h2>
+                  <p>{error}</p>
+                  <button 
+                    onClick={refresh}
+                    className="mt-4 px-4 py-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
+                  >
+                    다시 시도
+                  </button>
+                </div>
+              </div>
+            ) : currentItems.length === 0 ? (
+              // 빈 상태
+              <div className="col-span-full text-center">
+                <div className="bg-white/10 p-6 rounded-2xl">
+                  <h2 className="text-xl font-bold text-white mb-2">📰 뉴스가 없습니다</h2>
+                  <p className="text-white/70">다른 키워드로 검색해보세요.</p>
+                </div>
+              </div>
+            ) : (
+              // 뉴스 리스트 - 즉시 렌더링
+              <NewsContent items={currentItems} onItemClick={handleRouter} />
+            )}
+          </div>
+        </section>
+
+        {/* 사이드바를 나중에 표시 */}
+        <section className="w-full lg:w-2/4 lg:order-1">
           <h2 className="text-4xl font-extrabold text-white drop-shadow">
             {keyword} 소식을 들고왔어요!
           </h2>
@@ -77,55 +121,6 @@ export default function BeeNews() {
               </button>
             </div>
           )}
-        </section>
-
-        <section className="w-full lg:w-3/4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
-            {loading ? (
-              // 로딩 스켈레톤
-              Array.from({ length: 6 }).map((_, index) => (
-                <SkeletonCard key={`skeleton-${index}`} />
-              ))
-            ) : error ? (
-              // 에러 상태
-              <div className="col-span-full text-center">
-                <div className="bg-red-100/20 border border-red-300 text-white p-6 rounded-2xl">
-                  <h2 className="text-xl font-bold mb-2">⚠️ 오류 발생</h2>
-                  <p>{error}</p>
-                  <button 
-                    onClick={refresh}
-                    className="mt-4 px-4 py-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
-                  >
-                    다시 시도
-                  </button>
-                </div>
-              </div>
-            ) : currentItems.length === 0 ? (
-              // 빈 상태
-              <div className="col-span-full text-center">
-                <div className="bg-white/10 p-6 rounded-2xl">
-                  <h2 className="text-xl font-bold text-white mb-2">📰 뉴스가 없습니다</h2>
-                  <p className="text-white/70">다른 키워드로 검색해보세요.</p>
-                </div>
-              </div>
-            ) : (
-              // 뉴스 리스트
-              currentItems.map((item, index) => (
-                <div
-                  onClick={() => handleRouter(item.link)}
-                  key={`${item.link}-${index}`}
-                  className="bg-white/10 hover:bg-white/30 transition-all shadow-xl rounded-2xl p-6 border-[1.5] border-purple-300 cursor-pointer"
-                >
-                  <h3 className="text-xl font-bold text-purple-800 hover:text-purple-600 transition-colors mb-3">
-                    {item.title}
-                  </h3>
-                  <div className="text-sm text-white/70 mb-4">
-                    🕒 {new Date(item.pubDate).toLocaleString("ko-KR")}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
         </section>
       </main>
     </div>

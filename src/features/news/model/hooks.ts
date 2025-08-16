@@ -4,9 +4,9 @@ import type { NewsHookReturn, NewsKeyword, NewsItem } from "./types";
 
 const ITEMS_PER_PAGE = 10;
 
-export const useNews = (): NewsHookReturn => {
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
+export const useNews = (initialData: NewsItem[] = []): NewsHookReturn => {
+  const [news, setNews] = useState<NewsItem[]>(initialData);
+  const [loading, setLoading] = useState(initialData.length === 0);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [keyword, setKeyword] = useState<NewsKeyword>("꿀벌");
@@ -27,9 +27,13 @@ export const useNews = (): NewsHookReturn => {
   }, []);
 
   useEffect(() => {
+    // 초기 데이터가 있고 현재 키워드가 "꿀벌"이면 로딩하지 않음
+    if (initialData.length > 0 && keyword === "꿀벌") {
+      return;
+    }
     loadNews(keyword);
     setCurrentPage(1); // 키워드 변경 시 첫 페이지로
-  }, [keyword, loadNews]);
+  }, [keyword, loadNews, initialData.length]);
 
   const totalPages = useMemo(() => Math.ceil(news.length / ITEMS_PER_PAGE), [news.length]);
   
