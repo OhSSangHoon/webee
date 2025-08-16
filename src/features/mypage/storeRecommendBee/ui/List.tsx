@@ -68,7 +68,7 @@ const RecommendationCard: React.FC<{
       <span className="text-lg font-bold text-gray-800 truncate">
         {getBeeTypeKorean(item.beeType)}
       </span>
-      <span className="bg-pink-400 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap">
+      <span className="bg-pink-500 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap">
         추천
       </span>
     </div>
@@ -95,10 +95,10 @@ const RecommendationCard: React.FC<{
 
       {/* 태그 영역 - 고정 위치 */}
       <div className="flex flex-wrap gap-2 mt-2">
-        <span className="bg-gray-100 px-3 py-1 rounded-full text-xs truncate max-w-[80px]">
+        <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs truncate max-w-[80px]">
           {getCultivationTypeKorean(item.cultivationType)}
         </span>
-        <span className="bg-gray-100 px-3 py-1 rounded-full text-xs truncate max-w-[100px]">
+        <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs truncate max-w-[100px]">
           {item.cultivationAddress}
         </span>
       </div>

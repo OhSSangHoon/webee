@@ -38,14 +38,13 @@ export const ProductCard = memo<ProductCardProps>(
     const optimizedImageUrl = product.imageUrls?.[0];
 
     return (
-      <article
-        className="group relative w-full max-w-[280px] h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 mx-auto"
-        onClick={handleCardClick}
-        onKeyDown={handleKeyPress}
-        role="button"
-        tabIndex={0}
-        aria-label={`${product.name} 상품 상세보기`}
-      >
+      <article className="group relative w-full max-w-[280px] h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out mx-auto">
+        <button
+          className="w-full h-full cursor-pointer focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg bg-transparent border-none p-0 text-left"
+          onClick={handleCardClick}
+          onKeyDown={handleKeyPress}
+          aria-label={`${product.name} 상품 상세보기`}
+        >
           {/* 상품 이미지 영역 */}
           <div className="relative w-full h-[200px] sm:h-[180px] lg:h-[160px] min-h-[160px] overflow-hidden rounded-t-lg bg-gray-100">
             {optimizedImageUrl && !imageError ? (
@@ -94,7 +93,7 @@ export const ProductCard = memo<ProductCardProps>(
             {/* 추가 정보 */}
             <div className="flex items-center justify-between text-xs sm:text-sm text-gray-500">
               <div className="flex items-center space-x-1">
-                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium truncate max-w-[80px] sm:max-w-[100px]">
+                <span className="px-2 py-1 bg-gray-200 text-gray-800 rounded-full text-xs font-medium truncate max-w-[80px] sm:max-w-[100px]">
                   {getBeeTypeKorean(product.beeType)}
                 </span>
               </div>
@@ -106,7 +105,8 @@ export const ProductCard = memo<ProductCardProps>(
 
           {/* 호버 오버레이 */}
           <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none" />
-        </article>
+        </button>
+      </article>
     );
   }
 );
