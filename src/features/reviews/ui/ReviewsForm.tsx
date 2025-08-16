@@ -25,7 +25,6 @@ export default function ReviewForm({
       setSubmitting(true);
       
       const response = await createReview(productId, content.trim());
-      console.log('리뷰 작성 성공:', response);
       
       // 새로운 리뷰 객체 생성
       const newReview: Review = {

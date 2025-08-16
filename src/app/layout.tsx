@@ -66,7 +66,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://mts.daumcdn.net" />
         <link rel="dns-prefetch" href="https://mts.daumcdn.net" />
         <link rel="preconnect" href="https://api.webee.sbs" />
-        <link rel="dns-prefetch" href="https://d96w70pr33mqi.cloudfront.net" />
       </head>
       <body
         className="antialiased" // 폰트 로딩 완료 후 제거

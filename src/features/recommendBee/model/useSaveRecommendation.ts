@@ -51,9 +51,8 @@ export const useSaveRecommendation = (
       );
       const response = await saveRecommendation(mappedData);
       setIsSave(response);
-      console.log("저장 직전 데이터:", mappedData);
     } catch (error) {
-      console.log("수정벌 추천 실패", error);
+      console.error(error);
     }
   };
 

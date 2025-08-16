@@ -14,7 +14,6 @@ export default function AuthButton() {
     } else {
       router.push("/signIn");
     }
-    console.log(document.cookie);
   };
 
   return (
