@@ -83,7 +83,7 @@ export default function MyProfile() {
         <div className="flex flex-col gap-2">
           <button
             onClick={() => (window.location.href = "/products")}
-            className="w-full bg-[#2B7FFF] text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg hover:bg-[#1E6FE6] transition-colors font-medium text-xs sm:text-sm"
+            className="w-full bg-[#1E40AF] text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg hover:bg-[#1E3A8A] transition-colors font-medium text-xs sm:text-sm"
           >
             + 새 상품 등록하기
           </button>

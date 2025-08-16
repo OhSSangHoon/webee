@@ -132,10 +132,12 @@ export default function PesticideTable() {
         {/* 검색 폼 */}
         <div className="bg-white/10 p-6 rounded-xl shadow-lg flex flex-wrap gap-4 justify-center items-end">
           <div>
-            <label className="block mb-1 font-medium">작물명</label>
+            <label htmlFor="crop-select" className="block mb-1 font-medium">작물명</label>
             <select
+              id="crop-select"
               onChange={(e) => setCrop(e.target.value)}
               className="bg-white text-black p-2 rounded-md"
+              aria-label="작물명 선택"
             >
               <option value="">전체</option>
               {aList.map((v, i) => (
@@ -146,10 +148,12 @@ export default function PesticideTable() {
             </select>
           </div>
           <div>
-            <label className="block mb-1 font-medium">용도</label>
+            <label htmlFor="usage-select" className="block mb-1 font-medium">용도</label>
             <select
+              id="usage-select"
               onChange={(e) => setUsage(e.target.value)}
               className="bg-white text-black p-2 rounded-md"
+              aria-label="용도 선택"
             >
               <option value="">전체</option>
               {bList.map((v, i) => (
@@ -160,10 +164,12 @@ export default function PesticideTable() {
             </select>
           </div>
           <div>
-            <label className="block mb-1 font-medium">곤충</label>
+            <label htmlFor="insect-select" className="block mb-1 font-medium">곤충</label>
             <select
+              id="insect-select"
               onChange={(e) => setInsect(e.target.value)}
               className="bg-white text-black p-2 rounded-md"
+              aria-label="곤충 선택"
             >
               <option value="">전체</option>
               {cList.map((v, i) => (
