@@ -56,7 +56,7 @@ const RecommendationCard: React.FC<{
   setOpenModal: (value: boolean) => void;
 }> = ({ item, onSelect, setOpenModal }) => (
   <li
-    className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md border border-transparent hover:border-pink-300 hover:bg-pink-50/30 transition-colors duration-300 flex flex-col justify-between items-start cursor-pointer isolate transform-gpu will-change-transform"
+    className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md border border-transparent hover:border-blue-300 hover:bg-blue-50/30 transition-colors duration-300 flex flex-col justify-between items-start cursor-pointer isolate transform-gpu will-change-transform"
     onClick={(e) => {
       e.stopPropagation();
       onSelect(item.beeRecommendationId);
@@ -68,7 +68,7 @@ const RecommendationCard: React.FC<{
       <span className="text-lg font-bold text-gray-800 truncate">
         {getBeeTypeKorean(item.beeType)}
       </span>
-      <span className="bg-pink-500 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap">
+      <span className="bg-blue-700 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap">
         추천
       </span>
     </div>
