@@ -17,7 +17,6 @@ export const useNews = (initialData: NewsItem[] = []): NewsHookReturn => {
     
     try {
       const newsData = await fetchGoogleNews(searchKeyword);
-      console.log(`뉴스 로드 완료 - 키워드: ${searchKeyword}, 개수: ${newsData.length}`);
       setNews(newsData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
