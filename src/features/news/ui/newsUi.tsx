@@ -21,7 +21,9 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
   );
 
   const handleRouter = (link: string) => {
-    window.open(link, "_blank");
+    if (typeof window !== 'undefined') {
+      window.open(link, "_blank");
+    }
   };
 
   return (

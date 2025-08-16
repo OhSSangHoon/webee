@@ -27,15 +27,14 @@ export const useNews = (initialData: NewsItem[] = []): NewsHookReturn => {
   }, []);
 
   useEffect(() => {
-    loadNews(keyword);
-  }, [keyword, loadNews]);
-
-  // 초기 데이터 설정을 위한 별도 useEffect
-  useEffect(() => {
-    if (initialData.length > 0) {
+    // 초기 데이터가 있으면 사용하고, 없으면 API 호출
+    if (initialData.length > 0 && news.length === 0) {
       setNews(initialData);
+      setLoading(false);
+    } else if (initialData.length === 0) {
+      loadNews(keyword);
     }
-  }, [initialData]);
+  }, [keyword, loadNews, initialData, news.length]);
 
   const totalPages = useMemo(() => Math.ceil(news.length / ITEMS_PER_PAGE), [news.length]);
   

@@ -43,7 +43,7 @@ const NewsContent = memo(({ items, onItemClick }: NewsContentProps) => {
           >
             {item.title}
           </h3>
-          <div className="text-sm text-white/70 mb-4">
+          <div className="text-sm text-white/70 mb-4" suppressHydrationWarning>
             🕒 {formatDateSimple(item.pubDate)}
           </div>
         </div>
