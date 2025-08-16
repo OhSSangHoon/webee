@@ -3,17 +3,7 @@
 import { useNews } from "../model/hooks";
 
 export default function BeeNews() {
-  const {
-    loading,
-    error,
-    keyword,
-    currentItems,
-    currentPage,
-    totalPages,
-    setKeyword,
-    setCurrentPage,
-    refresh,
-  } = useNews();
+  const { loading, error, keyword, currentItems, currentPage, totalPages, setKeyword, setCurrentPage, refresh } = useNews();
 
   // 스켈레톤 컴포넌트
   const SkeletonCard = () => (
