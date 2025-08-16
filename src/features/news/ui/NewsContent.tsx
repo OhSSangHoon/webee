@@ -1,20 +1,23 @@
 "use client";
 
-import { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import type { NewsItem } from "../model/types";
 
-// 하이드레이션 안전한 날짜 포맷터
-const formatDate = (dateString: string): string => {
+// SSR 안전한 간단한 날짜 포맷터
+const formatDateSimple = (dateString: string): string => {
   try {
+    // 간단한 날짜 파싱으로 성능 향상
     const date = new Date(dateString);
-    // UTC 기준으로 일관된 포맷팅
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    const hours = String(date.getUTCHours()).padStart(2, '0');
-    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    if (isNaN(date.getTime())) return dateString;
     
-    return `${year}.${month}.${day} ${hours}:${minutes}`;
+    // 로케일 기반 포맷팅으로 SSR/CSR 일관성 확보
+    return date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit', 
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   } catch {
     return dateString;
   }
@@ -26,29 +29,22 @@ interface NewsContentProps {
 }
 
 const NewsContent = memo(({ items, onItemClick }: NewsContentProps) => {
-  const [isClient, setIsClient] = useState(false);
-
-  // hydration 완료 후에만 동적 내용 렌더링
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
     <>
       {items.map((item, index) => (
         <div
           onClick={() => onItemClick(item.link)}
-          key={`news-${index}-${item.link?.slice(-10) || index}`} // 더 안전한 키 생성
-          className="news-card bg-white/10 hover:bg-white/30 shadow-xl rounded-2xl p-6 border-[1.5] border-purple-300 cursor-pointer"
+          key={`news-${index}-${item.title.slice(0, 10)}`} // 더 빠른 키 생성
+          className="news-card bg-white/10 hover:bg-white/30 shadow-xl rounded-2xl p-6 border-[1.5] border-purple-300 cursor-pointer transition-colors"
         >
           <h3 
-            className="news-title text-xl font-bold text-purple-800 hover:text-purple-600 transition-colors mb-3" 
-            style={{ containIntrinsicSize: "auto 3rem" }}
+            className="news-title text-xl font-bold text-purple-800 hover:text-purple-600 transition-colors mb-3"
+            // contain-intrinsic-size 제거로 레이아웃 시프트 방지
           >
             {item.title}
           </h3>
           <div className="text-sm text-white/70 mb-4">
-            🕒 {isClient ? formatDate(item.pubDate) : item.pubDate}
+            🕒 {formatDateSimple(item.pubDate)}
           </div>
         </div>
       ))}

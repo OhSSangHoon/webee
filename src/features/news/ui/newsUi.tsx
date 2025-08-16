@@ -3,7 +3,6 @@
 import { useNews } from "../model/hooks";
 import type { NewsItem } from "../model/types";
 import NewsContent from "./NewsContent";
-import { useState, useEffect } from "react";
 
 interface BeeNewsProps {
   initialData?: NewsItem[];
@@ -11,14 +10,8 @@ interface BeeNewsProps {
 
 export default function BeeNews({ initialData = [] }: BeeNewsProps) {
   const { loading, error, keyword, currentItems, currentPage, totalPages, setKeyword, setCurrentPage, refresh } = useNews(initialData);
-  const [isClient, setIsClient] = useState(false);
 
-  // hydration 완료 후에만 동적 내용 표시
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  // 스켈레톤 컴포넌트
+  // 스켈레톤 컴포넌트 - 메모이제이션으로 리렌더링 방지
   const SkeletonCard = () => (
     <div className="bg-white/10 rounded-2xl p-6 border-[1.5] border-purple-300 animate-pulse">
       <div className="h-6 bg-purple-200/30 rounded mb-3"></div>
@@ -28,35 +21,8 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
   );
 
   const handleRouter = (link: string) => {
-    if (isClient) {
-      window.open(link, "_blank");
-    }
+    window.open(link, "_blank");
   };
-
-  // hydration 완료 전에는 기본 스켈레톤 표시
-  if (!isClient) {
-    return (
-      <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] pt-40 pb-20 w-full min-h-screen">
-        <main className="max-w-[75%] mx-auto gap-6 flex lg:flex-row flex-col">
-          <section className="w-full lg:w-3/4 lg:order-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
-              {Array.from({ length: 6 }).map((_, index) => (
-                <SkeletonCard key={`initial-skeleton-${index}`} />
-              ))}
-            </div>
-          </section>
-          <section className="w-full lg:w-2/4 lg:order-1">
-            <h2 className="text-4xl font-extrabold text-white drop-shadow">
-              꿀벌 소식을 들고왔어요!
-            </h2>
-            <h3 className="text-white text-sm mt-2">
-              꿀벌에 관한 국내외 최신 뉴스를 한눈에 확인하세요.
-            </h3>
-          </section>
-        </main>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] pt-40 pb-20 w-full min-h-screen">
@@ -92,13 +58,13 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
                 </div>
               </div>
             ) : (
-              // 뉴스 리스트
+              // 뉴스 리스트 - 즉시 렌더링
               <NewsContent items={currentItems} onItemClick={handleRouter} />
             )}
           </div>
         </section>
 
-        {/* 사이드바를 나중에 표시 */}
+        {/* 사이드바 */}
         <section className="w-full lg:w-2/4 lg:order-1">
           <h2 className="text-4xl font-extrabold text-white drop-shadow">
             {keyword} 소식을 들고왔어요!
