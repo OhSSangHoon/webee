@@ -29,16 +29,16 @@ export default function BeeNews() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-indigo-400 via-purple-400 to-purple-400 overflow-hidden pt-20 h-lvh">
-      <main className="py-5 flex flex-col lg:flex-row lg:mr-60 gap-6 items-start justify-center">
-        <section className="w-full lg:w-1/5 lg:translate-x-[-50px]">
-          <h1 className="text-4xl font-extrabold text-white drop-shadow">
+    <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] pt-40 pb-20 w-full min-h-screen">
+      <main className="max-w-[75%] mx-auto gap-6 flex lg:flex-row flex-col">
+        <section className="w-full lg:w-2/4">
+          <h2 className="text-4xl font-extrabold text-white drop-shadow">
             {keyword} 소식을 들고왔어요!
-          </h1>
-          <p className="text-white text-sm mt-2">
+          </h2>
+          <h3 className="text-white text-sm mt-2">
             {keyword}에 관한 국내외 최신 뉴스를 한눈에 확인하세요. 양봉과 생태
             환경, 정책 변화, 기술 동향까지 관련 이슈를 빠르게 전달해드립니다.
-          </p>
+          </h3>
 
           {/* 주제 선택 버튼 */}
           <div className="flex gap-2 mt-4">
@@ -65,9 +65,31 @@ export default function BeeNews() {
               수정벌 뉴스
             </button>
           </div>
+
+          {!loading && !error && currentItems.length > 0 && totalPages > 1 && (
+            <div className="py-10 flex items-center space-x-4">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
+                className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
+              >
+                ← 이전
+              </button>
+              <span className="w-22 text-center px-4 py-2 text-white font-semibold bg-purple-500 rounded-full shadow">
+                {currentPage} / {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
+                className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
+              >
+                다음 →
+              </button>
+            </div>
+          )}
         </section>
 
-        <section className="flex-1">
+        <section className="w-full lg:w-3/4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
             {loading ? (
               // 로딩 스켈레톤
@@ -102,9 +124,9 @@ export default function BeeNews() {
                 <div
                   onClick={() => handleRouter(item.link)}
                   key={`${item.link}-${index}`}
-                  className="bg-white/10 hover:bg-white/30 transition-all shadow-xl rounded-2xl p-6 border-[1.5] border-purple-300 cursor-pointer transform hover:scale-[1.02] duration-200"
+                  className="bg-white/10 hover:bg-white/30 transition-all shadow-xl rounded-2xl p-6 border-[1.5] border-purple-300 cursor-pointer"
                 >
-                  <h3 className="text-xl font-bold text-purple-800 hover:text-purple-600 transition-colors mb-3 line-clamp-2">
+                  <h3 className="text-xl font-bold text-purple-800 hover:text-purple-600 transition-colors mb-3">
                     {item.title}
                   </h3>
                   <div className="text-sm text-white/70 mb-4">
@@ -114,28 +136,6 @@ export default function BeeNews() {
               ))
             )}
           </div>
-
-          {!loading && !error && currentItems.length > 0 && totalPages > 1 && (
-            <div className="mt-5 mb-10 flex justify-center items-center space-x-4">
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
-                className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
-              >
-                ← 이전
-              </button>
-              <span className="px-4 py-2 text-white font-semibold bg-purple-500 rounded-full shadow">
-                {currentPage} / {totalPages}
-              </span>
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
-                className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
-              >
-                다음 →
-              </button>
-            </div>
-          )}
         </section>
       </main>
     </div>
