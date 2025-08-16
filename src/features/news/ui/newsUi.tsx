@@ -81,8 +81,8 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
               disabled={loading}
               className={`px-4 py-2 rounded-full font-semibold text-sm transition-colors disabled:opacity-50 ${
                 keyword === "꿀벌"
-                  ? "bg-white text-purple-700"
-                  : "bg-purple-300 text-white hover:bg-purple-400"
+                  ? "bg-white text-indigo-700"
+                  : "bg-indigo-500/80 text-white hover:bg-indigo-600/90"
               }`}
             >
               꿀벌 뉴스
@@ -92,8 +92,8 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
               disabled={loading}
               className={`px-4 py-2 rounded-full font-semibold text-sm transition-colors disabled:opacity-50 ${
                 keyword === "수정벌"
-                  ? "bg-white text-purple-700"
-                  : "bg-purple-300 text-white hover:bg-purple-400"
+                  ? "bg-white text-indigo-700"
+                  : "bg-indigo-500/80 text-white hover:bg-indigo-600/90"
               }`}
             >
               수정벌 뉴스
@@ -105,17 +105,17 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
-                className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
+                className="px-5 py-2 border-2 border-white/40 hover:bg-white/25 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
               >
                 ← 이전
               </button>
-              <span className="w-22 text-center px-4 py-2 text-white font-semibold bg-purple-500 rounded-full shadow">
+              <span className="w-22 text-center px-4 py-2 text-white font-semibold bg-indigo-600/90 rounded-full shadow">
                 {currentPage} / {totalPages}
               </span>
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
-                className="px-5 py-2 border-2 border-purple-300 hover:bg-white/20 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
+                className="px-5 py-2 border-2 border-white/40 hover:bg-white/25 text-white font-semibold rounded-full shadow disabled:opacity-40 transition-colors"
               >
                 다음 →
               </button>

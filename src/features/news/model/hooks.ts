@@ -17,6 +17,7 @@ export const useNews = (initialData: NewsItem[] = []): NewsHookReturn => {
     
     try {
       const newsData = await fetchGoogleNews(searchKeyword);
+      console.log(`뉴스 로드 완료 - 키워드: ${searchKeyword}, 개수: ${newsData.length}`);
       setNews(newsData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
@@ -27,13 +28,15 @@ export const useNews = (initialData: NewsItem[] = []): NewsHookReturn => {
   }, []);
 
   useEffect(() => {
-    // 초기 데이터가 있고 현재 키워드가 "꿀벌"이면 로딩하지 않음
-    if (initialData.length > 0 && keyword === "꿀벌") {
-      return;
-    }
     loadNews(keyword);
-    setCurrentPage(1); // 키워드 변경 시 첫 페이지로
-  }, [keyword, loadNews, initialData.length]);
+  }, [keyword, loadNews]);
+
+  // 초기 데이터 설정을 위한 별도 useEffect
+  useEffect(() => {
+    if (initialData.length > 0) {
+      setNews(initialData);
+    }
+  }, [initialData]);
 
   const totalPages = useMemo(() => Math.ceil(news.length / ITEMS_PER_PAGE), [news.length]);
   
@@ -45,6 +48,7 @@ export const useNews = (initialData: NewsItem[] = []): NewsHookReturn => {
 
   const handleSetKeyword = useCallback((newKeyword: NewsKeyword) => {
     setKeyword(newKeyword);
+    setCurrentPage(1); // 키워드 변경 시 즉시 첫 페이지로 초기화
   }, []);
 
   const handleSetCurrentPage = useCallback((page: number) => {
