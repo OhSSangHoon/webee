@@ -51,3 +51,9 @@ export { default as Pesticide } from "./pesticide/ui/Pesticide";
 
 /* 꿀벌,수정벌 뉴스 모아보기 */
 export { default as BeeNews } from "./news/ui/newsUi";
+
+/* 로그인 */
+export { default as SignIn } from "./auth/signIn/ui/SignIn";
+
+/* 회원가입 */
+export { default as SignUp } from "./auth/signUp/ui/SignUp";

@@ -104,7 +104,7 @@ body {
 
 /* 버튼 디자인 */
 .blue-button {
-  @apply py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors cursor-pointer;
+  @apply py-2 text-sm bg-blue-700 text-white rounded-md hover:bg-blue-800 transition-colors cursor-pointer;
 }
 
 .blue-button2 {
