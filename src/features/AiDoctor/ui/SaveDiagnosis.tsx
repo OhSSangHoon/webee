@@ -3,27 +3,24 @@
 import { useState, useCallback, useMemo } from "react";
 import AiDiagnosisUI from "./AiDiagnosis";
 import AiDoctorUi from "./AiDoctor";
-import {
-  useSaveDiagnosis,
-  SaveDiagnosisForm,
-  AiDoctorResult,
-} from "../model/useSaveDiagnosis";
+import { useSaveDiagnosis, SaveDiagnosisForm, AiDoctorResult } from "../model/useSaveDiagnosis";
 import { DiagnosisResult } from "@/shared/types/diagnosis";
 
 export default function DiagnosisWrapper() {
-  const [imageFile, setImageFile] = useState<File | null>(null); // step 1. AiDiagnosis 사진
+  const [imageFile, setImageFile] = useState<File | null>(null); // AiDiagnosis 사진
   const [diagnosisResult, setDiagnosisResult] =
-    useState<DiagnosisResult | null>(null); // step1. AiDiagnosis 결과
-  const [form, setForm] = useState<SaveDiagnosisForm>({
+    useState<DiagnosisResult | null>(null); // AiDiagnosis 결과
+  const [form, setForm] = useState<SaveDiagnosisForm & { disease: string }>({
+    disease: "",
     cultivationType: "OPEN_FIELD",
     cropName: "",
     cultivationAddress: "",
     details: "",
-  }); // step 2. AiDoctor에 필요한 정보
+  }); // AiDoctor에 필요한 정보
 
   const [aiDoctorResult, setAiDoctorResult] = useState<AiDoctorResult | null>(
     null
-  ); // step 2. AiDoctor 결과 솔루션
+  ); // AiDoctor 결과 솔루션
 
   const { save, saveResult, loading } = useSaveDiagnosis();
 
@@ -46,6 +43,15 @@ export default function DiagnosisWrapper() {
 
   const derivedDisease = diagnosisResult?.name || "";
 
+  // useMemo로 aiDoctorForm 생성 (derivedDisease 자동 반영)
+  const aiDoctorForm = useMemo(() => ({
+    disease: derivedDisease,
+    cultivationType: form.cultivationType,
+    cropName: form.cropName,
+    cultivationAddress: form.cultivationAddress,
+    details: form.details,
+  }), [derivedDisease, form.cultivationType, form.cropName, form.cultivationAddress, form.details]);
+
   return (
     <div className="card-section-2 mt-20 text-[#333333] ">
       <header className="flex flex-col items-start justify-center bg-blue-50 px-6 py-6 rounded-t-lg">
@@ -62,12 +68,8 @@ export default function DiagnosisWrapper() {
           result={diagnosisResult}
         />
         <AiDoctorUi
-          form={{ ...form, disease: derivedDisease }}
-          setForm={
-            setForm as React.Dispatch<
-              React.SetStateAction<SaveDiagnosisForm & { disease: string }>
-            >
-          }
+          form={aiDoctorForm}
+          setForm={setForm}
           setResult={setAiDoctorResult}
           result={aiDoctorResult}
         />

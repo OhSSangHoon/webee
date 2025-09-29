@@ -1,6 +1,6 @@
 "use client";
 
-import { useBusinessProfileForm } from "../model/useBusinessProfileForm";
+import { useBusinessProfileForm, BusinessProfileFormValues } from "../model/useBusinessProfileForm";
 import { postBusinessProfile } from "../api/postBusinessProfile";
 import { PostcodeModal } from "./PostcodeModal";
 import { useState } from "react";
@@ -11,26 +11,26 @@ export default function BusinessProfileForm() {
   const {
     form,
     file,
-    handleChange,
     handleFileChange,
     removeFile,
     handleInquirySelect,
   } = useBusinessProfileForm();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = form;
+  const inquiryMethod = watch("inquiryMethod");
 
+  const onSubmit = async (data: BusinessProfileFormValues) => {
     const payload = {
-      companyName: form.farmName,
+      companyName: data.farmName,
       businessAddress: selectedAddress,
-      registrationNumber: form.businessNumber,
-      representativeName: form.ceoName,
-      commencementDate: form.startDate,
-      phoneNumber: form.contact,
-      onlineStoreUrl: form.onlineStore || undefined,
+      registrationNumber: data.businessNumber,
+      representativeName: data.ceoName,
+      commencementDate: data.startDate,
+      phoneNumber: data.contact,
+      onlineStoreUrl: data.onlineStore || undefined,
       kakaoChatUrl:
-        form.inquiryMethod === "kakao" && form.kakaoId
-          ? `https://pf.kakao.com/${form.kakaoId}`
+        data.inquiryMethod === "kakao" && data.kakaoId.trim()
+          ? `https://pf.kakao.com/${data.kakaoId}`
           : undefined,
       businessCertificateImage: file ?? undefined,
     };
@@ -61,7 +61,7 @@ export default function BusinessProfileForm() {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="space-y-6 w-full max-w-[1000px] text-black flex flex-col justify-center rounded-2xl items-start shadow-lg text-[14px] "
     >
       <div className="bg-[#EEF2FF] w-full h-[60px] px-4 py-3 rounded-t-2xl">
@@ -84,26 +84,26 @@ export default function BusinessProfileForm() {
                 사업자등록번호 <span className="text-red-500">*</span>
               </label>
               <input
-                name="businessNumber"
-                value={form.businessNumber}
-                onChange={handleChange}
+                {...register("businessNumber")}
                 className="custom-Input"
                 placeholder="사업자등록번호를 입력하세요"
-                required
               />
+              {errors.businessNumber && (
+                <p className="text-red-500 text-sm mt-1">{errors.businessNumber.message}</p>
+              )}
             </div>
             <div>
               <label className="block">
                 대표자명 <span className="text-red-500">*</span>
               </label>
               <input
-                name="ceoName"
-                value={form.ceoName}
-                onChange={handleChange}
+                {...register("ceoName")}
                 className="custom-Input"
                 placeholder="대표자명을 입력하세요"
-                required
               />
+              {errors.ceoName && (
+                <p className="text-red-500 text-sm mt-1">{errors.ceoName.message}</p>
+              )}
             </div>
             <div>
               <label className="block">
@@ -111,12 +111,12 @@ export default function BusinessProfileForm() {
               </label>
               <input
                 type="date"
-                name="startDate"
-                value={form.startDate}
-                onChange={handleChange}
+                {...register("startDate")}
                 className="custom-Input"
-                required
               />
+              {errors.startDate && (
+                <p className="text-red-500 text-sm mt-1">{errors.startDate.message}</p>
+              )}
             </div>
             <div>
               <label className="block">사업자 등록증 제출</label>
@@ -165,13 +165,13 @@ export default function BusinessProfileForm() {
                 업체명 <span className="text-red-500">*</span>
               </label>
               <input
-                name="farmName"
-                value={form.farmName}
-                onChange={handleChange}
+                {...register("farmName")}
                 className="custom-Input"
                 placeholder="업체명을 입력하세요"
-                required
               />
+              {errors.farmName && (
+                <p className="text-red-500 text-sm mt-1">{errors.farmName.message}</p>
+              )}
             </div>
           </div>
           <div className="mt-4">
@@ -212,23 +212,24 @@ export default function BusinessProfileForm() {
                 연락처 <span className="text-red-500">*</span>
               </label>
               <input
-                name="contact"
-                value={form.contact}
-                onChange={handleChange}
+                {...register("contact")}
                 className="custom-Input"
                 placeholder="000-0000-0000"
-                required
               />
+              {errors.contact && (
+                <p className="text-red-500 text-sm mt-1">{errors.contact.message}</p>
+              )}
             </div>
             <div>
               <label className="block">온라인 스토어 링크</label>
               <input
-                name="onlineStore"
-                value={form.onlineStore}
-                onChange={handleChange}
+                {...register("onlineStore")}
                 className="custom-Input"
                 placeholder="http://"
               />
+              {errors.onlineStore && (
+                <p className="text-red-500 text-sm mt-1">{errors.onlineStore.message}</p>
+              )}
             </div>
           </div>
         </section>
@@ -241,7 +242,7 @@ export default function BusinessProfileForm() {
               type="button"
               onClick={() => handleInquirySelect("phone")}
               className={`px-4 py-2 border rounded  cursor-pointer ${
-                form.inquiryMethod === "phone" ? "bg-blue-500 text-white" : ""
+                inquiryMethod === "phone" ? "bg-blue-500 text-white" : ""
               }`}
             >
               전화 문의
@@ -251,23 +252,27 @@ export default function BusinessProfileForm() {
               type="button"
               onClick={() => handleInquirySelect("kakao")}
               className={`px-4 py-2 border rounded  cursor-pointer ${
-                form.inquiryMethod === "kakao" ? "bg-blue-500 text-white" : ""
+                inquiryMethod === "kakao" ? "bg-blue-500 text-white" : ""
               }`}
             >
               카카오톡 문의
               <div>카카오톡을 통해 문의를 받습니다.</div>
             </button>
           </div>
-          {form.inquiryMethod === "kakao" && (
+          {errors.inquiryMethod && (
+            <p className="text-red-500 text-sm mt-1">{errors.inquiryMethod.message}</p>
+          )}
+          {inquiryMethod === "kakao" && (
             <div className="mt-4">
               <label className="block">카카오톡 ID</label>
               <input
-                name="kakaoId"
-                value={form.kakaoId}
-                onChange={handleChange}
+                {...register("kakaoId")}
                 className="custom-Input"
                 placeholder="카카오톡 ID를 입력하세요"
               />
+              {errors.kakaoId && (
+                <p className="text-red-500 text-sm mt-1">{errors.kakaoId.message}</p>
+              )}
             </div>
           )}
         </section>
@@ -276,9 +281,10 @@ export default function BusinessProfileForm() {
         <div className="text-right">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-20 py-2 rounded my-5 "
+            className="bg-blue-500 text-white px-20 py-2 rounded my-5 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           >
-            등록하기
+            {isSubmitting ? "등록 중..." : "등록하기"}
           </button>
         </div>
       </div>
