@@ -2,9 +2,12 @@
 import api from "@/shared/auth/lib";
 import { Crops } from "@/features";
 import { Crop } from "@/shared/types/crop";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useEffect } from "react";
 
-type FormType = {
+type AiDoctorFormValues = {
   disease: string;
   cultivationType: string;
   cropName: string;
@@ -12,9 +15,25 @@ type FormType = {
   details: string;
 };
 
+const schema = yup.object({
+  disease: yup.string().required("질병을 선택해주세요."),
+  cultivationType: yup.string().required("농지환경을 선택해주세요."),
+  cropName: yup.string().required("재배작물을 입력해주세요."),
+  cultivationAddress: yup.string().required("농지 위치를 입력해주세요."),
+  details: yup.string().required("추가 정보를 입력해주세요."),
+});
+
 type AiDoctorResult = {
   situationAnalysis: string[];
   solutions: string[];
+};
+
+type FormType = {
+  disease: string;
+  cultivationType: string;
+  cropName: string;
+  cultivationAddress: string;
+  details: string;
 };
 
 type AiDoctorUiProps = {
@@ -25,43 +44,56 @@ type AiDoctorUiProps = {
 };
 
 export default function AiDoctorUi({
-  form,
-  setForm,
+  form: externalForm,
+  setForm: setExternalForm,
   setResult,
   result,
 }: AiDoctorUiProps) {
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    watch
+  } = useForm<AiDoctorFormValues>({
+    resolver: yupResolver(schema),
+    mode: "onBlur",
+    defaultValues: externalForm
+  });
+
+  // ✅ 개별 필드를 watch (무한 루프 방지)
+  const disease = watch("disease");
+  const cultivationType = watch("cultivationType");
+  const cropName = watch("cropName");
+  const cultivationAddress = watch("cultivationAddress");
+  const details = watch("details");
+
+  // ✅ 개별 필드를 의존성으로 사용
+  useEffect(() => {
+    setExternalForm({
+      disease,
+      cultivationType,
+      cropName,
+      cultivationAddress,
+      details,
+    });
+  }, [disease, cultivationType, cropName, cultivationAddress, details, setExternalForm]);
 
   const handleCropSelect = (crop: Crop) => {
-    setForm({
-      disease: "",
-      cultivationType: crop.cultivationType || "",
-      cropName: crop.name,
-      cultivationAddress: crop.cultivationAddress || "",
-      details: crop.description || "",
-    });
+    setValue("disease", "");
+    setValue("cultivationType", crop.cultivationType || "");
+    setValue("cropName", crop.name);
+    setValue("cultivationAddress", crop.cultivationAddress || "");
+    setValue("details", crop.description || "");
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 폼 제출 시 새로고침 방지
-    setLoading(true);
+  const onSubmit = async (data: AiDoctorFormValues) => {
     try {
-      const response = await api.post("/bee/diagnosis/ai", form);
+      const response = await api.post("/bee/diagnosis/ai", data);
       setResult(response.data.data);
-      setLoading(false);
     } catch (error) {
       console.error("AI 진단 요청 실패:", error);
       alert("AI 진단 요청에 실패했습니다.");
-      setLoading(false);
     }
   };
 
@@ -76,7 +108,7 @@ export default function AiDoctorUi({
       </header>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="space-y-6  rounded-lg border-1 border-[#ececec] p-8"
       >
         {/* 질병 선택 */}
@@ -90,16 +122,12 @@ export default function AiDoctorUi({
           </label>
           <select
             id="disease"
-            name="disease"
-            value={form.disease}
-            onChange={handleChange}
-            required
+            {...register("disease")}
             className="w-full border border-[#ececec] p-2 rounded-md appearance-none placeholder-[#d1d1d1]"
           >
             <option value="" disabled hidden className="text-[#d1d1d1]">
               질병 선택
             </option>
-
             <option value="유층 응애">유충 응애</option>
             <option value="성충 응애">성충 응애</option>
             <option value="유충 부저병">유충 부저병</option>
@@ -108,6 +136,9 @@ export default function AiDoctorUi({
               성충 날개불구바이러스감염증
             </option>
           </select>
+          {errors.disease && (
+            <p className="text-red-500 text-sm mt-1">{errors.disease.message}</p>
+          )}
         </div>
 
         {/* 재배 유형(농지환경) */}
@@ -120,10 +151,7 @@ export default function AiDoctorUi({
           </label>
           <select
             id="cultivationType"
-            name="cultivationType"
-            value={form.cultivationType}
-            onChange={handleChange}
-            required
+            {...register("cultivationType")}
             className="w-full border border-[#ececec] p-2 rounded-md appearance-none placeholder-[#d1d1d1]"
           >
             <option value="" disabled hidden className="text-[#d1d1d1]">
@@ -132,6 +160,9 @@ export default function AiDoctorUi({
             <option value="CONTROLLED">시설</option>
             <option value="OPEN_FIELD">노지(기본)</option>
           </select>
+          {errors.cultivationType && (
+            <p className="text-red-500 text-sm mt-1">{errors.cultivationType.message}</p>
+          )}
         </div>
 
         {/* 재배작물 */}
@@ -141,13 +172,13 @@ export default function AiDoctorUi({
           </label>
           <input
             id="cropName"
-            name="cropName"
+            {...register("cropName")}
             placeholder="블루베리"
-            value={form.cropName}
-            onChange={handleChange}
-            required
             className="w-full border border-[#ececec] p-2 rounded-md placeholder-[#d1d1d1]"
           />
+          {errors.cropName && (
+            <p className="text-red-500 text-sm mt-1">{errors.cropName.message}</p>
+          )}
         </div>
 
         {/* 농지 위치 */}
@@ -160,13 +191,13 @@ export default function AiDoctorUi({
           </label>
           <input
             id="cultivationAddress"
-            name="cultivationAddress"
+            {...register("cultivationAddress")}
             placeholder="경산북도 경산시 (정확한 주소를 입력해 주세요)"
-            value={form.cultivationAddress}
-            onChange={handleChange}
-            required
             className="w-full border border-[#ececec] p-2 rounded-md placeholder-[#d1d1d1]"
           />
+          {errors.cultivationAddress && (
+            <p className="text-red-500 text-sm mt-1">{errors.cultivationAddress.message}</p>
+          )}
         </div>
 
         {/* 추가 정보 */}
@@ -176,22 +207,23 @@ export default function AiDoctorUi({
           </label>
           <textarea
             id="details"
-            name="details"
+            {...register("details")}
             placeholder="추가로 알려주실 정보가 있다면 작성해 주세요. (최근 특이사항,  주변 환경 등) 없다면 '없음' 을 적어주세요"
-            value={form.details}
-            onChange={handleChange}
-            required
             className="w-full min-h-[6rem] border border-[#ececec] p-2 rounded-md placeholder-[#d1d1d1] "
           />
+          {errors.details && (
+            <p className="text-red-500 text-sm mt-1">{errors.details.message}</p>
+          )}
         </div>
 
         <div className="flex flex-row gap-4">
           <Crops onSelect={handleCropSelect} />
           <button
             type="submit"
-            className={`blue-button2 ${loading ? "loading" : ""}`}
+            className={`blue-button2 ${isSubmitting ? "loading" : ""}`}
+            disabled={isSubmitting}
           >
-            {loading ? "요청 중..." : "솔루션 요청"}
+            {isSubmitting ? "요청 중..." : "솔루션 요청"}
           </button>
         </div>
       </form>

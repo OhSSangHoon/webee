@@ -1,62 +1,79 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useRecommendBee } from "../model/useRecommendation";
 import Crops from "@/features/crops/ui/cropsUI";
 import { Crop } from "@/shared/types/crop";
 
+type CropInfoFormValues = {
+  name: string;
+  variety: string;
+  cultivationType: string;
+  cultivationAddress: string;
+  cultivationArea: string;
+  plantingDate: string;
+};
+
+const schema = yup.object({
+  name: yup.string().required("재배 작물을 입력해주세요."),
+  variety: yup.string().default(""),
+  cultivationType: yup.string().required("재배 방식을 선택해주세요."),
+  cultivationAddress: yup.string().required("재배 지역을 입력해주세요."),
+  cultivationArea: yup
+    .string()
+    .required("재배 면적을 입력해주세요.")
+    .matches(/^\d+$/, "재배 면적은 숫자만 입력 가능합니다."),
+  plantingDate: yup.string().required("정식일을 입력해주세요."),
+});
+
 export default function CropInfo() {
   const { submitCropInfo, loading, error, isSuccess } = useRecommendBee();
 
-  const [form, setForm] = useState({
-    name: "",
-    variety: "",
-    cultivationType: "OPEN_FILED",
-    cultivationAddress: "",
-    cultivationArea: "",
-    plantingDate: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue
+  } = useForm<CropInfoFormValues>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: "",
+      variety: "",
+      cultivationType: "OPEN_FIELD",
+      cultivationAddress: "",
+      cultivationArea: "",
+      plantingDate: "",
+    },
+    mode: "onBlur",
   });
 
   useEffect(() => {
     if (isSuccess) {
-      setForm({
-        name: "",
-        variety: "",
-        cultivationType: "OPEN_FILED",
-        cultivationAddress: "",
-        cultivationArea: "",
-        plantingDate: "",
-      });
+      reset();
     }
-  }, [isSuccess]);
+  }, [isSuccess, reset]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await submitCropInfo(form);
+  const onSubmit = async (data: CropInfoFormValues) => {
+    await submitCropInfo(data);
   };
 
   const handleCropSelect = (crop: Crop) => {
-    setForm({
-      cultivationType: crop.cultivationType || "",
-      name: crop.name,
-      variety: crop.variety || "",
-      cultivationAddress: crop.cultivationAddress || "",
-      cultivationArea: crop.cultivationArea?.toString() || "",
-      plantingDate: crop.plantingDate || "",
-    });
+    setValue("cultivationType", crop.cultivationType || "");
+    setValue("name", crop.name);
+    setValue("variety", crop.variety || "");
+    setValue("cultivationAddress", crop.cultivationAddress || "");
+    setValue("cultivationArea", crop.cultivationArea?.toString() || "");
+    setValue("plantingDate", crop.plantingDate || "");
   };
 
   return (
     <form
       className=" flex flex-col justify-start items-stretch w-full  card-section text-[#333333]"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <h2 className="text-2xl font-bold pb-10">
         🥬 새 작물 추가
@@ -71,25 +88,26 @@ export default function CropInfo() {
         </label>
         <input
           type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
+          {...register("name")}
           className="custom-Input"
           placeholder="예: 딸기, 블루베리 등"
-          required
         />
+        {errors.name && (
+          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+        )}
       </div>
       {/* 품종 */}
       <div>
         <label className="block mb-1 text-sm font-medium">품종</label>
         <input
           type="text"
-          name="variety"
-          value={form.variety}
-          onChange={handleChange}
+          {...register("variety")}
           className="custom-Input"
           placeholder="예: 설향, 한라봉 등"
         />
+        {errors.variety && (
+          <p className="text-red-500 text-sm mt-1">{errors.variety.message}</p>
+        )}
       </div>
       {/* 재배 방식 */}
       <div>
@@ -97,29 +115,29 @@ export default function CropInfo() {
           재배 방식 <span className="text-red-500">*</span>
         </label>
         <select
-          name="cultivationType"
-          value={form.cultivationType}
-          onChange={handleChange}
+          {...register("cultivationType")}
           className="custom-Input"
-          required
         >
           <option value="">선택해주세요</option>
           <option value="OPEN_FIELD">노지(기본)</option>
           <option value="CONTROLLED">비닐하우스</option>
         </select>
+        {errors.cultivationType && (
+          <p className="text-red-500 text-sm mt-1">{errors.cultivationType.message}</p>
+        )}
       </div>
       {/* 재배 지역 */}
       <div>
-        <label className="block mb-1 text-sm font-medium">재배 지역 </label>
+        <label className="block mb-1 text-sm font-medium">재배 지역 <span className="text-red-500">*</span></label>
         <input
           type="text"
-          name="cultivationAddress"
-          value={form.cultivationAddress}
-          onChange={handleChange}
+          {...register("cultivationAddress")}
           className="custom-Input"
           placeholder="경상북도 경산시 (정확한 주소를 입력해 주세요)"
-          required
         />
+        {errors.cultivationAddress && (
+          <p className="text-red-500 text-sm mt-1">{errors.cultivationAddress.message}</p>
+        )}
       </div>
       {/* 재배 면적 */}
       <div>
@@ -127,14 +145,14 @@ export default function CropInfo() {
           재배 면적 (m²) <span className="text-red-500">*</span>
         </label>
         <input
-          type="number"
-          name="cultivationArea"
-          value={form.cultivationArea}
-          onChange={handleChange}
+          type="text"
+          {...register("cultivationArea")}
           className="custom-Input"
           placeholder="예: 300"
-          required
         />
+        {errors.cultivationArea && (
+          <p className="text-red-500 text-sm mt-1">{errors.cultivationArea.message}</p>
+        )}
       </div>
       {/* 정식일 (파종일) */}
       <div>
@@ -143,12 +161,12 @@ export default function CropInfo() {
         </label>
         <input
           type="date"
-          name="plantingDate"
-          value={form.plantingDate}
-          onChange={handleChange}
+          {...register("plantingDate")}
           className="custom-Input"
-          required
         />
+        {errors.plantingDate && (
+          <p className="text-red-500 text-sm mt-1">{errors.plantingDate.message}</p>
+        )}
       </div>
       <div className="flex flex-row w-full gap-2 pt-10">
         <Crops onSelect={handleCropSelect} />
