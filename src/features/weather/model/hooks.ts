@@ -68,6 +68,10 @@ export const useWeatherData = () => {
     );
   };
 
+  useEffect(() => {
+    requestLocationData();
+  }, []);
+
   return { ...state, requestLocationData };
 };
 

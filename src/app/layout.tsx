@@ -4,7 +4,8 @@ import { Header } from "@/widgets";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
 import ChatBot from "@/features/chatBot/ChatBotModal";
-import LoadingOverlay from "@/components/LoadingOverlay";
+import { Footer } from "@/widgets";
+// import LoadingOverlay from "@/components/LoadingOverlay";
 
 export const metadata: Metadata = {
   title: {
@@ -58,24 +59,25 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link rel="preload" href="/images/bee1.webp" as="image" type="image/webp" crossOrigin="anonymous" />
-        <link rel="preload" href="/images/bee2.webp" as="image" type="image/webp" crossOrigin="anonymous" />
-        <link rel="preload" href="/images/bee3.webp" as="image" type="image/webp" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://dapi.kakao.com" />
         <link rel="dns-prefetch" href="https://dapi.kakao.com" />
         <link rel="preconnect" href="https://mts.daumcdn.net" />
         <link rel="dns-prefetch" href="https://mts.daumcdn.net" />
         <link rel="preconnect" href="https://api.webee.sbs" />
+        <link rel="preload" href="/webee.svg" as="image" type="image/svg+xml" crossOrigin="anonymous" />
       </head>
       <body
-        className="antialiased" // 폰트 로딩 완료 후 제거
+        className="antialiased min-h-screen flex flex-col container border-x border-gray-500" // 폰트 로딩 완료 후 제거
       >
-        <LoadingOverlay />
+        {/* <LoadingOverlay /> */}
         <HydrationProvider>
           <Header />
           <Providers>
-            {children}
+            <main className="flex-1">
+              {children}
+            </main>
           </Providers>
+          <Footer />
         </HydrationProvider>
         <ChatBot />
       </body>
