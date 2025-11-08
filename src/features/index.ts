@@ -41,7 +41,7 @@ export { default as Search } from "./search/ui/ProductsSearch";
 export { default as StoreRecommendBee } from "./mypage/storeRecommendBee/ui/module";
 
 /* 날씨 위젯 */
-export { default as Weather2 } from "./weather/ui/WeatherUi";
+export { default as Weather } from "./weather/ui/WeatherUi";
 
 /* 수정벌 챗봇 */
 export { default as ChatBot } from "./chatBot/ChatBotModal";
