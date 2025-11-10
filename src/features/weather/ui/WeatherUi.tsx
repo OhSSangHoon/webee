@@ -76,7 +76,7 @@ export default function WeatherUI() {
   const dailyForecast = getDailyForecast(forecastData);
 
   return (
-    <main className="flex flex-col items-center gap-4 pb-2">
+    <main className="flex flex-col items-center gap-4 pb-2 w-full">
       {/* 메인 날씨 정보 */}
       <section className="flex flex-col gap-1 items-center" aria-label="현재 날씨">
         <h2 className="text-gray-900 font-semibold text-sm">
@@ -103,7 +103,7 @@ export default function WeatherUI() {
 
       {/* 벌 관련 메시지 */}
       <aside className="rounded-xl text-center w-[335px] bg-[#FFE482] flex items-center justify-center py-3" aria-label="꿀벌 활동 정보">
-        <p className="text-main-900 font-semibold text-md tracking-tight">
+        <p className="text-main-900 font-semibold text-md tracking-tight whitespace-pre-line">
           {getBeeMessage(weatherData)}
         </p>
       </aside>
@@ -121,7 +121,7 @@ export default function WeatherUI() {
 
       {/* 6일 예보 */}
       {forecastData && (
-        <section className="w-[335px] shadow-[0_4px_10px_0px_rgba(0,0,0,0.04)] border border-gray-300 bg-white rounded-xl px-4 py-3" aria-label="주간 날씨 예보">
+        <section className="w-full shadow-[0_4px_10px_0px_rgba(0,0,0,0.04)] border border-gray-300 bg-white rounded-xl px-4 py-3" aria-label="주간 날씨 예보">
           <ul className="grid grid-cols-5 gap-2">
             {dailyForecast.map((day, index) => {
               return (
@@ -150,7 +150,7 @@ export default function WeatherUI() {
       )}
 
         {/* 농업기상 정보 사이드바 */}
-        <section className="w-[335px] shadow-[0_4px_10px_0px_rgba(0,0,0,0.04)] border-1 border-gray-300 bg-white rounded-xl px-4 py-3">
+        <section className="w-[335px] shadow-[0_4px_10px_0px_rgba(0,0,0,0.04)] border-1 border-gray-300 bg-white rounded-xl px-4 py-3 text-center">
           {/* {detailError && (
             <p className="text-red text-sm font-regular py-2 text-center">{detailError}</p>
           )}
