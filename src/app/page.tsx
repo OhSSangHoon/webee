@@ -59,11 +59,11 @@ export default function Home() {
 
 
   return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-[335px] mx-auto">
         {/* 날씨 위젯 */}
         <Weather />
         {/* 기능 섹션 */}
-        <article id="features" className="">
+        <article id="features" className="w-full">
           <div className="w-full h-full my-4">
             <h3 className="text-xl font-bold text-main-900 font-bold">Webee의 특별한 기능을 누려보세요!</h3>  
           </div>
@@ -74,16 +74,16 @@ export default function Home() {
                 key={feature.title}
                 className=""
               >
-                <div className="w-25 h-25 bg-main-500 rounded-xl flex flex-col items-center justify-center cursor-pointer">
-                  <div className="text-3xl py-2">{feature.icon}</div>
-                  <h4 className="text-md font-medium text-gray-900 ">{feature.title}</h4>
+                <div className="w-25 h-25 bg-main-500 rounded-xl flex flex-col items-center justify-center cursor-pointer group">
+                  <div className="text-3xl py-2 transition-all duration-200 group-hover:scale-105">{feature.icon}</div>
+                  <h4 className="text-md font-medium text-gray-900 transition-all duration-200 group-hover:text-lg">{feature.title}</h4>
                 </div>
               </article>
             ))}
           </div>
         </article>
         {/* 뉴스 섹션 */}
-        <article id="features" className="mt-2 gap-4">
+        <article id="features" className="mt-2 gap-4 w-full">
           <div className="w-full h-full my-4">
             <h3 className="text-xl font-bold text-main-900 font-bold">오늘의 주요 뉴스를 확인하세요!</h3>  
           </div>
