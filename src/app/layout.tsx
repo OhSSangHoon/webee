@@ -3,7 +3,7 @@ import "./globals.css";
 import { Header } from "@/widgets";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
-import ChatBot from "@/features/chatBot/ChatBotModal";
+import Chatbot from "@/features/chatBot/ui/ChatBotModal";
 import { Footer } from "@/widgets";
 // import LoadingOverlay from "@/components/LoadingOverlay";
 
@@ -79,7 +79,7 @@ export default function RootLayout({
           </Providers>
           <Footer />
         </HydrationProvider>
-        <ChatBot />
+        <Chatbot />
       </body>
     </html>
   );

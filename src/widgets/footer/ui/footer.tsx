@@ -1,15 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { useChatbotStore } from "@/features/chatBot/model/useChatbotStore";
 
 export default function Footer() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
+  const { openChatbot } = useChatbotStore();
 
   return (
     <footer className="sticky bottom-0 left-0 w-full h-[90px] flex flex-col items-center py-3 border-t border-gray-500 mt-auto bg-white">
         <div className="grid grid-cols-4 gap-12">
-            <div 
+            <Link 
+              href="/"
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("home")}
               onMouseLeave={() => setHoveredIcon(null)}
@@ -31,8 +35,9 @@ export default function Footer() {
                     />
                 </div>
                 <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "home" ? "text-main-300" : "text-gray-700"}`}>홈</span>
-            </div>
-            <div 
+            </Link>
+            <Link 
+              href="/search"
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("trade")}
               onMouseLeave={() => setHoveredIcon(null)}
@@ -54,11 +59,12 @@ export default function Footer() {
                     />
                 </div>
                 <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "trade" ? "text-main-300" : "text-gray-700"}`}>거래</span>
-            </div>
+            </Link>
             <div 
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("chat")}
               onMouseLeave={() => setHoveredIcon(null)}
+              onClick={openChatbot}
             >
                 <div className="relative w-[25px] h-[25px]">
                     <Image 
@@ -78,7 +84,8 @@ export default function Footer() {
                 </div>
                 <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "chat" ? "text-main-300" : "text-gray-700"}`}>상담</span>
             </div>
-            <div 
+            <Link 
+              href="/mypage"
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("profile")}
               onMouseLeave={() => setHoveredIcon(null)}
@@ -100,7 +107,7 @@ export default function Footer() {
                     />
                 </div>
                 <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "profile" ? "text-main-300" : "text-gray-700"}`}>프로필</span>
-            </div>
+            </Link>
         </div>
     </footer>
   );

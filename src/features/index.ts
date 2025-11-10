@@ -44,7 +44,7 @@ export { default as StoreRecommendBee } from "./mypage/storeRecommendBee/ui/modu
 export { default as Weather } from "./weather/ui/WeatherUi";
 
 /* 수정벌 챗봇 */
-export { default as ChatBot } from "./chatBot/ChatBotModal";
+export { default as ChatBot } from "./chatBot/ui/ChatBotModal";
 
 /* 농약 찾기 */
 export { default as Pesticide } from "./pesticide/ui/Pesticide";
