@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useChatbotStore } from "@/features/chatBot/model/useChatbotStore";
+import { useUserStore } from "@/shared/auth/useUserStore";
 
 export default function Footer() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const { openChatbot } = useChatbotStore();
+  const { isLoggedIn } = useUserStore();
 
   return (
     <footer className="sticky bottom-0 left-0 w-full h-[90px] flex flex-col items-center py-3 border-t border-gray-500 mt-auto bg-white">
@@ -84,29 +86,31 @@ export default function Footer() {
                 </div>
                 <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "chat" ? "text-main-300" : "text-gray-700"}`}>상담</span>
             </div>
-            <Link 
-              href="/mypage"
+            <Link
+              href={isLoggedIn ? "/mypage" : "/signIn"}
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("profile")}
               onMouseLeave={() => setHoveredIcon(null)}
             >
                 <div className="relative w-[25px] h-[25px]">
-                    <Image 
-                      src="/profile.svg" 
-                      alt="프로필 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/profile.svg"
+                      alt="프로필 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "profile" ? "opacity-0" : "opacity-100"}`}
                     />
-                    <Image 
-                      src="/profile_hover.svg" 
-                      alt="프로필 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/profile_hover.svg"
+                      alt="프로필 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "profile" ? "opacity-100" : "opacity-0"}`}
                     />
                 </div>
-                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "profile" ? "text-main-300" : "text-gray-700"}`}>프로필</span>
+                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "profile" ? "text-main-300" : "text-gray-700"}`}>
+                  {isLoggedIn ? "프로필" : "로그인"}
+                </span>
             </Link>
         </div>
     </footer>

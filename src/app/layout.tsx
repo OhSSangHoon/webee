@@ -5,7 +5,6 @@ import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
 import Chatbot from "@/features/chatBot/ui/ChatBotModal";
 import { Footer } from "@/widgets";
-// import LoadingOverlay from "@/components/LoadingOverlay";
 
 export const metadata: Metadata = {
   title: {
@@ -69,7 +68,6 @@ export default function RootLayout({
       <body
         className="antialiased min-h-screen flex flex-col container border-x border-gray-500" // 폰트 로딩 완료 후 제거
       >
-        {/* <LoadingOverlay /> */}
         <HydrationProvider>
           <Header />
           <Providers>
