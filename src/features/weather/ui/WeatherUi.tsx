@@ -4,6 +4,7 @@ import { useWeatherData, useDetailWeather } from "../model/hooks";
 // import { beeTemperatureData, getBeeBehaviorMessage } from "../model/temp";
 import Image from "next/image";
 import { getWeatherIcon, getWeatherKorean, formatDayShort, formatTime, getDailyForecast, getBeeMessage } from "../model/utils";
+import Skeleton from "@/widgets/skeleton/ui/Skeleton";
 
 
 /**
@@ -21,16 +22,7 @@ export default function WeatherUI() {
 
   // 로딩 상태 UI
   if (loading) {
-    return (
-      <aside className="flex justify-center items-center" role="status" aria-live="polite">
-        <div className="w-full">
-          <div className="text-center text-lg flex flex-col items-center justify-center h-full">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mb-4"></div>
-            <p>위치 정보를 가져오는 중...</p>
-          </div>
-        </div>
-      </aside>
-    );
+    return <Skeleton />;
   }
 
   // 에러 상태 UI
