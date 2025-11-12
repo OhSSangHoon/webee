@@ -10,10 +10,6 @@ import HeaderDropdown from "./HeaderDropdown";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <header className="w-full h-[100px] flex items-center justify-center relative">
       <Link href="/" aria-label="홈으로 이동">
