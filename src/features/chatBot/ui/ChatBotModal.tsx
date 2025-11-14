@@ -87,7 +87,7 @@ export default function ChatbotLauncher() {
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 text-gray-900 flex items-center justify-center z-50 text-[18px] "
+      className=" fixed inset-0 bg-black/70 text-gray-900 flex items-center justify-center text-[18px] "
       onClick={closeChatbot}
     >
       <div
@@ -109,7 +109,7 @@ export default function ChatbotLauncher() {
         {/* 채팅 영역 */}
         <div
           ref={scrollRef}
-          className="px-6 py-5 bg-gradient-to-b from-purple-50 to-white overflow-y-auto flex-1  min-h-[550px] max-h-[600px] resize-y rounded-md border border-gray-200"
+          className="px-6 py-5 overflow-y-auto flex-1  min-h-[550px] max-h-[600px] resize-y rounded-md border border-gray-200"
         >
           <div className="flex flex-row gap-2 ">
             <div className="w-11 h-11 ">
@@ -123,12 +123,10 @@ export default function ChatbotLauncher() {
               />
             </div>
             <div>
-              <div className="text-sm">붕붕이</div>
-              <div className="rounded-lg bg-white px-4 py-2  shadow inline-block">
+              <div className="text-xs font-bold">chat_bee</div>
+              <div>
                 안녕하세요! <br />
-                수정벌 전문 AI 비서{" "}
-                <span className="text-[#ff5e00]">붕붕이</span>
-                입니다.
+                수정벌 전문 AI 비서 붕붕이에요.
                 <br />
                 무엇을 도와드릴까요?
               </div>
@@ -158,10 +156,10 @@ export default function ChatbotLauncher() {
             <div key={idx} className="animate-fade-in overflow-auto ">
               {/* 사용자 메시지 */}
               <div className="flex flex-col justify-end items-end my-1.5 ">
-                <div className="bg-[#ffc83a] text-gray-900 px-4 py-3 rounded-xl shadow">
+                <div className="bg-[#ffc83a] px-4 py-3 rounded-xl shadow">
                   {res.input}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-gray-500 mt-1 mr-1">
                   {formatTime(new Date(res.timestamp))}
                 </div>
               </div>
@@ -178,16 +176,13 @@ export default function ChatbotLauncher() {
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
-                <div className="max-w-[80%]">
-                  <div className="text-sm">붕붕이</div>
-                  <div className="rounded-lg bg-white px-4 py-4 shadow inline-block">
-                    {res.answer}
+                <div className="max-w-[80%] mb-8">
+                  <div className="text-xs font-bold">chat_bee</div>
+                  <div>{res.answer}</div>
+                  <div className="text-xs text-gray-500">
+                    {formatTime(new Date(res.timestamp))}
                   </div>
                 </div>
-              </div>
-
-              <div className="text-xs text-gray-500">
-                {formatTime(new Date(res.timestamp))}
               </div>
             </div>
           ))}
