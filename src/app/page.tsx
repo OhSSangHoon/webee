@@ -3,6 +3,7 @@
 
 import { Weather } from "@/features";
 import { useRouter } from "next/navigation";
+import { NewsCarousel } from "@/widgets/home/newsCarousel/ui/NewsCarousel";
 
 
 const FEATURES_DATA = [
@@ -59,7 +60,7 @@ export default function Home() {
 
 
   return (
-      <div className="flex flex-col items-center w-[335px] mx-auto">
+      <div className="flex flex-col items-center w-[335px] mx-auto pb-4">
         {/* 날씨 위젯 */}
         <Weather />
         {/* 기능 섹션 */}
@@ -83,13 +84,11 @@ export default function Home() {
           </div>
         </article>
         {/* 뉴스 섹션 */}
-        <article id="features" className="mt-2 gap-4 w-full">
+        <article id="news" className="mt-2 gap-4 w-full">
           <div className="w-full h-full my-4">
-            <h3 className="text-xl font-bold text-main-900 font-bold">오늘의 주요 뉴스를 확인하세요!</h3>  
+            <h3 className="text-xl font-bold text-main-900 font-bold">오늘의 주요 뉴스를 확인하세요!</h3>
           </div>
-          <div className="w-full h-[110px] border-2 border-red-500 rounded-xl">
-            
-          </div>
+          <NewsCarousel />
         </article>
     </div>
   );
