@@ -108,6 +108,28 @@ body {
   display: none;  /* Chrome, Safari and Opera */
 }
 
+/* 나의 업체 슬라이더 페이지네이션 컨테이너 */
+.business-swiper .swiper-pagination{
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 나의 업체 슬라이더 페이지네이션 버튼 */
+.business-swiper .swiper-pagination-bullet {
+  border-radius: 100%;
+  background-color: var(--color-gray-500);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+/* 나의 업체 슬라이더 페이지네이션 활성화 */
+.business-swiper .swiper-pagination-bullet-active {
+  border-radius: 15px;
+  background-color: var(--color-main-900);
+  transition: all 0.3s ease;
+}
+
 
 /* 반응형 최적화 */
 @media (max-width: 640px) {

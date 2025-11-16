@@ -1,29 +1,34 @@
-import {
-  DiagnosisHistory,
-  MyProfile,
-  MySaleList,
-  StoreRecommendBee,
-} from "@/features";
+"use client";
+
+import { useEffect, useState } from "react";
+import { DiagnosisHistory, MyProfile, MySaleList, StoreRecommendBee,} from "@/features";
+import Skeleton from "@/widgets/skeleton/ui/Skeleton";
 
 export default function MyPage() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // 컴포넌트가 마운트되면 로딩 완료
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
+
   return (
-    <div className="lg:w-[65%] flex flex-col gap-8 mx-auto pt-30 pb-10">
-      {/* MySaleList와 MyProfile */}
-      <div className="w-full flex flex-col md:flex-row gap-6">
-        {/* MySaleList */}
-        <div className="w-full md:w-[70%] order-2 md:order-1">
+    <>
+      <div className="flex flex-col gap-8 mx-auto">
+        <div className="w-[335px] mx-auto">
+          {/* MyProfile */}
+          <MyProfile />
+          {/* MySaleList */}
           <MySaleList />
         </div>
-        
-        {/* MyProfile */}
-        <div className="w-full md:w-[30%] order-1 md:order-2">
-          <MyProfile />
-        </div>
+        {/* 추가 컴포넌트들 */}
+        <StoreRecommendBee />
+        <DiagnosisHistory />
       </div>
-
-      {/* 추가 컴포넌트들 */}
-      <StoreRecommendBee />
-      <DiagnosisHistory />
-    </div>
+    </>
   );
 }
