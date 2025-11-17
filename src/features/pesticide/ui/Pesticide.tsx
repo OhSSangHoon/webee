@@ -119,20 +119,24 @@ export default function PesticideTable() {
   const endPage = Math.min(startPage + 9, totalPages);
 
   return (
-    <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] min-h-screen text-white px-6 py-10">
-      <div className="max-w-6xl mx-auto space-y-10 pt-20">
-        <h1 className="text-4xl font-extrabold text-center">
-          🐝 내 작물에 맞는 농약 찾기
-        </h1>
-        <p className="text-center text-lg text-white/80">
-          작물, 용도, 곤충을 선택하고 검색하면 농약 적용 정보를 확인할 수
-          있습니다.
-        </p>
+    <div className="bg-gradient-to-br from-[#7e94f6f6] to-[#764ba2f6] min-h-screen text-white px-3 pt-5 pb-10 ">
+      <div className=" mx-auto space-y-10 ">
+        <section className="w-full order-1">
+          <h2 className="text-2xl font-extrabold text-white drop-shadow">
+          내 작물에 맞는 농약 찾기
+          </h2>
+          <h3 className="text-white text-xs mt-1">
+            작물, 용도, 곤충을 선택 후 검색하면 농약 적용 정보를 확인할 수
+            있습니다.
+          </h3>
+        </section>
 
         {/* 검색 폼 */}
-        <div className="bg-white/10 p-6 rounded-xl shadow-lg flex flex-wrap gap-4 justify-center items-end">
+        <section className="bg-white/10 p-6 rounded-xl shadow-lg flex flex-wrap gap-2 justify-center items-end">
           <div>
-            <label htmlFor="crop-select" className="block mb-1 font-medium">작물명</label>
+            <label htmlFor="crop-select" className="block mb-1 font-medium">
+              작물명
+            </label>
             <select
               id="crop-select"
               onChange={(e) => setCrop(e.target.value)}
@@ -148,7 +152,9 @@ export default function PesticideTable() {
             </select>
           </div>
           <div>
-            <label htmlFor="usage-select" className="block mb-1 font-medium">용도</label>
+            <label htmlFor="usage-select" className="block mb-1 font-medium">
+              용도
+            </label>
             <select
               id="usage-select"
               onChange={(e) => setUsage(e.target.value)}
@@ -164,7 +170,9 @@ export default function PesticideTable() {
             </select>
           </div>
           <div>
-            <label htmlFor="insect-select" className="block mb-1 font-medium">곤충</label>
+            <label htmlFor="insect-select" className="block mb-1 font-medium">
+              곤충
+            </label>
             <select
               id="insect-select"
               onChange={(e) => setInsect(e.target.value)}
@@ -181,14 +189,14 @@ export default function PesticideTable() {
           </div>
           <button
             onClick={() => handleSearch(1, true)}
-            className="bg-yellow-400 text-black px-6 py-2 rounded-full font-bold hover:bg-yellow-300 transition  cursor-pointer"
+            className="button-orange"
           >
             검색
           </button>
-        </div>
+        </section>
 
         {/* 결과 테이블 */}
-        <div className="bg-white text-black rounded-xl overflow-auto shadow-lg">
+        <section className="bg-white text-black rounded-xl shadow-lg w-full overflow-auto">
           {loading ? (
             <div className="text-center p-6 text-xl">검색 중...</div>
           ) : results.length === 0 && searched ? (
@@ -196,14 +204,21 @@ export default function PesticideTable() {
               해당 조합으로 된 검색결과가 없습니다.
             </div>
           ) : (
-            <table className="w-full text-sm text-center">
+            <table className="min-w-2xl text-base text-center">
               <thead className="bg-gray-200">
                 <tr>
                   <th className="p-2">번호</th>
                   <th className="p-2">상표명</th>
                   <th className="p-2">품목명</th>
-                  <th className="p-2">함량정보</th>
-                  <th className="p-2">안전방사시간</th>
+                  <th className="p-2">
+                    함량 <br />
+                    정보
+                  </th>
+                  <th className="p-2">
+                    안전 <br />
+                    방사 <br />
+                    시간
+                  </th>
                   <th className="p-2">작물명</th>
                   <th className="p-2">봄종명</th>
                   <th className="p-2">용도</th>
@@ -215,7 +230,9 @@ export default function PesticideTable() {
                   <tr key={i} className="odd:bg-gray-50 even:bg-white">
                     <td className="p-2">{r.agchmApplcNo}</td>
                     <td className="p-2">{r.brandNm}</td>
-                    <td className="p-2">{r.prdlstNm}</td>
+                    <td className="p-2 break-words max-w-[15ch]">
+                      {r.prdlstNm}
+                    </td>
                     <td className="p-2">{r.contInfo}</td>
                     <td className="p-2">{r.safeRdmtrTime}</td>
                     <td className="p-2">{r.cropsNm}</td>
@@ -227,44 +244,56 @@ export default function PesticideTable() {
               </tbody>
             </table>
           )}
-        </div>
+        </section>
 
         {/* 페이지네이션 */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-2 flex-wrap">
+          <section className="flex flex-wrap justify-center mt-4">
             {startPage > 1 && (
               <button
                 onClick={() => handleSearch(startPage - 1, false)}
-                className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200  cursor-pointer"
+                className="px-3 py-1 text-white font-semibold
+                 bg-white/20 backdrop-blur-xl border border-white/20 shadow-md
+                 rounded-l-full hover:bg-white/30 transition-all cursor-pointer"
               >
                 ◀
               </button>
             )}
+
             {Array.from({ length: endPage - startPage + 1 }).map((_, idx) => {
               const pageNo = startPage + idx;
+              const isSelected = page === pageNo;
+
               return (
                 <button
                   key={pageNo}
                   onClick={() => handleSearch(pageNo, false)}
-                  className={`px-3 py-1 rounded-full transition ${
-                    page === pageNo
-                      ? "bg-yellow-400 text-black font-bold"
-                      : "bg-white text-black hover:bg-gray-200  cursor-pointer"
-                  }`}
+                  className={`px-3 py-1 text-white font-semibold border-t border-b border-white/20
+                    -ml-[1px] relative transition-all cursor-pointer
+                    ${
+                      isSelected
+                        ? "bg-white/40 backdrop-blur-xl shadow-lg -translate-y-1 scale-105 z-10 rounded"
+                        : "bg-white/20 backdrop-blur-xl shadow-md hover:bg-white/30"
+                    }
+                    ${idx === 0 ? "rounded-l-full" : ""}
+                    ${idx === endPage - startPage ? "rounded-r-full" : ""}`}
                 >
                   {pageNo}
                 </button>
               );
             })}
+
             {endPage < totalPages && (
               <button
                 onClick={() => handleSearch(endPage + 1, false)}
-                className="px-3 py-1 rounded-full bg-white text-black hover:bg-gray-200  cursor-pointer"
+                className="px-3 py-1 text-white font-semibold
+                 bg-white/20 backdrop-blur-xl border border-white/20 shadow-md
+                 rounded-r-full hover:bg-white/30 transition-all cursor-pointer"
               >
                 ▶
               </button>
             )}
-          </div>
+          </section>
         )}
       </div>
     </div>
