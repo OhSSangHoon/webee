@@ -11,8 +11,8 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="w-full h-[100px] flex items-center justify-center relative">
-      <Link href="/" aria-label="홈으로 이동">
+    <header className="w-full h-[100px] flex items-center justify-center relative z-50">
+      <Link href="/" aria-label="홈으로 이동">  
         <Image src="/webee.svg" alt="Webee 로고" width={100} height={100} priority/>
       </Link>
       <HeaderDropdown isOpen={isMenuOpen} onOpenChange={setIsMenuOpen}>

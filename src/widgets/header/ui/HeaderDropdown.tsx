@@ -53,7 +53,7 @@ export default function HeaderDropdown({ isOpen, onOpenChange, children }: Heade
       {/* 오버레이 */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-black/50"
           onClick={() => onOpenChange(false)}
         />
       )}
@@ -64,7 +64,7 @@ export default function HeaderDropdown({ isOpen, onOpenChange, children }: Heade
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-[375px] z-50 bg-white/95 backdrop-blur-sm shadow-xl border border-gray-200"
+          className="w-[375px] bg-white/95 backdrop-blur-sm shadow-xl border border-gray-200"
           alignOffset={-25}
         >
           <DropdownMenuItem asChild onClick={handleItemClick}>
