@@ -37,7 +37,7 @@ export default function CropInfo() {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue
+    setValue,
   } = useForm<CropInfoFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -72,113 +72,106 @@ export default function CropInfo() {
 
   return (
     <form
-      className=" flex flex-col justify-start items-stretch w-full  card-section text-[#333333]"
+      className=" flex flex-col justify-start items-stretch w-full text-gray-900 gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="text-2xl font-bold pb-10">
-        🥬 새 작물 추가
-        <span className="text-sm text-red-400">
-          <span className="text-red-500">*</span> 별이 붙어있는 항목은
-          필수입력이에요.
-        </span>
-      </h2>
+      <header className=" items-start">
+        <h1 className="title-large">어떤 수정벌을 찾고 계신가요?</h1>
+        <h2 className="title-sub">
+          농작물 정보를 알려주시면 <br /> 공공데이터 기반으로 최적의 수정벌을
+          추천해드려요
+        </h2>
+      </header>
+
+      <Crops onSelect={handleCropSelect} />
       <div>
-        <label className="block mb-1 text-sm font-medium">
-          재배 작물 <span className="text-red-500">*</span>
+        <label className="input-label">
+          재배 작물 <span className="text-red-500">(기본)</span>
         </label>
         <input
           type="text"
           {...register("name")}
-          className="custom-Input"
+          className="input-default"
           placeholder="예: 딸기, 블루베리 등"
         />
-        {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-        )}
+        {errors.name && <p className="input-error">{errors.name.message}</p>}
       </div>
       {/* 품종 */}
       <div>
-        <label className="block mb-1 text-sm font-medium">품종</label>
+        <label className="input-label">품종</label>
         <input
           type="text"
           {...register("variety")}
-          className="custom-Input"
+          className="input-default"
           placeholder="예: 설향, 한라봉 등"
         />
         {errors.variety && (
-          <p className="text-red-500 text-sm mt-1">{errors.variety.message}</p>
+          <p className="input-error">{errors.variety.message}</p>
         )}
       </div>
       {/* 재배 방식 */}
       <div>
-        <label className="block mb-1 text-sm font-medium">
-          재배 방식 <span className="text-red-500">*</span>
+        <label className="input-label">
+          재배 방식 <span className="text-red-500">(기본)</span>
         </label>
-        <select
-          {...register("cultivationType")}
-          className="custom-Input"
-        >
+        <select {...register("cultivationType")} className="field-default">
           <option value="">선택해주세요</option>
           <option value="OPEN_FIELD">노지(기본)</option>
           <option value="CONTROLLED">비닐하우스</option>
         </select>
         {errors.cultivationType && (
-          <p className="text-red-500 text-sm mt-1">{errors.cultivationType.message}</p>
+          <p className="input-error">{errors.cultivationType.message}</p>
         )}
       </div>
       {/* 재배 지역 */}
       <div>
-        <label className="block mb-1 text-sm font-medium">재배 지역 <span className="text-red-500">*</span></label>
+        <label className="input-label">
+          재배 지역 <span className="text-red-500">(기본)</span>
+        </label>
         <input
           type="text"
           {...register("cultivationAddress")}
-          className="custom-Input"
+          className="input-default"
           placeholder="경상북도 경산시 (정확한 주소를 입력해 주세요)"
         />
         {errors.cultivationAddress && (
-          <p className="text-red-500 text-sm mt-1">{errors.cultivationAddress.message}</p>
+          <p className="input-error">{errors.cultivationAddress.message}</p>
         )}
       </div>
       {/* 재배 면적 */}
       <div>
-        <label className="block mb-1 text-sm font-medium">
-          재배 면적 (m²) <span className="text-red-500">*</span>
+        <label className="input-label">
+          재배 면적 (m²) <span className="text-red-500">(기본)</span>
         </label>
         <input
           type="text"
           {...register("cultivationArea")}
-          className="custom-Input"
+          className="input-default"
           placeholder="예: 300"
         />
         {errors.cultivationArea && (
-          <p className="text-red-500 text-sm mt-1">{errors.cultivationArea.message}</p>
+          <p className="input-error">{errors.cultivationArea.message}</p>
         )}
       </div>
       {/* 정식일 (파종일) */}
       <div>
-        <label className="block mb-1 text-sm font-medium">
-          정식 (또는 파종)일 <span className="text-red-500">*</span>
+        <label className="input-label">
+          정식일/파종일 <span className="text-red-500">(기본)</span>
         </label>
         <input
           type="date"
           {...register("plantingDate")}
-          className="custom-Input"
+          className="input-default"
         />
         {errors.plantingDate && (
-          <p className="text-red-500 text-sm mt-1">{errors.plantingDate.message}</p>
+          <p className="input-error">{errors.plantingDate.message}</p>
         )}
       </div>
-      <div className="flex flex-row w-full gap-2 pt-10">
-        <Crops onSelect={handleCropSelect} />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white  rounded m-0 hover:bg-blue-600 transition duration-200 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          disabled={loading}
-        >
-          {loading ? "분석 중..." : "추천 요청"}
-        </button>
-        {error && <div className="text-red-500 text-sm pb-5">{error}</div>}
-      </div>
+
+      <button type="submit" className="button-yellow" disabled={loading}>
+        {loading ? "분석 중..." : "추천 요청"}
+      </button>
+      {error && <div className="input-error">{error}</div>}
     </form>
   );
 }

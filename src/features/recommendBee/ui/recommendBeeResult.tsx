@@ -5,20 +5,47 @@ import clsx from "clsx";
 import { useRecommendBee } from "../model/useRecommendation";
 import { useSaveRecommendation } from "../model/useSaveRecommendation";
 import { safeLocalStorage } from "@/shared/utils/localStorage";
-import { getProducts } from "@/features/products/api/api";
-import { product } from "@/features/products/model/model";
-import { filterProductsByBeeType } from "@/shared/types/beeSwitch";
-import { Section, ProductsSection } from "../model/useFunction";
+import { useProducts } from "../model/useProducts";
+import { ProductsSection } from "./recommendProduct";
+
+export function Section({
+  icon,
+  title,
+  items,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  items: string[];
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        {icon}
+        <h4 className="card-title ">{title}</h4>
+      </div>
+      <ul className=" list-disc card-content ">
+        {items.map((item, idx) => (
+          <li key={idx}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function ResultBox() {
   const { resultData, isSuccess, loading } = useRecommendBee();
+  const { products, loading: productsLoading, loadProducts } = useProducts();
   const [tab, setTab] = useState<"info" | "products">("info");
   const [isSave, setIsSave] = useState("");
   const [canSave, setCanSave] = useState(false);
-  const [products, setProducts] = useState<product[]>([]);
-  const [productsLoading, setProductsLoading] = useState(false);
 
   const save = useSaveRecommendation(resultData, setIsSave);
+
+  useEffect(() => {
+    if (tab === "products" && isSuccess) {
+      loadProducts(resultData.beeType);
+    }
+  }, [tab]);
 
   useEffect(() => {
     const token = safeLocalStorage.getItem("accessToken");
@@ -29,30 +56,6 @@ export default function ResultBox() {
       setIsSave("로그인 시 저장 가능해요!");
     }
   }, []);
-
-  useEffect(() => {
-    const fetchMatchingProducts = async () => {
-      if (isSuccess && resultData.beeType) {
-        setProductsLoading(true);
-        try {
-          const response = await getProducts();
-          if (response?.data?.content) {
-            const matchingProducts = filterProductsByBeeType(
-              response.data.content,
-              resultData.beeType
-            );
-            setProducts(matchingProducts);
-          }
-        } catch (error) {
-          console.error("상품 데이터 로드 실패:", error);
-        } finally {
-          setProductsLoading(false);
-        }
-      }
-    };
-
-    fetchMatchingProducts();
-  }, [isSuccess, resultData.beeType]);
 
   return (
     <div className="relative flex flex-col justify-center items-stretch w-full h-full card-section gap-4">
