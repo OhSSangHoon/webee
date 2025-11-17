@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useSignInForm } from "../model/useSignIn";
+import Image from "next/image";
 
 export default function SignIn() {
   const {
@@ -15,75 +16,106 @@ export default function SignIn() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col h-screen items-center justify-center min-h-[calc(100vh-550px)] w-full ">
-      <div className="flex flex-col items-start justify-center w-full max-w-[400px]">
-        <h1 className="text-5xl font-extrabold mb-5">로그인</h1>
-        <p className="text-gray-custom mb-10">
+    <div className="relative  h-215 px-4 pt-20 overflow-hidden <div bg-[radial-gradient(circle,_#e6a647_5%,_#eadab7_40%,_#f6f1e6_60%,_#ffffff_100%)]">
+      {/* 벌 이미지 */}
+      <div className="absolute top-42 right-0 translate-x-[7%]  pt-2">
+        <Image
+          src="/BeeBg2.webp"
+          alt="Blob"
+          width={900}
+          height={900}
+          className="opacity-90 scale-105 pointer-events-none"
+        />
+      </div>
+
+      {/* 글래스모피즘 박스 */}
+      <div
+        className="relative z-10 max-w-[355px] p-6 rounded-2xl
+      bg-white/10 backdrop-blur-[23px] border border-white/20
+      shadow-inner shadow-black/20 drop-shadow-lg flex flex-col gap-4
+      overflow-hidden"
+      >
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-main-800 text-center text-shadow-2xs">
+          로그인
+        </h1>
+        <p className="text-main-900 text-sm sm:text-base text-center ">
           다시 오신 걸 환영합니다! <br />
           아이디와 비밀번호를 입력해주세요.
         </p>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col space-y-4 w-full"
-          role="form"
-          aria-label="로그인 폼"
+          className="flex flex-col gap-4 w-full"
         >
           {/* 아이디 */}
-          <div className="flex flex-col w-full ">
-            <label htmlFor="username" className="auth-label">아이디</label>
+          <div className="flex flex-col w-full">
+            <label
+              htmlFor="username"
+              className="text-main-900 font-medium text-sm"
+            >
+              아이디
+            </label>
             <input
               id="username"
               type="text"
-              className="auth-input w-full"
-              aria-describedby={errors.username ? "username-error" : undefined}
+              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
               {...register("username")}
+              aria-describedby={errors.username ? "username-error" : undefined}
             />
             {errors.username && (
-              <p id="username-error" className="text-red-500 text-sm" role="alert">{errors.username.message}</p>
+              <p id="username-error" className="text-red-400 text-xs mt-1">
+                {errors.username.message}
+              </p>
             )}
           </div>
 
           {/* 비밀번호 */}
-          <div className="flex flex-col">
-            <label htmlFor="password" className="auth-label">비밀번호</label>
+          <div className="flex flex-col w-full">
+            <label
+              htmlFor="password"
+              className="text-main-900 font-medium text-sm"
+            >
+              비밀번호
+            </label>
             <input
               id="password"
               type="password"
-              className="auth-input"
-              aria-describedby={errors.password ? "password-error" : undefined}
+              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
               {...register("password")}
+              aria-describedby={errors.password ? "password-error" : undefined}
             />
             {errors.password && (
-              <p id="password-error" className="text-red-500 text-sm" role="alert">{errors.password.message}</p>
+              <p id="password-error" className="text-red-400 text-xs mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
-          {/* 버튼 영역 */}
-          <div className="w-full flex space-x-2 pt-5">
+          {/* 버튼 */}
+          <div className="flex w-full gap-2 pt-2">
             <button
               type="button"
-              className="basis-[30%] h-[38px] bg-white text-gray-800 rounded-md border border-[#d8d8d8] hover:bg-gray-100 cursor-pointer"
+              className="flex-1 py-2 rounded-md bg-white/20 text-white border border-white/20
+                         backdrop-blur-sm hover:bg-white/30 transition-all"
               onClick={() => router.push("/signUp")}
-              aria-label="회원가입 페이지로 이동"
             >
               회원가입
             </button>
             <button
               type="submit"
-              className="blue-button basis-[70%]"
+              className="flex-2 py-2 rounded-md bg-white/40 text-black border border-white/20
+                         backdrop-blur-sm hover:bg-white/50 transition-all"
               disabled={isSubmitting}
-              aria-label={isSubmitting ? "로그인 진행 중" : "로그인 버튼"}
             >
               {isSubmitting ? "로그인 중..." : "로그인"}
             </button>
           </div>
         </form>
-        <div className="w-full flex justify-end mt-4">
+
+        <div className="w-full flex justify-end mt-2">
           <button
-            className="text-black/60 underline cursor-pointer hover:text-black "
+            className="text-white/60 underline hover:text-white text-xs"
             onClick={handleTestSubmit}
-            aria-label="테스트 계정으로 자동 로그인"
           >
             테스트 계정으로 로그인
           </button>

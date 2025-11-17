@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import api from "@/shared/auth/lib";
 import { useChatbotStore } from "../model/useChatbotStore";
 
@@ -25,9 +26,9 @@ export default function ChatbotLauncher() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const exampleQuestions = [
-    "수정벌 사용 시 주의사항은 무엇인가요?",
-    "수정벌이란 무엇인가요?",
-    "수정벌은 어떻게 관리하나요?",
+    "1. 수정벌 사용 시 주의사항은 무엇인가요?",
+    "2. 수정벌이란 무엇인가요?",
+    "3. 수정벌은 어떻게 관리하나요?",
   ];
 
   /**
@@ -86,7 +87,7 @@ export default function ChatbotLauncher() {
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+      className=" fixed inset-0 bg-black/70 text-gray-900 flex items-center justify-center text-[18px] "
       onClick={closeChatbot}
     >
       <div
@@ -108,53 +109,79 @@ export default function ChatbotLauncher() {
         {/* 채팅 영역 */}
         <div
           ref={scrollRef}
-          className="p-4 bg-gradient-to-b from-purple-50 to-white overflow-y-auto flex-1 space-y-4 min-h-[120px] max-h-[600px] resize-y rounded-md border border-gray-200"
+          className="px-6 py-5 overflow-y-auto flex-1  min-h-[550px] max-h-[600px] resize-y rounded-md border border-gray-200"
         >
-          🐝
-          <div className="rounded-full bg-white px-4 py-2 shadow inline-block">
-            안녕하세요. 수정벌 전문 ai입니다. 무엇을 도와드릴까요?
+          <div className="flex flex-row gap-2 ">
+            <div className="w-11 h-11 ">
+              <Image
+                src="/Bee3D.webp"
+                alt="챗봇"
+                fetchPriority="high"
+                width={100}
+                height={100}
+                className="w-full h-full object-cover rounded-full"
+              />
+            </div>
+            <div>
+              <div className="text-xs font-bold">chat_bee</div>
+              <div>
+                안녕하세요! <br />
+                수정벌 전문 AI 비서 붕붕이에요.
+                <br />
+                무엇을 도와드릴까요?
+              </div>
+            </div>
           </div>
 
           {/* 예시 질문 */}
-          <hr className="border-t border-[#e4deff] m-4" />
-          <div className="text-sm text-gray-700">많이 하는 질문 목록</div>
-          <div className="space-y-2 mb-2">
-            {exampleQuestions.map((q, idx) => (
-              <button
-                key={idx}
-                className="w-full text-center bg-purple-50 text-purple-700 rounded-full py-2 shadow-md hover:bg-purple-100"
-                onClick={() => handleAsk(q)}
-              >
-                {q}
-              </button>
-            ))}
+          <div className="my-10">
+            <div className="text-sm font-semibold">
+              자주 하는 질문 목록이에요!
+            </div>
+            <div className="space-y-2">
+              {exampleQuestions.map((q, idx) => (
+                <button
+                  key={idx}
+                  className="w-full text-start bg-[#664318] text-white text-base rounded-xl py-2 px-5 shadow-md hover:bg-[#9e6e34]"
+                  onClick={() => handleAsk(q)}
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
           </div>
-          <hr className="border-t border-[#e4deff] m-4" />
 
           {/* 채팅 내용 */}
           {responses.map((res, idx) => (
-            <div key={idx} className="space-y-2 animate-fade-in overflow-auto">
+            <div key={idx} className="animate-fade-in overflow-auto ">
               {/* 사용자 메시지 */}
-              <div className="flex justify-end items-end gap-2">
-                <div className="text-xs text-gray-400">
-                  {formatTime(new Date(res.timestamp))}
+              <div className="flex flex-col justify-end items-end my-1.5 ">
+                <div className="bg-[#ffc83a] px-4 py-3 rounded-xl shadow">
+                  {res.input}
                 </div>
-                <div className="bg-violet-700 text-white px-4 py-2 rounded-2xl text-sm max-w-[80%] shadow">
-                  <div className="flex items-center gap-2">
-                    <span>{res.input}</span>
-                    <span className="text-lg">😀</span>
-                  </div>
+                <div className="text-xs text-gray-500 mt-1 mr-1">
+                  {formatTime(new Date(res.timestamp))}
                 </div>
               </div>
 
               {/* 봇 응답 */}
-              <div className="flex items-end gap-2">
-                <span className="text-lg">🐝</span>
-                <div className="bg-white text-gray-800 px-4 py-2 rounded-2xl text-sm max-w-[80%] shadow">
-                  <span>{res.answer}</span>
+              <div className="flex flex-row gap-2 ">
+                <div className="w-11 h-11 ">
+                  <Image
+                    src="/Bee3D.webp"
+                    alt="챗봇"
+                    fetchPriority="high"
+                    width={100}
+                    height={100}
+                    className="w-full h-full object-cover rounded-full"
+                  />
                 </div>
-                <div className="text-xs text-gray-400">
-                  {formatTime(new Date(res.timestamp))}
+                <div className="max-w-[80%] mb-8">
+                  <div className="text-xs font-bold">chat_bee</div>
+                  <div>{res.answer}</div>
+                  <div className="text-xs text-gray-500">
+                    {formatTime(new Date(res.timestamp))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -162,31 +189,28 @@ export default function ChatbotLauncher() {
 
           {/* 로딩 중 메시지 */}
           {loading && (
-            <div className="flex items-center gap-2 animate-pulse">
-              <span className="text-lg">🐝</span>
-              <div className="bg-white text-gray-500 px-4 py-2 rounded-2xl text-sm shadow">
-                답변 작성 중...
-              </div>
+            <div className="animate-pulse bg-white text-gray-600 px-4 py-2 rounded-l-lg text-sm shadow">
+              답변 작성 중...
             </div>
           )}
         </div>
 
         {/* 입력창 */}
-        <div className="p-4 border-t border-[#d2c7ff] flex gap-2">
+        <div className=" border flex flex-row px-4 py-4 gap-2 ">
           <input
-            className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm"
+            className="bg-gray-400 rounded-4xl px-5 w-[90%] "
             type="text"
-            placeholder="질문을 입력하세요"
+            placeholder="질문을 입력하세요.. "
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAsk(input)}
           />
           <button
-            className="bg-violet-600 hover:bg-violet-700 text-white rounded-full px-4 py-2 text-sm"
+            className="bg-[#ffb800] hover:bg-[#b8761a] text-white rounded-full w-12 h-12"
             onClick={() => handleAsk(input)}
             disabled={loading || !input.trim()}
           >
-            질문
+            ⬆
           </button>
         </div>
       </div>
