@@ -83,9 +83,7 @@ export default function DiagnosisWrapper() {
           <button
             onClick={handleUpload}
             disabled={!canSubmit || loading}
-            className={` mb-2 blue-button2 ${
-              loading ? "loading" : ""
-            } disabled:opacity-50`}
+            className={` button-yellow ${loading ? "loading" : ""} `}
           >
             {loading ? "저장 중..." : "진단 결과 최종 저장"}
           </button>
