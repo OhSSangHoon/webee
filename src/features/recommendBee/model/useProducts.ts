@@ -10,7 +10,7 @@ export function useProducts() {
   const [loaded, setLoaded] = useState(false); // 중복 호출 방지
   const { resultData } = useRecommendBee();
 
-  const loadProducts = async (beeType: string) => {
+  const loadProducts = async () => {
     if (loaded) return; // 이미 불러왔으면 다시 호출 X
 
     setLoading(true);
