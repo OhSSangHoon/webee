@@ -16,23 +16,12 @@ export default function SignIn() {
   const router = useRouter();
 
   return (
-    <div className="relative  h-215 px-4 pt-20 overflow-hidden <div bg-[radial-gradient(circle,_#e6a647_5%,_#eadab7_40%,_#f6f1e6_60%,_#ffffff_100%)]">
-      {/* 벌 이미지 */}
-      <div className="absolute top-42 right-0 translate-x-[7%]  pt-2">
-        <Image
-          src="/BeeBg2.webp"
-          alt="Blob"
-          width={900}
-          height={900}
-          className="opacity-90 scale-105 pointer-events-none"
-        />
-      </div>
-
+    <div className="relative h-150 px-4 overflow-hidden <div bg-[radial-gradient(circle,_#e6a647_5%,_#eadab7_40%,_#f6f1e6_60%,_#ffffff_100%)]">
       {/* 글래스모피즘 박스 */}
       <div
         className="relative z-10 max-w-[355px] p-6 rounded-2xl
-      bg-white/10 backdrop-blur-[23px] border border-white/20
-      shadow-inner shadow-black/20 drop-shadow-lg flex flex-col gap-4
+      bg-[#6f4f1c]/10 backdrop-blur-[18px] border-2 border-white/30
+      shadow-inner shadow-[#70930597]/10 drop-shadow-lg flex flex-col gap-4
       overflow-hidden"
       >
         <h1 className="text-3xl sm:text-4xl font-extrabold text-main-800 text-center text-shadow-2xs">
@@ -58,12 +47,12 @@ export default function SignIn() {
             <input
               id="username"
               type="text"
-              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
+              className="rounded-md p-2"
               {...register("username")}
               aria-describedby={errors.username ? "username-error" : undefined}
             />
             {errors.username && (
-              <p id="username-error" className="text-red-400 text-xs mt-1">
+              <p id="username-error" className="text-red-600 text-xs mt-1">
                 {errors.username.message}
               </p>
             )}
@@ -80,12 +69,12 @@ export default function SignIn() {
             <input
               id="password"
               type="password"
-              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
+              className=" rounded-md p-2"
               {...register("password")}
               aria-describedby={errors.password ? "password-error" : undefined}
             />
             {errors.password && (
-              <p id="password-error" className="text-red-400 text-xs mt-1">
+              <p id="password-error" className="text-red-600 text-xs mt-1">
                 {errors.password.message}
               </p>
             )}

@@ -10,24 +10,13 @@ export default function SignUp() {
   const router = useRouter();
 
   return (
-    <div className="relative h-215 px-4 pt-20 overflow-hidden bg-[radial-gradient(circle,_#e6a647_5%,_#eadab7_40%,_#f6f1e6_60%,_#ffffff_100%)]">
-      {/* 벌 이미지 */}
-      <div className="absolute top-42 right-0 translate-x-[7%] pt-2">
-        <Image
-          src="/BeeBg2.webp"
-          alt="Bee Background"
-          width={900}
-          height={900}
-          className="opacity-90 scale-105 pointer-events-none"
-        />
-      </div>
-
+    <div className="relative h-215 px-4  overflow-hidden bg-[radial-gradient(circle,_#e6a647_5%,_#eadab7_40%,_#f6f1e6_60%,_#ffffff_100%)] ">
       {/* 글래스모피즘 박스 */}
       <div
         className="relative z-10 max-w-[355px] p-6 rounded-2xl
-      bg-white/10 backdrop-blur-[23px] border border-white/20
-      shadow-inner shadow-black/20 drop-shadow-lg flex flex-col gap-4
-      overflow-hidden"
+           bg-[#6f4f1c]/10 backdrop-blur-[18px] border-2 border-white/30
+           shadow-inner shadow-[#70930597]/10 drop-shadow-lg flex flex-col gap-4
+           overflow-hidden mt-20"
       >
         <h1 className="text-3xl sm:text-4xl font-extrabold text-main-800 text-center text-shadow-2xs">
           회원가입
