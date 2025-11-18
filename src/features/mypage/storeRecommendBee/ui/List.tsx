@@ -146,16 +146,14 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   }, [loadList]);
 
   return (
-    <div className="custom-box2 shadow-lg isolate transform-gpu">
-      <header className="custom-box2-title w-full text-base font-medium">
-        <span className="custom-box2-icon">🐝</span>수정벌 추천 리스트
+    <div className="isolate transform-gpu">
+      <header className="w-full text-base font-medium">
+        <span className="text-lg font-semibold text-gray-900">수정벌 추천 리스트</span>
       </header>
-      
-      {/* 컨테이너 - 항상 최소 높이 보장으로 layout shift 방지 */}
-      <div className="px-2 py-2 isolate overflow-hidden min-h-[220px]">
+      <div className="py-2 isolate overflow-hidden min-h-[220px]">
         {/* 로딩 상태 */}
         {loading && list === null && (
-          <ul className="flex flex-row overflow-x-auto p-4 gap-4 isolate transform-gpu">
+          <ul className="flex flex-row overflow-x-auto gap-4 isolate transform-gpu">
             {[1, 2, 3].map((index) => (
               <SkeletonCard key={`skeleton-${index}`} />
             ))}

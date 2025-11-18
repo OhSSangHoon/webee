@@ -69,22 +69,22 @@ export default function MyProfile() {
           {/* 하단 버튼 영역 */}
           <div className="flex w-full flex-col gap-3 mt-auto">
             <div className="w-full h-px bg-gray-200"></div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 text-main-900 font-bold text-base">
               <button
                 onClick={() => (window.location.href = "/products")}
-                className="w-full bg-[#1E40AF] text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg hover:bg-[#1E3A8A] transition-colors font-medium text-xs sm:text-sm"
+                className="w-full bg-main-700 hover:bg-main-800 hover:text-white rounded-lg py-2 px-3 transition-all duration-300 cursor-pointer"
               >
                 + 새 상품 등록하기
               </button>
               <button
                 onClick={() => (window.location.href = "/myprofile")}
-                className="w-full border border-gray-300 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-50 transition-colors text-xs sm:text-sm"
+                className="w-full bg-main-700 hover:bg-main-800 hover:text-white rounded-lg py-2 px-3 transition-all duration-300 cursor-pointer"
               >
                 업체 등록하기
               </button>
               <button
                 onClick={() => (window.location.href = "/cropInfo")}
-                className="w-full border border-gray-300 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-50 transition-colors text-xs sm:text-sm"
+                className="w-full bg-main-700 hover:bg-main-800 hover:text-white rounded-lg py-2 px-3 transition-all duration-300 cursor-pointer"
               >
                 작물정보 등록하기
               </button>
