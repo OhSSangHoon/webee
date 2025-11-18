@@ -1,95 +1,160 @@
 "use client";
+import Image from "next/image";
 import { useSignUpForm } from "../model/useSignUp";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const { register, handleSubmit, errors, signUpError, loading } =
     useSignUpForm();
 
+  const router = useRouter();
+
   return (
-    <div className="flex flex-col h-screen items-center justify-center min-h-[calc(100vh-400px)]">
-      <div className="flex flex-col items-start justify-center">
-        <h1 className="text-5xl font-extrabold mb-5">회원가입</h1>
-        <p className="text-gray-custom mb-10">
+    <div className="relative h-215 px-4 pt-20 overflow-hidden bg-[radial-gradient(circle,_#e6a647_5%,_#eadab7_40%,_#f6f1e6_60%,_#ffffff_100%)]">
+      {/* 벌 이미지 */}
+      <div className="absolute top-42 right-0 translate-x-[7%] pt-2">
+        <Image
+          src="/BeeBg2.webp"
+          alt="Bee Background"
+          width={900}
+          height={900}
+          className="opacity-90 scale-105 pointer-events-none"
+        />
+      </div>
+
+      {/* 글래스모피즘 박스 */}
+      <div
+        className="relative z-10 max-w-[355px] p-6 rounded-2xl
+      bg-white/10 backdrop-blur-[23px] border border-white/20
+      shadow-inner shadow-black/20 drop-shadow-lg flex flex-col gap-4
+      overflow-hidden"
+      >
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-main-800 text-center text-shadow-2xs">
+          회원가입
+        </h1>
+        <p className="text-main-900 text-sm sm:text-base text-center">
           위비에 오신 것을 환영합니다! <br />
-          회원가입 시, 수정벌 관리 기능을 지속적으로 모니터링 할 수 있어요!
+          꿀벌과 함께 성장하는 특별한 하루를 시작해요.
         </p>
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col space-y-4  w-full max-w-[400px]"
+          className="flex flex-col gap-4 w-full"
           role="form"
           aria-label="회원가입 폼"
         >
           {/* 아이디 */}
           <div className="flex flex-col w-full">
-            <label htmlFor="username" className="auth-label">아이디</label>
-            <input 
+            <label
+              htmlFor="username"
+              className="text-main-900 font-medium text-sm"
+            >
+              아이디
+            </label>
+            <input
               id="username"
-              {...register("username")} 
-              className="auth-input w-full"
+              {...register("username")}
+              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
               aria-describedby={errors.username ? "username-error" : undefined}
             />
             {errors.username && (
-              <p id="username-error" className="text-red-500 text-sm" role="alert">{errors.username?.message}</p>
+              <p id="username-error" className="text-red-400 text-xs mt-1">
+                {errors.username?.message}
+              </p>
             )}
           </div>
 
           {/* 이름 */}
-          <div className="flex flex-col">
-            <label htmlFor="name" className="auth-label">이름</label>
-            <input 
+          <div className="flex flex-col w-full">
+            <label htmlFor="name" className="text-main-900 font-medium text-sm">
+              이름
+            </label>
+            <input
               id="name"
-              {...register("name")} 
-              className="auth-input"
+              {...register("name")}
+              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
               aria-describedby={errors.name ? "name-error" : undefined}
             />
             {errors.name && (
-              <p id="name-error" className="text-red-500 text-sm" role="alert">{errors.name?.message}</p>
+              <p id="name-error" className="text-red-400 text-xs mt-1">
+                {errors.name?.message}
+              </p>
             )}
           </div>
 
           {/* 비밀번호 */}
-          <div className="flex flex-col">
-            <label htmlFor="password" className="auth-label ">비밀번호</label>
+          <div className="flex flex-col w-full">
+            <label
+              htmlFor="password"
+              className="text-main-900 font-medium text-sm"
+            >
+              비밀번호
+            </label>
             <input
               id="password"
               type="password"
               {...register("password")}
-              className="auth-input"
+              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
               aria-describedby={errors.password ? "password-error" : undefined}
             />
             {errors.password && (
-              <p id="password-error" className="text-red-500 text-sm" role="alert">{errors.password?.message}</p>
+              <p id="password-error" className="text-red-400 text-xs mt-1">
+                {errors.password?.message}
+              </p>
             )}
           </div>
 
           {/* 비밀번호 확인 */}
-          <div className="flex flex-col">
-            <label htmlFor="passwordConfirm" className="auth-label">비밀번호 확인</label>
+          <div className="flex flex-col w-full">
+            <label
+              htmlFor="passwordConfirm"
+              className="text-main-900 font-medium text-sm"
+            >
+              비밀번호 확인
+            </label>
             <input
               id="passwordConfirm"
               type="password"
               {...register("passwordConfirm")}
-              className="auth-input mb-5"
-              aria-describedby={errors.passwordConfirm ? "passwordConfirm-error" : undefined}
+              className="bg-white/30 text-white placeholder-white/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-white/50"
+              aria-describedby={
+                errors.passwordConfirm ? "passwordConfirm-error" : undefined
+              }
             />
             {errors.passwordConfirm && (
-              <p id="passwordConfirm-error" className="text-red-500 text-sm" role="alert">
+              <p
+                id="passwordConfirm-error"
+                className="text-red-400 text-xs mt-1"
+              >
                 {errors.passwordConfirm?.message}
               </p>
             )}
           </div>
 
-          <button
-            type="submit"
-            className="blue-button w-full "
-            disabled={loading}
-            aria-label={loading ? "회원가입 진행 중" : "회원가입 버튼"}
-          >
-            {loading ? "로딩 중" : "회원가입"}
-          </button>
+          {/* 버튼 */}
+          <div className="flex w-full gap-2 pt-2">
+            <button
+              type="button"
+              className="flex-1 py-2 rounded-md bg-white/20 text-white border border-white/20
+                       backdrop-blur-sm hover:bg-white/30 transition-all"
+              onClick={() => router.push("/signIn")}
+            >
+              로그인
+            </button>
+            <button
+              type="submit"
+              className="flex-2 py-2 rounded-md bg-white/40 text-black border border-white/20
+                       backdrop-blur-sm hover:bg-white/50 transition-all"
+              disabled={loading}
+            >
+              {loading ? "로딩 중..." : "회원가입"}
+            </button>
+          </div>
+
           {signUpError && (
-            <div className=" text-red-500 text-sm " role="alert">{signUpError}</div>
+            <div className="text-red-400 text-xs mt-2" role="alert">
+              {signUpError}
+            </div>
           )}
         </form>
       </div>

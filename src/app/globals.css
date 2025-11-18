@@ -5,17 +5,16 @@
   --foreground: #ffffff;
   width: 100%;
 
-
   /* Default Colors */
   --color-white: #ffffff;
-  --color-red: #EE3030;
+  --color-red: #ee3030;
 
   /* Gray Scale */
   --color-gray-900: #1a1a1a;
   --color-gray-800: #505050;
   --color-gray-700: #767676;
   --color-gray-600: #999999;
-  --color-gray-500: #D0D0D0;
+  --color-gray-500: #d0d0d0;
   --color-gray-400: #e3e3e3;
   --color-gray-300: #f7f8f9;
   --color-gray-200: #fafafa;
@@ -29,7 +28,6 @@
   --color-main-400: #fff0bb;
   --color-main-300: #ffb800;
 
-
   /* Sub Colors */
   --color-sub-900: #ff840f;
   --color-sub-800: #0877ff;
@@ -41,32 +39,32 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-   /* Default */
-   --color-white: var(--color-white);
-   --color-red: var(--color-red);
- 
-   /* Gray */
-   --color-gray-900: var(--color-gray-900);
-   --color-gray-800: var(--color-gray-800);
-   --color-gray-700: var(--color-gray-700);
-   --color-gray-600: var(--color-gray-600);
-   --color-gray-500: var(--color-gray-500);
-   --color-gray-400: var(--color-gray-400);
-   --color-gray-300: var(--color-gray-300);
-   --color-gray-200: var(--color-gray-200);
- 
-   /* Main */
-   --color-main-900: var(--color-main-900);
-   --color-main-800: var(--color-main-800);
-   --color-main-700: var(--color-main-700);
-   --color-main-600: var(--color-main-600);
-   --color-main-500: var(--color-main-500);
-   --color-main-400: var(--color-main-400);
-   --color-main-300: var(--color-main-300);
- 
-   /* Sub */
-   --color-sub-900: var(--color-sub-900);
-   --color-sub-800: var(--color-sub-800);
+  /* Default */
+  --color-white: var(--color-white);
+  --color-red: var(--color-red);
+
+  /* Gray */
+  --color-gray-900: var(--color-gray-900);
+  --color-gray-800: var(--color-gray-800);
+  --color-gray-700: var(--color-gray-700);
+  --color-gray-600: var(--color-gray-600);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-200: var(--color-gray-200);
+
+  /* Main */
+  --color-main-900: var(--color-main-900);
+  --color-main-800: var(--color-main-800);
+  --color-main-700: var(--color-main-700);
+  --color-main-600: var(--color-main-600);
+  --color-main-500: var(--color-main-500);
+  --color-main-400: var(--color-main-400);
+  --color-main-300: var(--color-main-300);
+
+  /* Sub */
+  --color-sub-900: var(--color-sub-900);
+  --color-sub-800: var(--color-sub-800);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -89,13 +87,14 @@ html {
 }
 
 body {
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Noto Sans KR", sans-serif;
 }
 
 .container {
-  width:375px;
+  width: 375px;
   height: 100%;
-  margin:0 auto;
+  margin: 0 auto;
 }
 
 /* 스크롤바 숨기기 유틸리티 */
@@ -146,4 +145,92 @@ body {
     --card-image-height: 160px;
     --card-content-height: 120px;
   }
+}
+
+/*---------------------------[input]-------------------------------*/
+/* 인풋 */
+input {
+  @apply bg-gray-200 border border-[#eeee] rounded-lg w-full px-3 py-2 text-gray-900;
+}
+
+input:focus {
+  @apply border-gray-900 ring-2 ring-gray-700 outline-none;
+}
+
+/* 필드 (input + select) */
+.field-default {
+  @apply bg-gray-200 border border-[#eeee] rounded-lg w-full px-3 py-2 text-gray-900;
+}
+
+.field-default:focus {
+  @apply border-[#eeee] ring-2 ring-gray-700 outline-none;
+}
+
+/* 인풋 라벨 */
+.input-label {
+  @apply block mb-1 text-sm font-medium;
+}
+
+/* 인풋 에러 */
+.input-error {
+  @apply text-red-500 text-sm mt-1;
+}
+
+/*-----------------------------[card]---------------------------------*/
+/*회색 카드*/
+.card-gray {
+  @apply rounded-2xl bg-gray-200 border border-gray-400 px-4 py-4;
+}
+
+/*카드 소제목*/
+.card-title {
+  @apply text-sm text-main-900 font-bold;
+}
+
+/*카드 컨텐츠*/
+.card-content {
+  @apply text-gray-900 text-base pl-3;
+}
+
+/*---------------------------[button]-------------------------------*/
+/*노란 버튼*/
+.button-yellow {
+  @apply w-full p-2 bg-main-700 rounded-lg text-lg font-semibold  cursor-pointer
+    hover:bg-[#FFB800] transition-colors;
+}
+
+.button-yellow:disabled {
+  @apply opacity-30 cursor-not-allowed;
+}
+
+/*주황 버튼*/
+.button-orange {
+  @apply w-full p-2 bg-sub-900 rounded-lg text-lg font-semibold  cursor-pointer
+    hover:bg-[#ff6a00] text-white transition-colors;
+}
+
+.button-orange:disabled {
+  @apply opacity-30 cursor-not-allowed;
+}
+
+/*회색 버튼*/
+.button-none {
+  @apply w-full p-2 bg-gray-300 rounded-lg text-lg text-gray-700 font-semibold cursor-pointer
+    hover:bg-gray-500 transition-colors;
+}
+
+/*---------------------------[text]-------------------------------*/
+/*제목*/
+.title-large {
+  @apply text-2xl font-bold text-gray-900;
+}
+
+/*부제목*/
+.title-sub {
+  @apply text-[14px] text-gray-700;
+}
+
+/*부제목(진한 색)*/
+.title-sub-900 {
+  @apply text-[14px] text-gray-900 font-bold;
 }

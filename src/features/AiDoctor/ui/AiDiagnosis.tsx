@@ -72,105 +72,113 @@ export default function AiDiagnosisUI({
   };
 
   return (
-    <div className="flex flex-col justify-start items-start w-full gap-4 ">
-      <header className="font-semibold flex flex-row items-end space-x-2 text-[20px] w-full">
-        <div className="text-blue-700 font-semibold">Step 1</div> 꿀벌 사진 업로드
-        <div className="text-blue-700 text-[13px] mb-1 mx-2 font-medium">
-          꿀벌 사진을 업로드하여 응애, 부저병, 날개불구바이러스감염증, 석고병
-          질병 여부를 진단받을 수 있어요!
+    <div className="flex flex-col justify-start items-start w-84 gap-2 ">
+      <header className="mb-6 text-[#664318] ">
+        <h1 className="text-2xl font-semibold mb-1">
+          꿀벌 질병 진단을 진행할게요!
+        </h1>
+        <h2 className="text-base text-gray-800">
+          60만 장의 꿀벌 이미지 분석을 통해 <br /> 질병 여부를 진단하고 맞춤형
+          대처 방안을 받아보세요
+          <span className=" text-xs text-gray-700">
+            (응애, 부저병, 날개불구바이러스감염증, 석고병 진단)
+          </span>
+        </h2>
+      </header>
+      <header className="font-semibold flex flex-col  space-x-2 text-[20px] w-full">
+        <div className="text-gray-900 text-sm font-semibold">
+          꿀벌 사진 업로드
         </div>
       </header>
 
-      <div className="w-full flex flex-col lg:flex-row lg:h-[15rem] space-y-4 space-x-2">
-        {/* 커스텀 파일 업로드 박스 */}
+      {/* 커스텀 파일 업로드 박스 */}
 
-        <div className="flex flex-col gap-3 w-full h-full">
-          <div
-            className="border-2 border-dashed border-[#ececec] rounded-lg h-[120px] lg:h-full flex flex-col justify-center items-center cursor-pointer hover:bg-gray-50 transition relative overflow-hidden"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            {previewImage ? (
-              <Image
-                src={previewImage}
-                alt="선택한 이미지"
-                width={300}
-                height={200}
-                className="object-contain h-full w-full"
-              />
-            ) : (
-              <>
-                <Camera className="w-8 h-8 text-gray-700" />
-                <p className="text-gray-700 text-sm mt-2">
-                  사진을 선택해주세요
-                </p>
-              </>
-            )}
-          </div>
-
-          {/* 실제 input은 숨김 */}
-          <input
-            type="file"
-            accept=".jpg,.jpeg,.png,.svg,.webp"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+      <div className="flex flex-col ">
+        <div
+          className="border-2 border-dashed border-[#ececec] rounded-lg h-84 w-84  flex flex-col justify-center items-center cursor-pointer hover:bg-gray-50 transition relative overflow-hidden"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          {previewImage ? (
+            <Image
+              src={previewImage}
+              alt="선택한 이미지"
+              width={336}
+              height={336}
+              className="object-contain h-full w-full"
+            />
+          ) : (
+            <>
+              <Camera className="w-8 h-8 text-gray-700" />
+              <p className="text-gray-700 text-sm mt-2">사진을 선택해주세요</p>
+            </>
+          )}
         </div>
 
-        {/* 예시 이미지 안내 영역 */}
-        <div className="p-5 border-2 border-[#ececec] rounded-lg w-full min-h-[15rem] flex flex-col justify-center items-start ">
-          <div>꿀벌이 잘 보이도록 확대해서 찍어주세요. </div>
-          <div className="flex flex-row justify-center items-center w-full h-full gap-4 lg:gap-10">
-            <div className="flex-1 h-40">
-              <Image
-                src="/images/bee1.webp"
-                alt="예시 꿀벌1"
-                priority
-                fetchPriority="high"
-                width={200}
-                height={160}
-                sizes="(max-width: 768px) 33vw, 200px"
-                className="w-full h-full object-cover rounded-lg border"
-              />
-            </div>
-            <div className="flex-1 h-40">
-              <Image
-                src="/images/bee2.webp"
-                alt="예시 꿀벌2"
-                priority
-                fetchPriority="high"
-                width={200}
-                height={160}
-                sizes="(max-width: 768px) 33vw, 200px"
-                className="w-full h-full object-cover rounded-lg border"
-              />
-            </div>
-            <div className="flex-1 h-40">
-              <Image
-                src="/images/bee3.webp"
-                alt="예시 꿀벌3"
-                priority
-                fetchPriority="high"
-                width={200}
-                height={160}
-                sizes="(max-width: 768px) 33vw, 200px"
-                className="w-full h-full object-cover rounded-lg border"
-              />
-            </div>
+        {/* 실제 input은 숨김 */}
+        <input
+          type="file"
+          accept=".jpg,.jpeg,.png,.svg,.webp"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      </div>
+
+      {/* 예시 이미지 안내 영역 */}
+      <div className=" flex flex-col w-84 ">
+        <div className="font-semibold text-gray-900 text-sm">예시 이미지</div>
+        <div className="flex flex-row gap-1 ">
+          <div className="flex-1 w-26 h-26 ">
+            <Image
+              src="/images/bee1.webp"
+              alt="예시 꿀벌1"
+              priority
+              fetchPriority="high"
+              width={105}
+              height={105}
+              sizes=""
+              className="w-full h-full object-cover rounded-sm "
+            />
           </div>
-          <div className="flex justify-end items-end text-sm text-gray-700">
-            <span className="">※ 위의 예시 이미지를 참고해주세요.</span>
+
+          <div className="flex-1 w-26 h-26">
+            <Image
+              src="/images/bee3.webp"
+              alt="예시 꿀벌3"
+              priority
+              fetchPriority="high"
+              width={105}
+              height={105}
+              sizes=""
+              className="w-full h-full object-cover rounded-sm"
+            />
           </div>
+          <div className="flex-1 w-26 h-26">
+            <Image
+              src="/images/bee2.webp"
+              alt="예시 꿀벌2"
+              priority
+              fetchPriority="high"
+              width={105}
+              height={105}
+              sizes=""
+              className="w-full h-full object-cover rounded-sm "
+            />
+          </div>
+        </div>
+        <div className=" text-sm text-gray-800">
+          ※예시 이미지를 참고하여 꿀벌이 잘 보이도록 확대해 주세요.
         </div>
       </div>
-      {/* 버튼 */}
+
+      {/* 진단 요청 버튼 */}
       <button
-        className={`white-button text-base w-[10rem]  ml-auto ${
+        className={`bg-[#FFC83A] rounded-lg text-lg font-semibold w-full p-2 ${
           loading ? "loading" : ""
         }`}
         onClick={apifunc}
       >
-        {loading ? "진단 중..." : "진단 요청"}
+        {loading ? "진단 중입니다." : "진단 요청"}
       </button>
 
       {result && (
