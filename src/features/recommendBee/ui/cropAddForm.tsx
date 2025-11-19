@@ -60,23 +60,29 @@ export default function CropInfo() {
   const onSubmit = async (data: CropInfoFormValues) => {
     await submitCropInfo(data);
   };
-
   const handleCropSelect = (crop: Crop) => {
-    setValue("cultivationType", crop.cultivationType || "");
-    setValue("name", crop.name);
-    setValue("variety", crop.variety || "");
-    setValue("cultivationAddress", crop.cultivationAddress || "");
-    setValue("cultivationArea", crop.cultivationArea?.toString() || "");
-    setValue("plantingDate", crop.plantingDate || "");
+    reset(
+      {
+        cultivationType: crop.cultivationType || "OPEN_FIELD",
+        name: crop.name,
+        variety: crop.variety || "",
+        cultivationAddress: crop.cultivationAddress || "",
+        cultivationArea: crop.cultivationArea?.toString() || "",
+        plantingDate: crop.plantingDate || "",
+      },
+      {
+        keepDefaultValues: false,
+        keepErrors: false, // 에러 clear
+      }
+    );
   };
-
   return (
     <form
       className=" flex flex-col justify-start items-stretch w-full text-gray-900 gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <header className=" items-start">
-        <h1 className="title-large">어떤 수정벌을 찾고 계신가요?</h1>
+        <h1 className="title-large"> 을 찾고 계신가요?</h1>
         <h2 className="title-sub">
           농작물 정보를 알려주시면 <br /> 공공데이터 기반으로 최적의 수정벌을
           추천해드려요

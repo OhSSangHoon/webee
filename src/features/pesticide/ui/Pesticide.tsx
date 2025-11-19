@@ -119,20 +119,20 @@ export default function PesticideTable() {
   const endPage = Math.min(startPage + 9, totalPages);
 
   return (
-    <div className="bg-gradient-to-br from-[#7e94f6f6] to-[#764ba2f6] min-h-screen text-white px-3 pt-5 pb-10 ">
+    <div className="bg-gradient-to-b from-[#fffffff6] to-[#ffd675f6] min-h-screen text-white px-3 pt-5 pb-10 ">
       <div className=" mx-auto space-y-10 ">
         <section className="w-full order-1">
-          <h2 className="text-2xl font-extrabold text-white drop-shadow">
-          내 작물에 맞는 농약 찾기
+          <h2 className="text-2xl font-extrabold text-main-900 drop-shadow">
+            내 작물에 맞는 농약 찾기
           </h2>
-          <h3 className="text-white text-xs mt-1">
+          <h3 className="text-gray-800 text-base mt-1">
             작물, 용도, 곤충을 선택 후 검색하면 농약 적용 정보를 확인할 수
             있습니다.
           </h3>
         </section>
 
         {/* 검색 폼 */}
-        <section className="bg-white/10 p-6 rounded-xl shadow-lg flex flex-wrap gap-2 justify-center items-end">
+        <section className="bg-white/10 p-6 rounded-xl shadow-lg flex flex-wrap gap-2 justify-center items-end text-gray-800">
           <div>
             <label htmlFor="crop-select" className="block mb-1 font-medium">
               작물명
@@ -140,7 +140,7 @@ export default function PesticideTable() {
             <select
               id="crop-select"
               onChange={(e) => setCrop(e.target.value)}
-              className="bg-white text-black p-2 rounded-md"
+              className="bg-white text-gray-900 p-2 rounded-md"
               aria-label="작물명 선택"
             >
               <option value="">전체</option>
@@ -158,7 +158,7 @@ export default function PesticideTable() {
             <select
               id="usage-select"
               onChange={(e) => setUsage(e.target.value)}
-              className="bg-white text-black p-2 rounded-md"
+              className="bg-white text-gray-900 p-2 rounded-md"
               aria-label="용도 선택"
             >
               <option value="">전체</option>
@@ -176,7 +176,7 @@ export default function PesticideTable() {
             <select
               id="insect-select"
               onChange={(e) => setInsect(e.target.value)}
-              className="bg-white text-black p-2 rounded-md"
+              className="bg-white text-gray-900 p-2 rounded-md"
               aria-label="곤충 선택"
             >
               <option value="">전체</option>
@@ -196,7 +196,7 @@ export default function PesticideTable() {
         </section>
 
         {/* 결과 테이블 */}
-        <section className="bg-white text-black rounded-xl shadow-lg w-full overflow-auto">
+        <section className="bg-white text-gray-900 rounded-xl shadow-lg w-full overflow-auto">
           {loading ? (
             <div className="text-center p-6 text-xl">검색 중...</div>
           ) : results.length === 0 && searched ? (

@@ -35,7 +35,7 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-[#7e94f6f6] to-[#764ba2f6] pt-5 pb-20 w-full min-h-screen">
+    <div className="bg-gradient-to-b from-[#fffffff6] to-[#ffd675f6] pt-5  ">
       <main className=" mx-auto flex flex-col gap-4 px-3">
         {/* 뉴스 컨텐츠 */}
         <section className="w-full order-2">
@@ -46,7 +46,7 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
               ))
             ) : error ? (
               <div className="text-center">
-                <div className="bg-red-100/20 border border-red-300 text-white p-4 rounded-2xl">
+                <div className="bg-red-100/20 border border-red-300 text-main-900 p-4 rounded-2xl">
                   <h2 className="text-lg font-bold mb-1">⚠️ 오류 발생</h2>
                   <p className="text-xs">{error}</p>
                   <button
@@ -60,10 +60,10 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
             ) : currentItems.length === 0 ? (
               <div className="text-center">
                 <div className="bg-white/10 p-4 rounded-2xl">
-                  <h2 className="text-lg font-bold text-white mb-1">
+                  <h2 className="text-lg font-bold text-main-900 mb-1">
                     📰 뉴스가 없습니다
                   </h2>
-                  <p className="text-white/70 text-xs">
+                  <p className="text-main-900 text-xs">
                     다른 키워드로 검색해보세요.
                   </p>
                 </div>
@@ -76,10 +76,10 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
 
         {/* 사이드바 */}
         <section className="w-full order-1">
-          <h2 className="text-2xl font-extrabold text-white drop-shadow">
+          <h2 className="text-2xl font-extrabold text-main-900  drop-shadow">
             {keyword} 소식을 들고왔어요!
           </h2>
-          <h3 className="text-white text-xs mt-1">
+          <h3 className="text-gray-800  text-base  mt-1">
             {keyword} 관련 국내외 최신 뉴스를 확인하세요. 양봉, 생태, 정책, 기술
             동향까지 빠르게 전달드립니다.
           </h3>
@@ -91,8 +91,8 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
               disabled={loading}
               className={`px-2 py-1 rounded-full text-xs font-semibold transition-colors disabled:opacity-50 ${
                 keyword === "꿀벌"
-                  ? "bg-white text-indigo-700"
-                  : "bg-indigo-500/80 text-white hover:bg-indigo-600/90"
+                  ? "bg-main-800 text-white"
+                  : "bg-white text-main-900  hover:bg-main-800 "
               }`}
             >
               꿀벌 뉴스
@@ -102,8 +102,8 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
               disabled={loading}
               className={`px-2 py-1 rounded-full text-xs font-semibold transition-colors disabled:opacity-50 ${
                 keyword === "수정벌"
-                  ? "bg-white text-indigo-700"
-                  : "bg-indigo-500/80 text-white hover:bg-indigo-600/90"
+                  ? "bg-main-800 text-white"
+                  : "bg-white text-main-900  hover:bg-main-800"
               }`}
             >
               수정벌 뉴스
@@ -116,14 +116,14 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
-                className="px-3 py-1 text-white text-xs font-semibold rounded-full shadow-md disabled:opacity-40
-               bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all"
+                className="px-3 py-1 text-main-900 text-xs font-semibold rounded-full shadow-md disabled:opacity-40
+               bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/90 transition-all"
               >
                 ← 이전
               </button>
 
               <span
-                className="px-3 py-1 text-white text-xs font-semibold rounded-full shadow-md
+                className="px-3 py-1 text-main-900 text-xs font-semibold rounded-full shadow-md
                   bg-white/20 backdrop-blur-sm border border-white/30"
               >
                 {currentPage} / {totalPages}
@@ -134,7 +134,7 @@ export default function BeeNews({ initialData = [] }: BeeNewsProps) {
                 onClick={() =>
                   setCurrentPage(Math.min(currentPage + 1, totalPages))
                 }
-                className="px-3 py-1 text-white text-xs font-semibold rounded-full shadow-md disabled:opacity-40
+                className="px-3 py-1 text-main-900 text-xs font-semibold rounded-full shadow-md disabled:opacity-40
                bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all"
               >
                 다음 →
