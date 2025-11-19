@@ -12,7 +12,7 @@ export default function Footer() {
   const { isLoggedIn } = useUserStore();
 
   return (
-    <footer className="sticky bottom-0 left-0 w-full h-[90px] flex flex-col items-center py-3 mt-auto bg-white z-50 shadow-[0_-2px_6px_0_rgba(0,0,0,0.06)] rounded-t-3xl">
+    <footer className="sticky bottom-0 left-0 w-full h-[90px] flex flex-col items-center py-3 mt-auto bg-white shadow-[0_-2px_6px_0_rgba(0,0,0,0.06)] rounded-t-3xl z-1">
         <div className="grid grid-cols-4 gap-12">
             <Link 
               href="/"

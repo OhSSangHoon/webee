@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  DiagnosisHistory,
-  MyProfile,
-  MySaleList,
-  StoreRecommendBee,
-} from "@/features";
+import { DiagnosisHistory, MyProfile, MySaleList, StoreRecommendBee,} from "@/features";
 import Skeleton from "@/widgets/skeleton/ui/Skeleton";
 
 export default function MyPage() {

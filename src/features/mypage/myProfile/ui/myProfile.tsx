@@ -33,7 +33,7 @@ export default function MyProfile() {
       <div className="flex flex-col gap-3 w-full">
         <div className="w-full flex flex-row justify-between">
           <div className="">
-            {realName || "사용자"}
+              {realName || "사용자"}
             <span className="text-sm">님 반갑습니다</span>
           </div>
           <div>
@@ -47,51 +47,44 @@ export default function MyProfile() {
         <div className="flex flex-col justify-start items-center w-[335px] mx-auto border border-gray-400 rounded-lg p-4 shadow-[0_4px_10px_0_rgba(0,0,0,0.04)]">
           {/* 나의 업체 정보 */}
           <div className="flex flex-col w-full">
-            <div className="font-semibold text-sm text-main-800">
-              나의 업체 정보
-            </div>
-            <BusinessList />
+            <div className="font-semibold text-sm text-main-800">나의 업체 정보</div>
+              <BusinessList />
           </div>
 
           {/* 나의 농지 정보 */}
           <div className="flex flex-col gap-1 w-full">
-            <div className="font-semibold text-sm text-main-800">
-              나의 농지 정보
-            </div>
-            {cropAddresses.length > 0 ? (
-              cropAddresses.map((address, index) => (
-                <div
-                  key={index}
-                  className="text-base font-regular text-gray-700"
-                >
-                  농지명 <span className="text-gray-900 pl-4">{address}</span>
+            <div className="font-semibold text-sm text-main-800">나의 농지 정보</div>
+              {cropAddresses.length > 0 ? (
+                cropAddresses.map((address, index) => (
+                  <div key={index} className="text-base font-regular text-gray-700">
+                    농지명 <span className="text-gray-900 pl-4">{address}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="text-gray-500 text-xs py-2">
+                  등록된 농지 정보가 없습니다.
                 </div>
-              ))
-            ) : (
-              <div className="text-gray-500 text-xs py-2">
-                등록된 농지 정보가 없습니다.
-              </div>
-            )}
+              )}
           </div>
           {/* 하단 버튼 영역 */}
           <div className="flex w-full flex-col gap-3 mt-auto">
             <div className="w-full h-px bg-gray-200"></div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 text-main-900 font-bold text-base">
               <button
                 onClick={() => (window.location.href = "/products")}
-                className="w-full bg-[#1E40AF] text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg hover:bg-[#1E3A8A] transition-colors font-medium text-xs sm:text-sm"
+                className="w-full bg-main-700 hover:bg-main-800 hover:text-white rounded-lg py-2 px-3 transition-all duration-300 cursor-pointer"
               >
                 + 새 상품 등록하기
               </button>
               <button
                 onClick={() => (window.location.href = "/myprofile")}
-                className="w-full border border-gray-300 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-50 transition-colors text-xs sm:text-sm"
+                className="w-full bg-main-700 hover:bg-main-800 hover:text-white rounded-lg py-2 px-3 transition-all duration-300 cursor-pointer"
               >
                 업체 등록하기
               </button>
               <button
                 onClick={() => (window.location.href = "/cropInfo")}
-                className="w-full border border-gray-300 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-50 transition-colors text-xs sm:text-sm"
+                className="w-full bg-main-700 hover:bg-main-800 hover:text-white rounded-lg py-2 px-3 transition-all duration-300 cursor-pointer"
               >
                 작물정보 등록하기
               </button>

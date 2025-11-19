@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import clsx from "clsx";
 import { useRecommendBee } from "../model/useRecommendation";
 import { useSaveRecommendation } from "../model/useSaveRecommendation";
@@ -43,9 +44,9 @@ export default function ResultBox() {
 
   useEffect(() => {
     if (tab === "products" && isSuccess) {
-      loadProducts(resultData.beeType);
+      loadProducts();
     }
-  }, [tab]);
+  }, [tab, isSuccess, loadProducts]);
 
   useEffect(() => {
     const token = safeLocalStorage.getItem("accessToken");
@@ -83,8 +84,13 @@ export default function ResultBox() {
       <h3 className="text-2xl font-bold">🐝 수정벌 상세 정보</h3>
 
       <div className="flex flex-row gap-4">
-        <div>
-          <img src="/beeEx.svg" />
+        <div className="relative w-[100px] h-[100px]">
+          <Image
+            src="/beeEx.svg"
+            alt="수정벌 이미지"
+            fill
+            className="object-contain"
+          />
         </div>
         <div>
           <div className="title-large mb-2">{resultData.beeType}</div>
@@ -116,19 +122,31 @@ export default function ResultBox() {
       {tab === "info" ? (
         <div className="card-gray overflow-y-auto space-y-8 text-main-900  ">
           <Section
-            icon={<img src="/note.svg" className="w-5 h-5" />}
+            icon={
+              <div className="relative w-5 h-5">
+                <Image src="/note.svg" alt="노트 아이콘" fill className="object-contain" />
+              </div>
+            }
             title="주요 특징"
             items={resultData.characteristics}
           />
 
           <Section
-            icon={<img src="/caution.svg" className="w-5 h-5" />}
+            icon={
+              <div className="relative w-5 h-5">
+                <Image src="/caution.svg" alt="주의 아이콘" fill className="object-contain" />
+              </div>
+            }
             title="주의 사항"
             items={resultData.caution}
           />
 
           <Section
-            icon={<img src="/search.svg" className="w-5 h-5" />}
+            icon={
+              <div className="relative w-5 h-5">
+                <Image src="/search.svg" alt="검색 아이콘" fill className="object-contain" />
+              </div>
+            }
             title="투입 팁"
             items={resultData.usageTip}
           />

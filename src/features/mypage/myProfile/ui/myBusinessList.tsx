@@ -62,22 +62,15 @@ export function BusinessList() {
               >
                 <div className="flex flex-col gap-1 mb-5">
                   <div className="text-base font-regular text-gray-700">
-                    업체명{" "}
-                    <span className="text-gray-900 pl-4">{b.companyName}</span>
+                    업체명 <span className="text-gray-900 pl-4">{b.companyName}</span>
                   </div>
                   {detail && (
                     <>
                       <div className="text-base font-regular text-gray-700">
-                        대표자{" "}
-                        <span className="text-gray-900 pl-4">
-                          {detail.representativeName}
-                        </span>
+                        대표자 <span className="text-gray-900 pl-4">{detail.representativeName}</span>
                       </div>
                       <div className="text-base font-regular text-gray-700">
-                        개업일{" "}
-                        <span className="text-gray-900 pl-4">
-                          {detail.commencementDate}
-                        </span>
+                        개업일 <span className="text-gray-900 pl-4">{detail.commencementDate}</span>
                       </div>
                     </>
                   )}
