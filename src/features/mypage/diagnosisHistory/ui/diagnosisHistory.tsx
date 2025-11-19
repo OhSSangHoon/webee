@@ -4,6 +4,11 @@ import api from "@/shared/auth/lib";
 import Image from "next/image";
 import { getBeeDiseaseKorean } from "@/shared/types/beeSwitch";
 import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/free-mode";
 
 interface DiagnosisItem {
   beeDiagnosisId: number;
@@ -26,24 +31,6 @@ interface DiagnosisDetail {
   solutions: string;
   createdAt: string;
 }
-
-// 스켈레톤 아이템 컴포넌트 - 실제 진단 결과와 동일한 크기 보장
-const SkeletonDiagnosisItem: React.FC = () => (
-  <div className="flex flex-row justify-start items-start gap-10 rounded-b-xl px-10 py-5 min-h-[100px] transform-gpu">
-    {/* 이미지 스켈레톤 */}
-    <div className="w-22 h-22 min-w-[88px] min-h-[88px] bg-gray-200 rounded-md animate-pulse flex-shrink-0"></div>
-    
-    {/* 텍스트 스켈레톤 */}
-    <div className="flex flex-col gap-3 flex-1 min-w-0">
-      <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-      <div className="space-y-2">
-        <div className="h-3 bg-gray-200 rounded w-full animate-pulse"></div>
-        <div className="h-3 bg-gray-200 rounded w-5/6 animate-pulse"></div>
-        <div className="h-3 bg-gray-200 rounded w-4/6 animate-pulse"></div>
-      </div>
-    </div>
-  </div>
-);
 
 // 빈 상태 컴포넌트
 const EmptyDiagnosisState: React.FC = () => (
@@ -71,8 +58,8 @@ const ErrorDiagnosisState: React.FC<{ error: string; onRetry: () => void }> = ({
   </div>
 );
 
-// 진단 결과 아이템 컴포넌트
-const DiagnosisItem: React.FC<{
+// 진단 결과 카드 컴포넌트
+const DiagnosisCard: React.FC<{
   item: DiagnosisItem;
   onClick: () => void;
 }> = ({ item, onClick }) => {
@@ -81,64 +68,72 @@ const DiagnosisItem: React.FC<{
 
   return (
     <div
-      className="flex flex-row justify-start items-start gap-10 rounded-b-xl hover:bg-blue-50 px-10 py-5 hover:shadow-md transition-all duration-300 group min-h-[100px] transform-gpu will-change-transform cursor-pointer"
+      className="w-full bg-white rounded-2xl p-4 border border-gray-400 hover:border-blue-300 hover:bg-blue-50/30 transition-colors duration-300 flex flex-col gap-3 cursor-pointer mb-2 transform-gpu will-change-transform"
       onClick={onClick}
     >
-      {/* 이미지 컨테이너 - 고정 크기 */}
-      <div className="relative w-22 h-22 min-w-[88px] min-h-[88px] aspect-square overflow-hidden flex-shrink-0 isolate">
-        {/* 배경 */}
-        <div className="absolute inset-0 bg-gray-100 rounded-md"></div>
-        
-        {/* 로딩 상태 */}
-        {!imageLoaded && !imageError && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-          </div>
-        )}
+      {/* 상단: 이미지 + 제목/날짜 */}
+      <div className="flex items-start gap-3">
+        {/* 이미지 컨테이너 - 40px x 40px */}
+        <div className="relative w-10 h-10 overflow-hidden flex-shrink-0 isolate">
+          {/* 배경 */}
+          <div className="absolute inset-0 bg-gray-100 rounded-xl"></div>
 
-        {/* 실제 이미지 */}
-        {!imageError ? (
-          <Image
-            src={item.imageUrl}
-            alt={item.diseaseType}
-            fill
-            className={`object-cover rounded-md hover:scale-105 transform-gpu transition-all duration-300 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            sizes="88px"
-            loading="lazy"
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-md">
-            <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+          {/* 로딩 상태 */}
+          {!imageLoaded && !imageError && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+            </div>
+          )}
+
+          {/* 실제 이미지 */}
+          {!imageError ? (
+            <Image
+              src={item.imageUrl}
+              alt={item.diseaseType}
+              fill
+              className={`object-cover rounded-xl transition-opacity duration-300 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              sizes="40px"
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl">
+              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          )}
+        </div>
+
+        {/* 제목 + 날짜 */}
+        <div className="flex flex-col gap-1 flex-1 min-w-0">
+          {/* 제목 */}
+          <div className="text-sm font-bold text-gray-800 truncate">
+            {getBeeDiseaseKorean(item.diseaseType)}
           </div>
-        )}
+
+          {/* 날짜 */}
+          <div className="text-xs text-gray-500 truncate">
+            {item.createdAt}
+          </div>
+        </div>
       </div>
 
-      {/* 텍스트 컨텐츠 - flex-1으로 남은 공간 활용 */}
-      <div className="flex flex-col gap-3 flex-1 min-w-0 isolate">
-        {/* 제목 - 고정 높이 */}
-        <div className="text-sm font-semibold text-ellipsis-1-line h-5 flex items-center">
-          {getBeeDiseaseKorean(item.diseaseType)} ({item.createdAt})
-        </div>
-        
-        {/* 설명 - 고정 높이와 라인 제한 */}
-        <div 
-          className="text-xs text-[#4B5563] overflow-hidden"
-          style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            lineHeight: '1.4',
-            maxHeight: '4.2em'
-          }}
-        >
-          {item.situationAnalysis}
-        </div>
+      {/* 하단: 진단 설명 */}
+      <div
+        className="text-xs text-gray-600 overflow-hidden"
+        style={{
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+          lineHeight: '1.4',
+          maxHeight: '4.2em'
+        }}
+      >
+        {item.situationAnalysis}
       </div>
     </div>
   );
@@ -189,10 +184,10 @@ export default function DiagnosisHistory() {
   }, []);
 
   return (
-    <div className="custom-box2 isolate">
+    <div className="w-full py-4">
       {/* 헤더 - 고정 높이 */}
-      <div className="custom-box2-title flex-shrink-0">
-        <span className="custom-box2-icon">💉</span>질병 진단 결과
+      <div className="pb-3">
+        <span className="text-lg font-semibold text-gray-900">질병 진단 결과</span>
       </div>
 
       {/* 모달 */}
@@ -219,7 +214,7 @@ export default function DiagnosisHistory() {
             </div>
 
             {/* 진단 이미지 - 고정 크기 */}
-            <div className="relative w-full h-64 mb-6">
+            <div className="relative w-full">
               <Image
                 src={detailContent.imageUrl}
                 alt={detailContent.diseaseType}
@@ -265,15 +260,22 @@ export default function DiagnosisHistory() {
         </div>
       )}
 
-      {/* 컨텐츠 영역 - 최소 높이 보장 */}
-      <div className="flex flex-col-reverse list-container">
+      {/* 컨텐츠 영역 */}
+      <div className="isolate overflow-hidden">
         {/* 로딩 상태 */}
         {isLoading && (
-          <>
+          <Swiper
+            modules={[FreeMode]}
+            spaceBetween={16}
+            slidesPerView="auto"
+            freeMode={true}
+            className="w-full"
+          >
             {[1, 2, 3].map((index) => (
-              <SkeletonDiagnosisItem key={`skeleton-${index}`} />
+              <SwiperSlide key={`skeleton-${index}`} className="!w-[315px]">
+              </SwiperSlide>
             ))}
-          </>
+          </Swiper>
         )}
 
         {/* 에러 상태 */}
@@ -288,15 +290,22 @@ export default function DiagnosisHistory() {
 
         {/* 실제 진단 결과 목록 */}
         {!isLoading && !error && diagnosisList.length > 0 && (
-          <>
+          <Swiper
+            modules={[FreeMode]}
+            spaceBetween={16}
+            slidesPerView="auto"
+            freeMode={true}
+            className="w-full"
+          >
             {diagnosisList.map((item) => (
-              <DiagnosisItem
-                key={item.beeDiagnosisId}
-                item={item}
-                onClick={() => openDetailModal(item.beeDiagnosisId)}
-              />
+              <SwiperSlide key={item.beeDiagnosisId} className="!w-[315px]">
+                <DiagnosisCard
+                  item={item}
+                  onClick={() => openDetailModal(item.beeDiagnosisId)}
+                />
+              </SwiperSlide>
             ))}
-          </>
+          </Swiper>
         )}
       </div>
     </div>
