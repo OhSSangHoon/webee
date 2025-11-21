@@ -256,10 +256,10 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
   }, [mapState.map, selectedProduct, mapState.businessCoordinates]);
 
   return (
-    <div className="w-full h-full relative" style={{ height: 'calc(100vh - 80px)' }}>
+    <div className="w-full h-full" >
       {/* 대형 콘텐츠 플레이스홀더 - LCP 최적화 */}
       <div 
-        className="absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center"
+        className=" bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center"
         style={{ 
           width: '100%', 
           height: '100%',
@@ -315,7 +315,7 @@ export const Maps = ({ products, selectedProductId, selectedProduct, onMarkerCli
         aria-label="상품 위치 지도"
       />
       
-      <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-2 z-[1000]">
+      <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-2 z-[10]">
         <button
           onClick={() => {
             if (mapState.map && typeof mapState.map === 'object' && 'getLevel' in mapState.map && 'setLevel' in mapState.map) {
