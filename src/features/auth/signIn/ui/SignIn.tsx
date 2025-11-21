@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useSignInForm } from "../model/useSignIn";
-import Image from "next/image";
 
 export default function SignIn() {
   const {

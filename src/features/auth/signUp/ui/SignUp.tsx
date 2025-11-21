@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useSignUpForm } from "../model/useSignUp";
 import { useRouter } from "next/navigation";
 

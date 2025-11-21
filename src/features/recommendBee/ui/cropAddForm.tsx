@@ -37,7 +37,6 @@ export default function CropInfo() {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
   } = useForm<CropInfoFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -82,7 +81,7 @@ export default function CropInfo() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <header className=" items-start">
-        <h1 className="title-large"> 을 찾고 계신가요?</h1>
+        <h1 className="title-large"> 어떤 수정벌을 찾고 계신가요?</h1>
         <h2 className="title-sub">
           농작물 정보를 알려주시면 <br /> 공공데이터 기반으로 최적의 수정벌을
           추천해드려요
