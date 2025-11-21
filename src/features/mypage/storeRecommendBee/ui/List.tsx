@@ -5,6 +5,11 @@ import { useBeeRecommendationStore } from "../model/store";
 import { getBeeTypeKorean } from "@/shared/types/beeSwitch";
 import { BeeRecommendation } from "../model/types";
 import { getCultivationTypeKorean } from "@/shared/utils/cultivationUtils";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/free-mode";
 
 interface BeeRecommendationListProps {
   onSelect: (id: number) => void;
@@ -23,40 +28,15 @@ const formatDate = (dateString: string): string => {
   }
 };
 
-// 스켈레톤 카드 컴포넌트 - 실제 카드와 동일한 크기 보장
-const SkeletonCard: React.FC = () => (
-  <li className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md border border-transparent flex flex-col justify-between items-start isolate animate-pulse">
-    {/* 헤더 영역 */}
-    <div className="flex items-center justify-between w-full mb-2">
-      <div className="h-6 bg-gray-200 rounded w-20"></div>
-      <div className="h-5 bg-gray-200 rounded-full w-12"></div>
-    </div>
 
-    {/* 작물명 */}
-    <div className="h-4 bg-gray-200 rounded w-32 mb-1"></div>
-    
-    {/* 투입 기간 */}
-    <div className="h-4 bg-gray-200 rounded w-40 mb-1"></div>
-    
-    {/* 저장일자 */}
-    <div className="h-4 bg-gray-200 rounded w-28 mb-2"></div>
-
-    {/* 태그들 */}
-    <div className="flex gap-2 mt-auto">
-      <div className="h-6 bg-gray-200 rounded-full w-16"></div>
-      <div className="h-6 bg-gray-200 rounded-full w-20"></div>
-    </div>
-  </li>
-);
-
-// 실제 카드 컴포넌트 - 고정 높이 보장
+// 실제 카드 컴포넌트
 const RecommendationCard: React.FC<{
   item: BeeRecommendation;
   onSelect: (id: number) => void;
   setOpenModal: (value: boolean) => void;
 }> = ({ item, onSelect, setOpenModal }) => (
-  <li
-    className="min-w-[280px] h-[180px] bg-white rounded-2xl p-4 drop-shadow-md border border-transparent hover:border-blue-300 hover:bg-blue-50/30 transition-colors duration-300 flex flex-col justify-between items-start cursor-pointer isolate transform-gpu will-change-transform"
+  <div
+    className="w-full bg-white rounded-2xl p-4 border border-gray-400 hover:border-blue-300 hover:bg-blue-50/30 transition-colors duration-300 flex flex-col justify-between items-start cursor-pointer mb-2"
     onClick={(e) => {
       e.stopPropagation();
       onSelect(item.beeRecommendationId);
@@ -64,8 +44,8 @@ const RecommendationCard: React.FC<{
     }}
   >
     {/* 헤더 영역 - 고정 높이 */}
-    <div className="flex items-center justify-between w-full mb-2 min-h-[24px]">
-      <span className="text-lg font-bold text-gray-800 truncate">
+    <div className="flex items-center justify-between w-full mb-2 min-h-[24px] border-b border-gray-400 pb-2">
+      <span className="text-lg font-semibold text-main-900 truncate">
         {getBeeTypeKorean(item.beeType)}
       </span>
       <span className="bg-blue-700 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap">
@@ -75,40 +55,42 @@ const RecommendationCard: React.FC<{
 
     {/* 컨텐츠 영역 - 고정 높이와 overflow 처리 */}
     <div className="flex-1 w-full min-h-[80px] flex flex-col justify-between">
-      <div className="space-y-1">
-        <div className="text-sm text-gray-700 truncate">
-          <span className="font-medium">작물명:</span> {item.cropName}
+      <div className="space-y-1 text-base font-medium">
+        <div className=" text-gray-700 truncate ">
+          <span className="w-[110px] inline-block">작물명</span>
+          <span className="text-gray-900 font-regular">{item.cropName}</span>
+        </div>
+        
+        <div className=" text-gray-700 truncate">
+          <span className="w-[110px] inline-block">저장일자</span>
+          <span className="text-gray-900 font-regular">{item.createdAt}</span>
         </div>
 
         {/* 투입 기간 정보 */}
-        <div className="text-sm text-gray-700 truncate">
-          <span className="font-medium">추천 투입 기간:</span>
-          <span className="ml-1">
+        <div className=" text-gray-700 truncate">
+          <span className="w-[110px] inline-block">추천 투입 기간</span>
+          <span className="text-gray-900 font-regular">
             {formatDate(item.inputStartDate)} ~ {formatDate(item.inputEndDate)}
           </span>
         </div>
-        
-        <div className="text-xs text-gray-500 truncate">
-          저장일자: {item.createdAt}
-        </div>
-      </div>
 
-      {/* 태그 영역 - 고정 위치 */}
+      </div>
+      {/* 태그 영역  */}
       <div className="flex flex-wrap gap-2 mt-2">
-        <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs truncate max-w-[80px]">
+        <span className="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg text-xs truncate max-w-[80px]">
           {getCultivationTypeKorean(item.cultivationType)}
         </span>
-        <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs truncate max-w-[100px]">
+        <span className="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg text-xs truncate max-w-[100px]">
           {item.cultivationAddress}
         </span>
       </div>
     </div>
-  </li>
+  </div>
 );
 
-// 빈 상태 컴포넌트 - 고정 높이 보장
+// 빈 상태 컴포넌트
 const EmptyState: React.FC = () => (
-  <div className="min-h-[200px] flex flex-col justify-center items-center px-4">
+  <div className="flex flex-col justify-center items-center">
     <div className="text-center">
       <div className="text-4xl mb-4">📂</div>
       <p className="text-gray-500 mb-4">추천된 수정벌이 없습니다.</p>
@@ -119,9 +101,9 @@ const EmptyState: React.FC = () => (
   </div>
 );
 
-// 에러 상태 컴포넌트 - 고정 높이 보장
+// 에러 상태 컴포넌트
 const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, onRetry }) => (
-  <div className="min-h-[200px] flex justify-center items-center px-4">
+  <div className="flex justify-center items-center">
     <div className="text-red-500 text-center">
       <p className="font-semibold">오류 발생</p>
       <p className="text-sm mt-1">{error}</p>
@@ -146,18 +128,25 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
   }, [loadList]);
 
   return (
-    <div className="isolate transform-gpu">
-      <header className="w-full text-base font-medium">
+    <div className="w-full">
+      <header className="text-base font-medium pb-3">
         <span className="text-lg font-semibold text-gray-900">수정벌 추천 리스트</span>
       </header>
-      <div className="py-2 isolate overflow-hidden min-h-[220px]">
+      <div className="">
         {/* 로딩 상태 */}
         {loading && list === null && (
-          <ul className="flex flex-row overflow-x-auto gap-4 isolate transform-gpu">
+          <Swiper
+            modules={[FreeMode]}
+            spaceBetween={16}
+            slidesPerView="auto"
+            freeMode={true}
+            className="w-full"
+          >
             {[1, 2, 3].map((index) => (
-              <SkeletonCard key={`skeleton-${index}`} />
+              <SwiperSlide key={`skeleton-${index}`} className="!w-[335px]">
+              </SwiperSlide>
             ))}
-          </ul>
+          </Swiper>
         )}
 
         {/* 에러 상태 */}
@@ -172,16 +161,23 @@ export const BeeRecommendationList: React.FC<BeeRecommendationListProps> = ({
 
         {/* 데이터 있는 상태 */}
         {!loading && !error && list && list.length > 0 && (
-          <ul className="flex flex-row overflow-x-auto p-4 gap-4 isolate transform-gpu">
+          <Swiper
+            modules={[FreeMode]}
+            spaceBetween={16}
+            slidesPerView="auto"
+            freeMode={true}
+            className="w-full p-4"
+          >
             {list.map((item: BeeRecommendation) => (
-              <RecommendationCard
-                key={item.beeRecommendationId}
-                item={item}
-                onSelect={onSelect}
-                setOpenModal={setOpenModal}
-              />
+              <SwiperSlide key={item.beeRecommendationId} className="!w-[315px]">
+                <RecommendationCard
+                  item={item}
+                  onSelect={onSelect}
+                  setOpenModal={setOpenModal}
+                />
+              </SwiperSlide>
             ))}
-          </ul>
+          </Swiper>
         )}
       </div>
     </div>

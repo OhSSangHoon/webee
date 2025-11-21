@@ -24,10 +24,10 @@ export default function MyPage() {
           <MyProfile />
           {/* MySaleList */}
           <MySaleList />
+          {/* 추가 컴포넌트들 */}
+          <StoreRecommendBee />
+          <DiagnosisHistory />
         </div>
-        {/* 추가 컴포넌트들 */}
-        <StoreRecommendBee />
-        <DiagnosisHistory />
       </div>
     </>
   );
