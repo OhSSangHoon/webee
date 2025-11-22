@@ -267,7 +267,7 @@ export default function Search() {
   }
 
   return (
-    <div className="flex flex-row relative">
+    <div className="flex flex-row h-[calc(100vh-80px-90px)] relative">
       {!isOpen && (
         <div
           className="absolute top-0 left-0 z-[10] p-3 bg-yellow-400 text-white font-bold rounded-r-full shadow-lg cursor-pointer hover:bg-yellow-500 transition-colors duration-200 text-center"
@@ -372,7 +372,7 @@ export default function Search() {
       )}
       {/* 지도 */}
       {!isOpen && (
-        <div className=" w-full h-[100vh] relative">
+        <div className="w-full h-full relative">
           <Maps
             products={filteredProducts}
             selectedProductId={selectedProductId}
