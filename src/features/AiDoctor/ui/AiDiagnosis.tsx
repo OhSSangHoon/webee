@@ -73,8 +73,8 @@ export default function AiDiagnosisUI({
 
   return (
     <div className="flex flex-col justify-start items-start w-84 gap-2 ">
-      <header className="mb-6 text-[#664318] ">
-        <h1 className="text-2xl font-semibold mb-1">
+      <header className="mb-6 text-main-900">
+        <h1 className="text-2xl font-bold mb-1">
           꿀벌 질병 진단을 진행할게요!
         </h1>
         <h2 className="text-base text-gray-800">

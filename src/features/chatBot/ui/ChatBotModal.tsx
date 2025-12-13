@@ -87,7 +87,7 @@ export default function ChatbotLauncher() {
 
   return (
     <div
-      className=" fixed inset-0 bg-black/70 text-gray-900 flex items-center justify-center text-[18px] "
+      className=" fixed inset-0 bg-black/70 text-gray-900 flex items-center justify-center text-[18px] z-999 "
       onClick={closeChatbot}
     >
       <div
@@ -142,7 +142,7 @@ export default function ChatbotLauncher() {
               {exampleQuestions.map((q, idx) => (
                 <button
                   key={idx}
-                  className="w-full text-start bg-[#664318] text-white text-base rounded-xl py-2 px-5 shadow-md hover:bg-[#9e6e34]"
+                  className="w-full text-start bg-[#ca9b61] text-white text-base rounded-xl py-2 px-5 shadow-md hover:bg-[#9e6e34]"
                   onClick={() => handleAsk(q)}
                 >
                   {q}
@@ -196,7 +196,7 @@ export default function ChatbotLauncher() {
         </div>
 
         {/* 입력창 */}
-        <div className=" border flex flex-row px-4 py-4 gap-2 ">
+        <div className=" flex flex-row px-4 py-4 gap-2 ">
           <input
             className="bg-gray-400 rounded-4xl px-5 w-[90%] "
             type="text"
@@ -206,7 +206,7 @@ export default function ChatbotLauncher() {
             onKeyDown={(e) => e.key === "Enter" && handleAsk(input)}
           />
           <button
-            className="bg-[#ffb800] hover:bg-[#b8761a] text-white rounded-full w-12 h-12"
+            className="bg-[#ffb800] hover:bg-[#b8761a] text-white rounded-full w-14 h-12"
             onClick={() => handleAsk(input)}
             disabled={loading || !input.trim()}
           >
