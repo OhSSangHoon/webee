@@ -79,18 +79,18 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 pt-20">
-      <div className="grid grid-cols-2 gap-16 items-stretch">
+    <div className="max-w-7xl mx-auto px-4 ">
+      <div className="grid grid-row gap-4 items-stretch">
         {/* 이미지 섹션 */}
-        <div className="flex gap-4">
+        <div>
           {/* 메인 이미지 */}
           <div className="flex-1 aspect-square bg-gray-200 rounded-lg overflow-hidden">
             {product.imageUrls && product.imageUrls.length > 0 ? (
               <Image
                 src={product.imageUrls[imagePositions[0]]}
                 alt={`${product.name} 메인 이미지`}
-                width={400}
-                height={400}
+                width={300}
+                height={300}
                 style={{ objectFit: "cover" }}
                 className="w-full h-full cursor-pointer"
                 priority
@@ -154,7 +154,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         {/* 상품 정보 섹션 */}
         <div className="flex flex-col justify-between">
           {/* 상품 기본 정보 */}
-          <div className="space-y-3 bg-[#FBFBFB] p-4 rounded-xl">
+          <div className=" bg-[#FBFBFB] p-4 rounded-xl">
             <h1 className="text-2xl font-bold mb-4">{product.name}</h1>
             <div className="space-y-3">
               <div className="flex">
@@ -239,7 +239,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       </div>
 
       {/* 상품 상세 설명 */}
-      <div className="mt-16 border-1 border-[#E2E5EB] rounded-xl p-4">
+      <div className="mt-4 border-1 border-[#E2E5EB] rounded-xl p-4">
         <div className="flex flex-row justify-between items-center mb-4">
           <h2 className="text-xl font-bold">상품 상세정보</h2>
           <div className="flex items-center gap-2">

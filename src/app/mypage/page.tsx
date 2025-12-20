@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DiagnosisHistory, MyProfile, MySaleList, StoreRecommendBee,} from "@/features";
+import {
+  DiagnosisHistory,
+  Logout,
+  MyProfile,
+  MySaleList,
+  StoreRecommendBee,
+} from "@/features";
 import Skeleton from "@/widgets/skeleton/ui/Skeleton";
 
 export default function MyPage() {
@@ -24,10 +30,11 @@ export default function MyPage() {
           <MyProfile />
           {/* MySaleList */}
           <MySaleList />
+          {/* 추가 컴포넌트들 */}
+          <StoreRecommendBee />
+          <DiagnosisHistory />
+          <Logout />
         </div>
-        {/* 추가 컴포넌트들 */}
-        <StoreRecommendBee />
-        <DiagnosisHistory />
       </div>
     </>
   );

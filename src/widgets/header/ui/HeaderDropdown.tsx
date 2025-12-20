@@ -53,9 +53,11 @@ export default function HeaderDropdown({ isOpen, onOpenChange, children }: Heade
       {/* 오버레이 */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50"
+          className="fixed inset-0 bg-black/50 z-40 flex items-start justify-center"
           onClick={() => onOpenChange(false)}
-        />
+        >
+          <div className="w-[375px] h-full relative" onClick={(e) => e.stopPropagation()} />
+        </div>
       )}
 
       <DropdownMenu open={isOpen} onOpenChange={onOpenChange} modal={false}>
@@ -64,8 +66,8 @@ export default function HeaderDropdown({ isOpen, onOpenChange, children }: Heade
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-[375px] bg-white/95 backdrop-blur-sm shadow-xl border border-gray-200"
-          alignOffset={-25}
+          className="w-[335px] bg-white/95 backdrop-blur-sm shadow-xl border border-gray-200 z-50"
+          alignOffset={0}
         >
           <DropdownMenuItem asChild onClick={handleItemClick}>
             <Link href="/recommend" className="flex items-center gap-3 py-3 px-4 font-medium text-gray-800 hover:bg-yellow-50">

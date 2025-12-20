@@ -35,17 +35,18 @@ const nextConfig = {
   // 실험적 기능 활성화
   experimental: {
     optimizePackageImports: ['lucide-react'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+  // Turbopack 설정 (stable)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
-  // 정적 최적화
-  output: 'standalone',
+  // 정적 최적화 - Windows에서 권한 문제로 주석 처리
+  // output: 'standalone',
 }
 
 module.exports = nextConfig

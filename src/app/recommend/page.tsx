@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useState, useEffect } from "react";
+import { useRecommendBee } from "@/features/recommendBee/model/useRecommendation";
 
 const CropAddForm = dynamic(
   () => import("@/features/recommendBee/ui/cropAddForm"),
@@ -12,22 +14,20 @@ const ResultBox = dynamic(
 );
 
 export default function RecommendBee() {
-  return (
-    <div className=" min-h-screen mx-auto gap-10 py-10 lg:w-[65%]">
-      <div className="card-section-2 mt-20 text-[#333333] ">
-        <header className="flex flex-col items-start justify-center bg-blue-50 px-6 py-6 rounded-t-lg">
-          <h1 className="text-[18px] font-semibold text-gray-900">수정벌 추천</h1>
-          <h2 className="text-[14px] text-gray-700">
-           농작물 정보를 알려주시면, 공공데이터를 바탕으로 적합한 수정벌을 추천해드릴게요!
-          </h2>
-        </header>
+  const { loading } = useRecommendBee();
+  const [step, setStep] = useState<1 | 2>(1);
+  useEffect(() => {
+    if (loading) {
+      setStep(2);
+    }
+  }, [loading]);
 
-        <title>수정벌 추천</title>
-        <div className="flex flex-row justify-center items-center">
-          <CropAddForm />
-          <ResultBox />
-        </div>
-      </div>
+  return (
+    <div className=" w-[335px] mx-auto space-y-6">
+      <title>수정벌 추천</title>
+
+      {step === 1 && <CropAddForm />}
+      {step === 2 && <ResultBox />}
     </div>
   );
 }

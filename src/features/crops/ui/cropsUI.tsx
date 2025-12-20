@@ -66,18 +66,18 @@ export default function Crops({ onSelect }: Props) {
       <button
         onClick={openModal}
         disabled={!hasAccessToken || undefined}
-        className={`relative w-full px-4 py-2 rounded-sm border text-blue-700 ${
-          isMounted && hasAccessToken
-            ? "white-button"
-            : "border-gray-300 bg-gray-100 text-gray-700 cursor-not-allowed"
-        }`}
+        className={`flex flex-row justify-between relative w-full rounded-lg border p-2 
+          ${
+            isMounted && hasAccessToken
+              ? "border-[#ff840f] bg-[#fff6e5] text-gray-900"
+              : "border-gray-400 bg-gray-100 text-gray-700 cursor-not-allowed"
+          }`}
       >
-        작물 정보 가져오기
-        {!hasAccessToken && (
-          <p className=" absolute mt-2 text-sm text-red-500">
-            로그인 시 사용 가능합니다.
-          </p>
-        )}
+        <div>등록된 작물 정보가 있어요!</div>
+
+        <div className="text-[#ff840f] text-sm flex items-center">
+          불러오기 &gt;
+        </div>
       </button>
 
       {isOpen && (

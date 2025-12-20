@@ -1,32 +1,9 @@
 "use client";
 
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useMySaleList } from "../model/model";
 import { ProductCard } from "./productCards";
-import { NavigationButton } from "./navButton";
 
-// 스켈레톤 카드 컴포넌트
-const SkeletonProductCard: React.FC = () => (
-  <div className="w-full max-w-[280px] flex justify-center">
-    <div className="w-full h-[320px] sm:h-[300px] lg:h-[280px] bg-white rounded-lg border border-gray-200 shadow-sm">
-      {/* 이미지 영역 */}
-      <div className="w-full h-[200px] sm:h-[180px] lg:h-[160px] bg-gray-200 rounded-t-lg animate-pulse"></div>
-      
-      {/* 컨텐츠 영역 */}
-      <div className="p-3 sm:p-4 h-[120px] flex flex-col justify-between">
-        <div className="space-y-2">
-          <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-          <div className="h-6 bg-gray-200 rounded w-1/2 animate-pulse"></div>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <div className="h-4 bg-gray-200 rounded-full w-16 animate-pulse"></div>
-          <div className="h-4 bg-gray-200 rounded w-12 animate-pulse"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 // 빈 상태 컴포넌트
 const EmptyState: React.FC = () => (
@@ -60,72 +37,26 @@ export default function MySaleList() {
   const {
     myProducts,
     visibleProducts,
-    slideInfo,
     isLoading,
     error,
     actions
   } = useMySaleList();
-  const [itemsToShow, setItemsToShow] = useState(1);
-
-  // 반응형 설정
-  useEffect(() => {
-    const updateItemsToShow = () => {
-      const width = window.innerWidth;
-      
-      if (width >= 1024) {
-        setItemsToShow(3);
-      } else if (width >= 768) {
-        setItemsToShow(2);
-      } else {
-        setItemsToShow(1);
-      }
-    };
-
-    updateItemsToShow();
-    
-    // 디바운스된 리사이즈 핸들러
-    let timeoutId: NodeJS.Timeout;
-    const debouncedResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(updateItemsToShow, 150);
-    };
-
-    window.addEventListener('resize', debouncedResize, { passive: true });
-    
-    return () => {
-      window.removeEventListener('resize', debouncedResize);
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   // 가격 포맷팅 함수
   const formatPrice = useCallback((price: number) => {
     return new Intl.NumberFormat("ko-KR").format(price) + "원";
   }, []);
 
-  // 반응형 그리드 클래스
-  const gridClasses = "grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
-
   return (
-    <div className="custom-box2 shadow-lg flex flex-col w-full overflow-hidden">
+    <div className="flex flex-col w-full my-8">
       {/* 헤더 */}
-      <div className="custom-box2-title mb-4 flex-shrink-0">
-        <span className="custom-box2-icon">🛒</span> 내 상품 목록
+      <div className="flex-shrink-0">
+        <span className="text-lg font-semibold text-gray-900">내 상품 목록</span>
       </div>
 
       {/* 컨텐츠 영역 */}
-      <div className="relative w-full px-4 sm:px-6 lg:px-10 py-4 isolate flex-1">
-        {/* 반응형 그리드 컨테이너 */}
-        <div
-          className={gridClasses}
-          style={{ minHeight: '280px' }}
-        >
-          {/* 로딩 상태 */}
-          {isLoading && (
-            Array.from({ length: itemsToShow }, (_, index) => (
-              <SkeletonProductCard key={`skeleton-${index}`} />
-            ))
-          )}
+      <div className="relative w-full py-2 isolate flex-1">
+        <div className="grid gap-2 justify-items-center grid-cols-1">
 
           {/* 에러 상태 */}
           {error && !isLoading && (
@@ -137,13 +68,13 @@ export default function MySaleList() {
             <EmptyState />
           )}
 
-          {/* 실제 상품 목록 - 최적화된 렌더링 */}
+          {/* 실제 상품 목록 */}
           {!isLoading && !error && myProducts.length > 0 && (
             <>
-              {visibleProducts.slice(0, itemsToShow).map((product, index) => (
+              {visibleProducts.slice(0, 3).map((product, index) => (
                 <div
                   key={product.id}
-                  className="w-full max-w-[280px] flex justify-center"
+                  className="w-full flex justify-center"
                 >
                   <ProductCard
                     product={product}
@@ -152,33 +83,9 @@ export default function MySaleList() {
                   />
                 </div>
               ))}
-              
-              {/* 빈 슬롯 채우기 - 데스크톱에서만 */}
-              {itemsToShow > 1 && visibleProducts.length < itemsToShow && (
-                Array.from({ length: itemsToShow - visibleProducts.length }, (_, index) => (
-                  <div key={`empty-${index}`} className="w-full max-w-[280px] hidden md:block"></div>
-                ))
-              )}
             </>
           )}
         </div>
-
-        {/* 네비게이션 버튼 */}
-        {!isLoading && !error && myProducts.length > itemsToShow && (
-          <div className="flex justify-between items-center mt-6">
-            <NavigationButton
-              direction="prev"
-              onClick={actions.goPrev}
-              disabled={!slideInfo.canGoPrev}
-            />
-
-            <NavigationButton
-              direction="next"
-              onClick={actions.goNext}
-              disabled={!slideInfo.canGoNext}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

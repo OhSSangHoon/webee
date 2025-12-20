@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   // useState로 QueryClient 생성 (재렌더링 시 새로 생성되지 않도록)
@@ -18,7 +19,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <ThemeProvider>
+        {children}
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

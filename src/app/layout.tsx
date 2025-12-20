@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "@/widgets";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
-import Chatbot from "@/features/chatBot/ui/ChatBotModal";
-import { Footer } from "@/widgets";
+import { LayoutContent } from "./LayoutContent";
 
 export const metadata: Metadata = {
   title: {
@@ -56,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <head>
         <link rel="dns-prefetch" href="https://api.webee.sbs" />
         <link rel="dns-prefetch" href="https://dapi.kakao.com" />
@@ -64,19 +62,12 @@ export default function RootLayout({
         <link rel="preload" href="/font/PretendardVariable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/webee.svg" as="image" type="image/svg+xml" crossOrigin="anonymous" />
       </head>
-      <body
-        className="antialiased min-h-screen flex flex-col container border-x border-gray-500" // 폰트 로딩 완료 후 제거
-      >
+      <body className="antialiased min-h-screen">
         <HydrationProvider>
-          <Header />
           <Providers>
-            <main className="flex-1">
-              {children}
-            </main>
+            <LayoutContent>{children}</LayoutContent>
           </Providers>
-          <Footer />
         </HydrationProvider>
-        <Chatbot />
       </body>
     </html>
   );

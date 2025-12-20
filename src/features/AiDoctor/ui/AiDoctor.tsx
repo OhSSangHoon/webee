@@ -54,11 +54,11 @@ export default function AiDoctorUi({
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    watch
+    watch,
   } = useForm<AiDoctorFormValues>({
     resolver: yupResolver(schema),
     mode: "onBlur",
-    defaultValues: externalForm
+    defaultValues: externalForm,
   });
 
   // ✅ 개별 필드를 watch (무한 루프 방지)
@@ -77,7 +77,14 @@ export default function AiDoctorUi({
       cultivationAddress,
       details,
     });
-  }, [disease, cultivationType, cropName, cultivationAddress, details, setExternalForm]);
+  }, [
+    disease,
+    cultivationType,
+    cropName,
+    cultivationAddress,
+    details,
+    setExternalForm,
+  ]);
 
   const handleCropSelect = (crop: Crop) => {
     setValue("disease", "");
@@ -98,32 +105,28 @@ export default function AiDoctorUi({
   };
 
   return (
-    <div className=" flex flex-col justify-start items-stretch w-full h-full gap-4 text-[#333333]">
-      <header className="font-semibold flex flex-row items-end space-x-2 text-[20px]">
-        <div className="text-blue-700 font-semibold">Step 2</div> AI 꿀벌 닥터
-        <div className="text-blue-700 text-[13px] mb-1 mx-2 font-medium">
-          꿀벌 이미지 질병 판단 결과와 사용자 농지 정보를 바탕으로 AI가 맞춤형
-          대처 방안을 응답합니다.
-        </div>
+    <div className=" flex flex-col items-stretch gap-5 ">
+      <header className="text-[#664318]">
+        <h1 className="text-2xl font-semibold ">
+          AI 닥터가 질병 솔루션을 제공해요!
+        </h1>
+        <h2 className="text-base text-gray-800">
+          꿀벌 이미지 질병 판단 결과와 사용자 농지 정보를 <br />
+          바탕으로 AI가 맞춤형 대처 방안을 응답합니다.
+        </h2>
       </header>
+      <Crops onSelect={handleCropSelect} />
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6  rounded-lg border-1 border-[#ececec] p-8"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* 질병 선택 */}
         <div className="flex flex-col">
           <label htmlFor="disease" className="text-[#4B5563] font-medium mb-1">
-            질병 선택 <span className="text-red-500 ">*</span>
-            <span className="text-gray-700 text-sm">
-              {" "}
-              (사진 진단 후 이용할 수 있습니다.)
-            </span>
+            질병 선택 <span className="text-red-500 text-xs ">(필수)</span>
           </label>
           <select
             id="disease"
             {...register("disease")}
-            className="w-full border border-[#ececec] p-2 rounded-md appearance-none placeholder-[#d1d1d1]"
+            className="w-full border border-[#ececec] p-2 rounded-lg appearance-none placeholder-[#d1d1d1]"
           >
             <option value="" disabled hidden className="text-[#d1d1d1]">
               질병 선택
@@ -137,7 +140,9 @@ export default function AiDoctorUi({
             </option>
           </select>
           {errors.disease && (
-            <p className="text-red-500 text-sm mt-1">{errors.disease.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.disease.message}
+            </p>
           )}
         </div>
 
@@ -147,12 +152,12 @@ export default function AiDoctorUi({
             htmlFor="cultivationType"
             className="text-[#4B5563] font-medium mb-1"
           >
-            농지환경 <span className="text-red-500">*</span>
+            농지환경 <span className="text-red-500 text-xs ">(필수)</span>
           </label>
           <select
             id="cultivationType"
             {...register("cultivationType")}
-            className="w-full border border-[#ececec] p-2 rounded-md appearance-none placeholder-[#d1d1d1]"
+            className="w-full border border-[#ececec] p-2 rounded-lg appearance-none placeholder-[#d1d1d1]"
           >
             <option value="" disabled hidden className="text-[#d1d1d1]">
               재배 유형 선택
@@ -161,23 +166,27 @@ export default function AiDoctorUi({
             <option value="OPEN_FIELD">노지(기본)</option>
           </select>
           {errors.cultivationType && (
-            <p className="text-red-500 text-sm mt-1">{errors.cultivationType.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.cultivationType.message}
+            </p>
           )}
         </div>
 
         {/* 재배작물 */}
         <div className="flex flex-col">
           <label htmlFor="cropName" className="text-[#4B5563] font-medium mb-1">
-            재배작물 <span className="text-red-500">*</span>
+            재배작물 <span className="text-red-500 text-xs ">(필수)</span>
           </label>
           <input
             id="cropName"
             {...register("cropName")}
             placeholder="블루베리"
-            className="w-full border border-[#ececec] p-2 rounded-md placeholder-[#d1d1d1]"
+            className="w-full border border-[#ececec] p-2 rounded-lg placeholder-[#d1d1d1]"
           />
           {errors.cropName && (
-            <p className="text-red-500 text-sm mt-1">{errors.cropName.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.cropName.message}
+            </p>
           )}
         </div>
 
@@ -187,40 +196,45 @@ export default function AiDoctorUi({
             htmlFor="cultivationAddress"
             className="text-[#4B5563]  font-medium mb-1"
           >
-            농지 위치 <span className="text-red-500">*</span>
+            농지 위치 <span className="text-red-500 text-xs ">(필수)</span>
           </label>
           <input
             id="cultivationAddress"
             {...register("cultivationAddress")}
             placeholder="경산북도 경산시 (정확한 주소를 입력해 주세요)"
-            className="w-full border border-[#ececec] p-2 rounded-md placeholder-[#d1d1d1]"
+            className="w-full border border-[#ececec] p-2 rounded-lg placeholder-[#d1d1d1]"
           />
           {errors.cultivationAddress && (
-            <p className="text-red-500 text-sm mt-1">{errors.cultivationAddress.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.cultivationAddress.message}
+            </p>
           )}
         </div>
 
         {/* 추가 정보 */}
         <div className="flex flex-col">
           <label htmlFor="details" className="text-[#4B5563]  font-medium mb-1">
-            추가 정보 <span className="text-red-500 ">*</span>
+            추가 정보 <span className="text-red-500 text-xs ">(필수)</span>
           </label>
           <textarea
             id="details"
             {...register("details")}
-            placeholder="추가로 알려주실 정보가 있다면 작성해 주세요. (최근 특이사항,  주변 환경 등) 없다면 '없음' 을 적어주세요"
-            className="w-full min-h-[6rem] border border-[#ececec] p-2 rounded-md placeholder-[#d1d1d1] "
+            placeholder="추가로 알려주실 정보가 있다면 작성해 주세요. (최근 특이사항, 주변 환경 등) 없다면 '없음' 을 적어주세요"
+            className="w-full min-h-[6rem] border border-[#ececec] p-2 rounded-lg placeholder-[#d1d1d1]"
           />
           {errors.details && (
-            <p className="text-red-500 text-sm mt-1">{errors.details.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.details.message}
+            </p>
           )}
         </div>
 
-        <div className="flex flex-row gap-4">
-          <Crops onSelect={handleCropSelect} />
+        <div className="flex flex-col gap-4">
           <button
             type="submit"
-            className={`blue-button2 ${isSubmitting ? "loading" : ""}`}
+            className={`bg-[#FFC83A] rounded-lg text-lg font-semibold w-full p-2  ${
+              isSubmitting ? "loading" : ""
+            }`}
             disabled={isSubmitting}
           >
             {isSubmitting ? "요청 중..." : "솔루션 요청"}
@@ -263,10 +277,6 @@ export default function AiDoctorUi({
           </div>
         </div>
       )}
-      <div className=" rounded-lg bg-[#FFFBEB] text-[#92400E] p-5 ">
-        ⚠️ 진단 결과는 인공지능이 제공한 참고용 방안입니다. 심각한 질병의 경우
-        전문가와 상담하는 것을 권장합니다.
-      </div>
     </div>
   );
 }

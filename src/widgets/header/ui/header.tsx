@@ -1,19 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import HeaderDropdown from "./HeaderDropdown";
 
-
-export default function Header() {
+export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="w-full h-[100px] flex items-center justify-center relative z-50">
-      <Link href="/" aria-label="홈으로 이동">  
-        <Image src="/webee.svg" alt="Webee 로고" width={100} height={100} priority/>
+    <header className="absolute top-0 left-0 right-0 w-full h-[80px] flex items-center justify-center bg-white z-50 border-b border-gray-300">
+      <Link href="/" aria-label="홈으로 이동">
+        <div className="text-2xl font-bold text-main-900">webee</div>
       </Link>
       <HeaderDropdown isOpen={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <div
