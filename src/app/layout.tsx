@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 import HydrationProvider from "@/app/HydrationProvider";
-import { Header } from "@/widgets";
+import { LayoutContent } from "./LayoutContent";
 
 export const metadata: Metadata = {
   title: {
@@ -65,8 +65,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen">
         <HydrationProvider>
           <Providers>
-            <Header />
-            {children}
+            <LayoutContent>{children}</LayoutContent>
           </Providers>
         </HydrationProvider>
       </body>

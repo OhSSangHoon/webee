@@ -12,79 +12,79 @@ export default function Footer() {
   const { isLoggedIn } = useUserStore();
 
   return (
-    <footer className="sticky bottom-0 left-0 w-full h-[90px] flex flex-col items-center py-3 mt-auto bg-background dark:bg-card shadow-[0_-2px_6px_0_rgba(0,0,0,0.06)] dark:shadow-[0_-2px_6px_0_rgba(0,0,0,0.2)] rounded-t-3xl z-1 border-t border-border">
+    <footer className="sticky bottom-0 left-0 w-full h-[90px] flex flex-col items-center py-3 mt-auto bg-white shadow-[0_-2px_6px_0_rgba(0,0,0,0.06)] rounded-t-3xl z-1">
         <div className="grid grid-cols-4 gap-12">
-            <Link 
-              href="/"
+            <Link
+              href="/home"
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("home")}
               onMouseLeave={() => setHoveredIcon(null)}
             >
                 <div className="relative w-[25px] h-[25px]">
-                    <Image 
-                      src="/home.svg" 
-                      alt="홈 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/assets/footerIcons/home.svg"
+                      alt="홈 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "home" ? "opacity-0" : "opacity-100"}`}
                     />
-                    <Image 
-                      src="/home_hover.svg" 
-                      alt="홈 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/assets/footerIcons/home_hover.svg"
+                      alt="홈 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "home" ? "opacity-100" : "opacity-0"}`}
                     />
                 </div>
-                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "home" ? "text-primary" : "text-muted-foreground"}`}>홈</span>
+                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "home" ? "text-main-300" : "text-gray-700"}`}>홈</span>
             </Link>
-            <Link 
+            <Link
               href="/search"
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("trade")}
               onMouseLeave={() => setHoveredIcon(null)}
             >
                 <div className="relative w-[25px] h-[25px]">
-                    <Image 
-                      src="/chat.svg" 
-                      alt="거래 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/assets/footerIcons/chat.svg"
+                      alt="거래 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "trade" ? "opacity-0" : "opacity-100"}`}
                     />
-                    <Image 
-                      src="/chat_hover.svg" 
-                      alt="거래 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/assets/footerIcons/chat_hover.svg"
+                      alt="거래 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "trade" ? "opacity-100" : "opacity-0"}`}
                     />
                 </div>
-                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "trade" ? "text-primary" : "text-muted-foreground"}`}>거래</span>
+                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "trade" ? "text-main-300" : "text-gray-700"}`}>거래</span>
             </Link>
-            <div 
+            <div
               className="cursor-pointer flex flex-col items-center justify-center gap-2"
               onMouseEnter={() => setHoveredIcon("chat")}
               onMouseLeave={() => setHoveredIcon(null)}
               onClick={openChatbot}
             >
                 <div className="relative w-[25px] h-[25px]">
-                    <Image 
-                      src="/chat.svg" 
-                      alt="상담 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/assets/footerIcons/chat.svg"
+                      alt="상담 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "chat" ? "opacity-0" : "opacity-100"}`}
                     />
-                    <Image 
-                      src="/chat_hover.svg" 
-                      alt="상담 아이콘" 
-                      width={25} 
+                    <Image
+                      src="/assets/footerIcons/chat_hover.svg"
+                      alt="상담 아이콘"
+                      width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "chat" ? "opacity-100" : "opacity-0"}`}
                     />
                 </div>
-                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "chat" ? "text-primary" : "text-muted-foreground"}`}>상담</span>
+                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "chat" ? "text-main-300" : "text-gray-700"}`}>상담</span>
             </div>
             <Link
               href={isLoggedIn ? "/mypage" : "/signIn"}
@@ -94,21 +94,21 @@ export default function Footer() {
             >
                 <div className="relative w-[25px] h-[25px]">
                     <Image
-                      src="/profile.svg"
+                      src="/assets/footerIcons/profile.svg"
                       alt="프로필 아이콘"
                       width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "profile" ? "opacity-0" : "opacity-100"}`}
                     />
                     <Image
-                      src="/profile_hover.svg"
+                      src="/assets/footerIcons/profile_hover.svg"
                       alt="프로필 아이콘"
                       width={25}
                       height={25}
                       className={`absolute inset-0 transition-opacity duration-200 ${hoveredIcon === "profile" ? "opacity-100" : "opacity-0"}`}
                     />
                 </div>
-                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "profile" ? "text-primary" : "text-muted-foreground"}`}>
+                <span className={`text-xs font-medium transition-colors duration-200 ${hoveredIcon === "profile" ? "text-main-300" : "text-gray-700"}`}>
                   {isLoggedIn ? "프로필" : "로그인"}
                 </span>
             </Link>

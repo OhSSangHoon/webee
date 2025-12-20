@@ -6,23 +6,23 @@ import { ForecastData, DailyForecast, WeatherData } from "./types";
 export const getWeatherIcon = (weatherMain: string): string => {
   switch (weatherMain.toLowerCase()) {
     case "clear":
-      return "/weatherIcons/sun.webp";
+      return "/assets/weatherIcons/sun.webp";
     case "clouds":
-      return "/weatherIcons/cloud.webp";
+      return "/assets/weatherIcons/cloud.webp";
     case "rain":
-      return "/weatherIcons/rain.webp";
+      return "/assets/weatherIcons/rain.webp";
     case "drizzle":
-      return "/weatherIcons/drizzle.webp";
+      return "/assets/weatherIcons/drizzle.webp";
     case "thunderstorm":
-      return "/weatherIcons/thunder.webp";
+      return "/assets/weatherIcons/thunder.webp";
     case "snow":
-      return "/weatherIcons/snow.webp";
+      return "/assets/weatherIcons/snow.webp";
     case "mist":
     case "fog":
     case "haze":
-      return "/weatherIcons/fog.webp";
+      return "/assets/weatherIcons/fog.webp";
     default:
-      return "/weatherIcons/default.webp";
+      return "/assets/weatherIcons/default.webp";
   }
 };
 

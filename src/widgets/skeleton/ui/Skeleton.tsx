@@ -7,7 +7,7 @@ export default function Skeleton() {
         <span className="text-lg font-medium text-gray-700">벌들이 정보를 열심히 나르고 있어요!</span>
         <div className="relative w-6 h-6 animate-bounce">
           <Image
-            src="/bee.svg"
+            src="assets/brandIcons/bee.svg"
             alt="webee"
             width={24}
             height={24}
