@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Header, WebHeader, Footer } from "@/widgets";
+import Chatbot from "@/features/chatBot/ui/ChatBotModal";
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -26,6 +27,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Footer />
+        <Chatbot />
       </div>
     </div>
   );
