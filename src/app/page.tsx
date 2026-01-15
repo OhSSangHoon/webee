@@ -870,7 +870,7 @@ export default function Landing() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1 }}
             >
-              <Link href="/diagnosis">
+              <Link href="/report">
                 <Button
                   size="lg"
                   className="bg-yellow-500 text-black font-semibold px-10 py-6 text-base rounded-none border-0"
