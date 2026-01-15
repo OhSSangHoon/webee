@@ -2,13 +2,14 @@
 
 import { usePathname } from "next/navigation";
 import { Header, WebHeader, Footer } from "@/widgets";
+import Chatbot from "@/features/chatBot/ui/ChatBotModal";
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isWebLanding = pathname === "/";
+  const isWebPage = pathname === "/" || pathname === "/report";
 
-  if (isWebLanding) {
-    // Web Landing Page
+  if (isWebPage) {
+    // 웹 페이지 (랜딩, 리포트)
     return (
       <>
         <WebHeader />
@@ -17,7 +18,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Mobile App Pages
+  // 모바일 앱 페이지
   return (
     <div className="min-h-screen bg-white">
       <div className="w-[375px] mx-auto border-x border-gray-500 min-h-screen bg-white flex flex-col relative">
@@ -26,6 +27,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Footer />
+        <Chatbot />
       </div>
     </div>
   );
