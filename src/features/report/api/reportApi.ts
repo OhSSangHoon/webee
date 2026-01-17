@@ -3,7 +3,10 @@ import type {
   ReportResult,
   HarvestPredictionRequest,
   HarvestPredictionResponse,
-  ManagementAction
+  ManagementAction,
+  ManagementGuideRaw,
+  ExpectedRevenueRaw,
+  FinalConclusionRaw
 } from "@/shared/types/report";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -183,10 +186,25 @@ function transformToReportResult(
         features: [],
         suitability: "",
       },
+      brand3: data.recommendation.alternatives[1] ? {
+        name: data.recommendation.alternatives[1].name,
+        price: data.recommendation.alternatives[1].price,
+        activityRate: data.recommendation.alternatives[1].activityRate,
+        replacementCycleWeeks: data.recommendation.alternatives[1].replacementCycleWeeks,
+        optimalTemperature: data.recommendation.alternatives[1].optimalTemperature,
+        features: data.recommendation.alternatives[1].tags || [],
+        suitability: data.recommendation.alternatives[1].optimalTemperature
+          ? `최적 온도: ${data.recommendation.alternatives[1].optimalTemperature.min}~${data.recommendation.alternatives[1].optimalTemperature.max}°C`
+          : `${data.recommendation.alternatives[1].name} - 활동성 ${data.recommendation.alternatives[1].activityRate}%`,
+      } : undefined,
     },
     summary: data.finalConclusion?.suitability
       ? `${data.finalConclusion.suitability} - 예상 연간 수익 증가: ${data.finalConclusion.expectedAnnualRevenueIncrease.min.toLocaleString()}~${data.finalConclusion.expectedAnnualRevenueIncrease.max.toLocaleString()}원`
       : `수정벌 관리 최적화 점수: ${data.summaryScore.score}점. ${data.recommendation.best.name}을(를) 사용하여 수확량 증대를 기대할 수 있습니다.`,
+    // LLM 응답 원본 데이터 전달
+    managementGuide: data.managementGuide as ManagementGuideRaw | undefined,
+    expectedRevenue: data.expectedRevenue as ExpectedRevenueRaw | undefined,
+    finalConclusion: data.finalConclusion as FinalConclusionRaw | undefined,
   };
 }
 
@@ -196,21 +214,11 @@ function transformToReportResult(
 export async function generateReport(input: ReportInput): Promise<ReportResult> {
   const requestBody = transformToApiRequest(input);
 
-  // 로그인 상태 확인
-  const accessToken = typeof window !== 'undefined' ? localStorage.getItem("accessToken") : null;
-
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-  };
-
-  // 토큰이 있으면 추가 (로그인 상태)
-  if (accessToken) {
-    headers["Authorization"] = `Bearer ${accessToken}`;
-  }
-
   const response = await fetch(`${API_BASE_URL}/api/v1/reports/harvest-prediction`, {
     method: "POST",
-    headers,
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(requestBody),
   });
 

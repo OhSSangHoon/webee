@@ -50,7 +50,7 @@ export function ReportForm({ onSubmit, isLoading }: ReportFormProps) {
           </div>
           <div>
             <h2 className="text-lg font-bold text-[#0A0E27]">농장 정보 입력</h2>
-            <p className="text-xs text-gray-500">정확한 분석을 위해 농장 정보를 입력해주세요</p>
+            <p className="text-xs text-gray-600">정확한 분석을 위해 농장 정보를 입력해주세요</p>
           </div>
         </div>
 
@@ -73,10 +73,10 @@ export function ReportForm({ onSubmit, isLoading }: ReportFormProps) {
             name="farmArea"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={`text-xs font-semibold h-4 ${hasGreenhouse ? "text-gray-400" : "text-gray-600"}`}>농지 면적 {hasGreenhouse && <span className="text-[10px]">(선택)</span>}</FormLabel>
+                <FormLabel className={`text-xs font-semibold h-4 ${hasGreenhouse ? "text-gray-500" : "text-gray-600"}`}>농지 면적 {hasGreenhouse && <span className="text-[10px]">(선택)</span>}</FormLabel>
                 <div className="relative">
-                  <Input type="number" {...field} onChange={(e) => field.onChange(Number(e.target.value) || 0)} disabled={hasGreenhouse} className={`h-10 border-gray-200 rounded-lg text-sm font-semibold pr-8 focus:border-[#22C55E] focus:ring-[#22C55E]/20 ${hasGreenhouse ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-gray-50 text-gray-900"}`} />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium">평</span>
+                  <Input type="number" {...field} onChange={(e) => field.onChange(Number(e.target.value) || 0)} disabled={hasGreenhouse} className={`h-10 border-gray-200 rounded-lg text-sm font-semibold pr-8 focus:border-[#22C55E] focus:ring-[#22C55E]/20 ${hasGreenhouse ? "bg-gray-100 text-gray-500 cursor-not-allowed" : "bg-gray-50 text-gray-900"}`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-medium">평</span>
                 </div>
               </FormItem>
             )}
@@ -143,13 +143,13 @@ export function ReportForm({ onSubmit, isLoading }: ReportFormProps) {
                 <FormField control={form.control} name="greenhouseCount" render={({ field }) => (
                   <div className="flex items-center gap-1.5">
                     <Input type="number" className="w-14 h-8 text-center text-xs font-bold text-gray-900 border-gray-200 rounded-lg bg-white" {...field} value={field.value ?? ""} onChange={(e) => field.onChange(Number(e.target.value) || undefined)} />
-                    <span className="text-xs text-gray-500">동</span>
+                    <span className="text-xs text-gray-600">동</span>
                   </div>
                 )} />
                 <FormField control={form.control} name="greenhouseSize" render={({ field }) => (
                   <div className="flex items-center gap-1.5">
                     <Input type="number" className="w-16 h-8 text-center text-xs font-bold text-gray-900 border-gray-200 rounded-lg bg-white" {...field} value={field.value ?? ""} onChange={(e) => field.onChange(Number(e.target.value) || undefined)} />
-                    <span className="text-xs text-gray-500">평/동</span>
+                    <span className="text-xs text-gray-600">평/동</span>
                   </div>
                 )} />
               </div>
@@ -160,7 +160,7 @@ export function ReportForm({ onSubmit, isLoading }: ReportFormProps) {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <FormField control={form.control} name="beeBrand" render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[10px] font-semibold text-gray-500 uppercase h-3.5">수정벌 브랜드</FormLabel>
+                  <FormLabel className="text-[10px] font-semibold text-gray-600 uppercase h-3.5">수정벌 브랜드</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger className="h-9 text-xs font-semibold text-gray-900 border-gray-200 rounded-lg bg-white">
                       <SelectValue />
@@ -173,28 +173,28 @@ export function ReportForm({ onSubmit, isLoading }: ReportFormProps) {
               )} />
               <FormField control={form.control} name="boxesPerHouse" render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[10px] font-semibold text-gray-500 uppercase h-3.5">동당 박스</FormLabel>
+                  <FormLabel className="text-[10px] font-semibold text-gray-600 uppercase h-3.5">동당 박스</FormLabel>
                   <div className="relative">
                     <Input type="number" className="h-9 text-xs font-bold text-gray-900 pr-10 border-gray-200 rounded-lg bg-white" {...field} value={field.value ?? ""} onChange={(e) => field.onChange(Number(e.target.value) || undefined)} />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400">박스</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">박스</span>
                   </div>
                 </FormItem>
               )} />
               <FormField control={form.control} name="replacementWeeks" render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[10px] font-semibold text-gray-500 uppercase h-3.5">교체 주기</FormLabel>
+                  <FormLabel className="text-[10px] font-semibold text-gray-600 uppercase h-3.5">교체 주기</FormLabel>
                   <div className="relative">
                     <Input type="number" className="h-9 text-xs font-bold text-gray-900 pr-8 border-gray-200 rounded-lg bg-white" {...field} value={field.value ?? ""} onChange={(e) => field.onChange(Number(e.target.value) || undefined)} />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400">주</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">주</span>
                   </div>
                 </FormItem>
               )} />
               <FormField control={form.control} name="annualKg" render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[10px] font-semibold text-gray-500 uppercase h-3.5">연 생산량</FormLabel>
+                  <FormLabel className="text-[10px] font-semibold text-gray-600 uppercase h-3.5">연 생산량</FormLabel>
                   <div className="relative">
                     <Input type="number" className="h-9 text-xs font-bold text-gray-900 pr-8 border-gray-200 rounded-lg bg-white" {...field} value={field.value ?? ""} onChange={(e) => field.onChange(Number(e.target.value) || undefined)} />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400">kg</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">kg</span>
                   </div>
                 </FormItem>
               )} />
@@ -217,14 +217,14 @@ export function ReportForm({ onSubmit, isLoading }: ReportFormProps) {
               <div className="flex items-center gap-4">
                 <FormField control={form.control} name="averageTemperature" render={({ field }) => (
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs text-gray-500">온도</span>
+                    <span className="text-xs text-gray-600">온도</span>
                     <Input type="number" className="w-14 h-8 text-center text-xs font-bold text-gray-900 border-gray-200 rounded-lg bg-white" {...field} value={field.value ?? ""} onChange={(e) => field.onChange(Number(e.target.value) || undefined)} />
                     <span className="text-xs text-[#22C55E] font-bold">°C</span>
                   </div>
                 )} />
                 <FormField control={form.control} name="averageHumidity" render={({ field }) => (
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs text-gray-500">습도</span>
+                    <span className="text-xs text-gray-600">습도</span>
                     <Input type="number" className="w-14 h-8 text-center text-xs font-bold text-gray-900 border-gray-200 rounded-lg bg-white" {...field} value={field.value ?? ""} onChange={(e) => field.onChange(Number(e.target.value) || undefined)} />
                     <span className="text-xs text-[#3B82F6] font-bold">%</span>
                   </div>
