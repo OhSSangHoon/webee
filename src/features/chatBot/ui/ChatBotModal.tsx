@@ -114,7 +114,7 @@ export default function ChatbotLauncher() {
           <div className="flex flex-row gap-2 ">
             <div className="w-11 h-11 ">
               <Image
-                src="/Bee3D.webp"
+                src="/assets/brandIcons/bee.svg"
                 alt="챗봇"
                 fetchPriority="high"
                 width={100}
@@ -168,7 +168,7 @@ export default function ChatbotLauncher() {
               <div className="flex flex-row gap-2 ">
                 <div className="w-11 h-11 ">
                   <Image
-                    src="/Bee3D.webp"
+                    src="/assets/brandIcons/bee.svg"
                     alt="챗봇"
                     fetchPriority="high"
                     width={100}
