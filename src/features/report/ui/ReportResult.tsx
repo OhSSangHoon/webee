@@ -105,6 +105,18 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
       features: brandComparison.brand2.features,
       recommended: false,
     },
+    ...(brandComparison.brand3 ? [{
+      rank: 3,
+      name: brandComparison.brand3.name,
+      price: brandComparison.brand3.price || 40000,
+      lifespan: `${brandComparison.brand3.replacementCycleWeeks || 3}주`,
+      cropMatch: brandComparison.brand3.activityRate || 80,
+      tempRange: brandComparison.brand3.optimalTemperature
+        ? `${brandComparison.brand3.optimalTemperature.min}~${brandComparison.brand3.optimalTemperature.max}°C`
+        : "18~28°C",
+      features: brandComparison.brand3.features,
+      recommended: false,
+    }] : []),
   ] : [];
 
   // 우선 개선 사항 (managementActions 기반)
@@ -197,14 +209,15 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
               </div>
             </div>
             
-            {/* 다른 추천 */}
+            {/* 2, 3순위 추천 - 가로 배치 */}
             {beeRecommendations.length > 1 && (
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {beeRecommendations.slice(1).map((bee) => (
-                  <div key={bee.rank} className="bg-gray-50 rounded-xl p-3 border border-gray-200">
-                    <div className="flex items-center justify-between mb-2">
+                  <div key={bee.rank} className="bg-gray-50 rounded-xl p-3 border border-gray-200 relative">
+                    <div className="absolute -top-2 left-3 bg-gray-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{bee.rank}위</div>
+                    <div className="pt-1 mb-2">
                       <span className="text-xs font-bold text-gray-700">{bee.name}</span>
-                      {bee.recommended && <span className="text-[9px] bg-[#3B82F6] text-white px-1.5 py-0.5 rounded">사용중</span>}
+                      {bee.recommended && <span className="ml-1 text-[9px] bg-[#3B82F6] text-white px-1.5 py-0.5 rounded">사용중</span>}
                     </div>
                     <div className="space-y-1 text-[10px] text-gray-600 mb-2">
                       <div className="flex justify-between">
@@ -221,7 +234,7 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1">
-                      {bee.features.map((f, i) => (
+                      {bee.features.slice(0, 2).map((f, i) => (
                         <span key={i} className="text-[9px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded-full">{f}</span>
                       ))}
                     </div>
