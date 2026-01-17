@@ -186,6 +186,17 @@ function transformToReportResult(
         features: [],
         suitability: "",
       },
+      brand3: data.recommendation.alternatives[1] ? {
+        name: data.recommendation.alternatives[1].name,
+        price: data.recommendation.alternatives[1].price,
+        activityRate: data.recommendation.alternatives[1].activityRate,
+        replacementCycleWeeks: data.recommendation.alternatives[1].replacementCycleWeeks,
+        optimalTemperature: data.recommendation.alternatives[1].optimalTemperature,
+        features: data.recommendation.alternatives[1].tags || [],
+        suitability: data.recommendation.alternatives[1].optimalTemperature
+          ? `최적 온도: ${data.recommendation.alternatives[1].optimalTemperature.min}~${data.recommendation.alternatives[1].optimalTemperature.max}°C`
+          : `${data.recommendation.alternatives[1].name} - 활동성 ${data.recommendation.alternatives[1].activityRate}%`,
+      } : undefined,
     },
     summary: data.finalConclusion?.suitability
       ? `${data.finalConclusion.suitability} - 예상 연간 수익 증가: ${data.finalConclusion.expectedAnnualRevenueIncrease.min.toLocaleString()}~${data.finalConclusion.expectedAnnualRevenueIncrease.max.toLocaleString()}원`

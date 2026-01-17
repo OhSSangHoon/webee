@@ -193,6 +193,15 @@ export interface BrandComparison {
     features: string[];
     suitability: string;
   };
+  brand3?: {
+    name: string;
+    price?: number;
+    activityRate?: number;
+    replacementCycleWeeks?: number;
+    optimalTemperature?: { min: number; max: number };
+    features: string[];
+    suitability: string;
+  };
 }
 
 // API 원본 데이터 타입
