@@ -31,7 +31,10 @@ export default function ReportPage() {
       {/* Hero Section */}
       <main className="flex-1 flex flex-col">
         <div className="relative py-12 md:py-16">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#22C55E15,_transparent_50%),radial-gradient(ellipse_at_bottom_right,_#3B82F615,_transparent_50%)]" />
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#22C55E]/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-0 w-[600px] h-[300px] bg-[#3B82F6]/5 rounded-full blur-3xl" />
+          </div>
 
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             <div className="text-center mb-10">

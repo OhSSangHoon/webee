@@ -195,6 +195,43 @@ export interface BrandComparison {
   };
 }
 
+// API 원본 데이터 타입
+export interface ManagementGuideRaw {
+  temperatureControl: {
+    currentRange: string;
+    recommendedRange: string;
+    actions: string[];
+  };
+  humidityControl: {
+    currentRange: string;
+    recommendedRange: string;
+    actions: string[];
+  };
+  pollinationManagement: {
+    placement: string;
+    replacementCycle: string;
+    additionalTips: string[];
+  };
+}
+
+export interface ExpectedRevenueRaw {
+  marketPricePerKg: number;
+  annualProductionKg: number;
+  currentPollinationRate: number;
+  improvedPollinationRate: number;
+  additionalProductionKg: number;
+  additionalRevenue: number;
+  additionalCost: { min: number; max: number };
+  netGainRange: { min: number; max: number };
+  roiPercentRange: { min: number; max: number };
+}
+
+export interface FinalConclusionRaw {
+  suitability: string;
+  expectedImprovementRate: { min: number; max: number };
+  expectedAnnualRevenueIncrease: { min: number; max: number };
+}
+
 export interface ReportResult {
   input: ReportInput;
   compatibility: CompatibilityResult;
@@ -203,6 +240,10 @@ export interface ReportResult {
   revenueAnalysis: RevenueAnalysis;
   brandComparison?: BrandComparison;
   summary: string;
+  // LLM 응답 원본 데이터
+  managementGuide?: ManagementGuideRaw;
+  expectedRevenue?: ExpectedRevenueRaw;
+  finalConclusion?: FinalConclusionRaw;
 }
 
 export const cropOptions = [

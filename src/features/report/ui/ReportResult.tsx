@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import type { ReportResult as ReportResultType } from "@/shared/types/report";
+import { CROP_NAME_MAP, CROP_VARIETY_MAP, BEE_TYPE_MAP } from "@/features/report/api/reportApi";
 import { 
   CheckCircle2, 
   AlertTriangle, 
@@ -47,7 +48,7 @@ function formatCurrency(value: number): string {
 export function ReportResult({ result, onNewReport }: ReportResultProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { revenueAnalysis, input, brandComparison, managementActions } = result;
+  const { revenueAnalysis, input, brandComparison, managementActions, managementGuide, expectedRevenue, finalConclusion } = result;
 
   // 페이지 변경 시 스크롤을 맨 위로 즉시 이동
   useEffect(() => {
@@ -61,9 +62,9 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
   const densityPer100 = (boxesPerHouse / greenhouseSize) * 100;
   const isDensityLow = densityPer100 < 1;
   
-  const cropName = input.crop === "strawberry" ? "딸기" : input.crop;
-  const varietyName = input.cropVariety === "seolhyang" ? "설향" : input.cropVariety || "";
-  const brandName = input.beeBrand === "jirisan" ? "지리산" : input.beeBrand === "maya" ? "마야" : "코리아넷";
+  const cropName = CROP_NAME_MAP[input.crop] || input.crop;
+  const varietyName = input.cropVariety ? (CROP_VARIETY_MAP[input.cropVariety] || input.cropVariety) : "";
+  const brandName = input.beeBrand ? (BEE_TYPE_MAP[input.beeBrand]?.replace(" 수정벌", "") || input.beeBrand) : "지리산";
   
   const hasEnvData = input.hasSmartFarm && input.averageTemperature && input.averageHumidity;
   const tempOptimal = input.averageTemperature && input.averageTemperature >= 18 && input.averageTemperature <= 25;
@@ -152,7 +153,7 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-4xl font-bold">{overallScore}</span>
-                <span className="text-xs text-white/60">점</span>
+                <span className="text-xs text-white/75">점</span>
               </div>
             </div>
             
@@ -173,19 +174,19 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
               <div className="absolute -top-2 left-4 bg-[#22C55E] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">BEST</div>
               <div className="flex items-center justify-between mb-3 pt-1">
                 <span className="text-base font-bold text-[#22C55E]">{beeRecommendations[0].name}</span>
-                <span className="text-base font-bold text-[#0A0E27]">{beeRecommendations[0].price.toLocaleString()}원<span className="text-xs font-normal text-gray-500">/박스</span></span>
+                <span className="text-base font-bold text-[#0A0E27]">{beeRecommendations[0].price.toLocaleString()}원<span className="text-xs font-normal text-gray-600">/박스</span></span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-xs mb-3">
                 <div className="bg-white/80 rounded-lg p-2 text-center">
-                  <p className="text-[10px] text-gray-500 mb-0.5">교체 주기</p>
+                  <p className="text-[10px] text-gray-600 mb-0.5">교체 주기</p>
                   <p className="font-bold text-[#0A0E27]">{beeRecommendations[0].lifespan}</p>
                 </div>
                 <div className="bg-white/80 rounded-lg p-2 text-center">
-                  <p className="text-[10px] text-gray-500 mb-0.5">{cropName} 적합도</p>
+                  <p className="text-[10px] text-gray-600 mb-0.5">{cropName} 적합도</p>
                   <p className="font-bold text-[#22C55E]">{beeRecommendations[0].cropMatch}%</p>
                 </div>
                 <div className="bg-white/80 rounded-lg p-2 text-center">
-                  <p className="text-[10px] text-gray-500 mb-0.5">적정 온도</p>
+                  <p className="text-[10px] text-gray-600 mb-0.5">적정 온도</p>
                   <p className="font-bold text-[#0A0E27]">{beeRecommendations[0].tempRange}</p>
                 </div>
               </div>
@@ -243,17 +244,17 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-xl p-4 text-center">
                   <Thermometer className="w-5 h-5 mx-auto mb-2 text-[#FFD55F]" />
-                  <p className="text-[10px] text-gray-500 mb-1">평균 온도</p>
+                  <p className="text-[10px] text-gray-600 mb-1">평균 온도</p>
                   <p className={`text-xl font-bold ${tempOptimal ? "text-[#22C55E]" : "text-[#FFD55F]"}`}>{input.averageTemperature}°C</p>
-                  <p className="text-[10px] text-gray-400 mt-1">벌 최적: 18~25°C</p>
-                  <p className="text-[10px] text-gray-400">{cropName} 최적: 15~25°C</p>
+                  <p className="text-[10px] text-gray-600 mt-1">벌 최적: {beeRecommendations[0]?.tempRange || "18~25°C"}</p>
+                  <p className="text-[10px] text-gray-600">{cropName} 최적: {result.environment?.temperatureRange ? `${result.environment.temperatureRange.min}~${result.environment.temperatureRange.max}°C` : "15~25°C"}</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4 text-center">
                   <Droplets className="w-5 h-5 mx-auto mb-2 text-[#3B82F6]" />
-                  <p className="text-[10px] text-gray-500 mb-1">평균 습도</p>
+                  <p className="text-[10px] text-gray-600 mb-1">평균 습도</p>
                   <p className={`text-xl font-bold ${humidOptimal ? "text-[#22C55E]" : "text-red-500"}`}>{input.averageHumidity}%</p>
-                  <p className="text-[10px] text-gray-400 mt-1">벌 최적: 50~70%</p>
-                  <p className="text-[10px] text-gray-400">{cropName} 최적: 60~75%</p>
+                  <p className="text-[10px] text-gray-600 mt-1">벌 최적: {managementGuide?.humidityControl?.recommendedRange || "50~70%"}</p>
+                  <p className="text-[10px] text-gray-600">{cropName} 최적: {result.environment?.humidityRange ? `${result.environment.humidityRange.min}~${result.environment.humidityRange.max}%` : "60~75%"}</p>
                 </div>
               </div>
               
@@ -308,23 +309,31 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
               </div>
               3. 온도 관리
             </h3>
-            
+
             <div className="bg-[#FFD55F]/5 rounded-xl p-4 border border-[#FFD55F]/20 space-y-3">
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="bg-white rounded-lg p-3 border border-gray-100">
                   <p className="font-semibold text-[#0A0E27] mb-1">벌 최적 온도</p>
-                  <p className="text-lg font-bold text-[#FFD55F]">18~25°C</p>
-                  <p className="text-[10px] text-gray-500 mt-1">저온시 활동 저하, 고온시 비행 단축</p>
+                  <p className="text-lg font-bold text-[#FFD55F]">{beeRecommendations[0]?.tempRange || "18~25°C"}</p>
+                  <p className="text-[10px] text-gray-600 mt-1">저온시 활동 저하, 고온시 비행 단축</p>
                 </div>
                 <div className="bg-white rounded-lg p-3 border border-gray-100">
                   <p className="font-semibold text-[#0A0E27] mb-1">{cropName} 최적 온도</p>
-                  <p className="text-lg font-bold text-[#22C55E]">15~25°C</p>
-                  <p className="text-[10px] text-gray-500 mt-1">개화 및 착과에 적합한 온도</p>
+                  <p className="text-lg font-bold text-[#22C55E]">{managementGuide?.temperatureControl?.recommendedRange || "15~25°C"}</p>
+                  <p className="text-[10px] text-gray-600 mt-1">개화 및 착과에 적합한 온도</p>
                 </div>
               </div>
               <ul className="text-xs text-gray-600 space-y-1.5">
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />오전 9~11시 개화 시간대 환기 강화</li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />고온 시(25°C 초과) 차광막 활용</li>
+                {managementGuide?.temperatureControl?.actions?.length ? (
+                  managementGuide.temperatureControl.actions.map((action, idx) => (
+                    <li key={idx} className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />{action}</li>
+                  ))
+                ) : (
+                  <>
+                    <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />오전 9~11시 개화 시간대 환기 강화</li>
+                    <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />고온 시(25°C 초과) 차광막 활용</li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
@@ -337,23 +346,31 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
               </div>
               4. 습도 관리
             </h3>
-            
+
             <div className="bg-[#3B82F6]/5 rounded-xl p-4 border border-[#3B82F6]/20 space-y-3">
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="bg-white rounded-lg p-3 border border-gray-100">
                   <p className="font-semibold text-[#0A0E27] mb-1">벌 최적 습도</p>
-                  <p className="text-lg font-bold text-[#3B82F6]">50~70%</p>
-                  <p className="text-[10px] text-gray-500 mt-1">고습시 날개 젖음, 비행 저하</p>
+                  <p className="text-lg font-bold text-[#3B82F6]">{managementGuide?.humidityControl?.recommendedRange || "50~70%"}</p>
+                  <p className="text-[10px] text-gray-600 mt-1">고습시 날개 젖음, 비행 저하</p>
                 </div>
                 <div className="bg-white rounded-lg p-3 border border-gray-100">
                   <p className="font-semibold text-[#0A0E27] mb-1">{cropName} 최적 습도</p>
-                  <p className="text-lg font-bold text-[#22C55E]">60~75%</p>
-                  <p className="text-[10px] text-gray-500 mt-1">꽃가루 방출에 적합한 습도</p>
+                  <p className="text-lg font-bold text-[#22C55E]">{result.environment?.humidityRange ? `${result.environment.humidityRange.min}~${result.environment.humidityRange.max}%` : "60~75%"}</p>
+                  <p className="text-[10px] text-gray-600 mt-1">꽃가루 방출에 적합한 습도</p>
                 </div>
               </div>
               <ul className="text-xs text-gray-600 space-y-1.5">
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />오전 관수 집중으로 오후 습도 상승 방지</li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />관수 후 1~2시간 내 환기 타이밍 설정</li>
+                {managementGuide?.humidityControl?.actions?.length ? (
+                  managementGuide.humidityControl.actions.map((action, idx) => (
+                    <li key={idx} className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />{action}</li>
+                  ))
+                ) : (
+                  <>
+                    <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />오전 관수 집중으로 오후 습도 상승 방지</li>
+                    <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] shrink-0 mt-0.5" />관수 후 1~2시간 내 환기 타이밍 설정</li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
@@ -366,7 +383,7 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
               </div>
               5. 벌 관리
             </h3>
-            
+
             <div className="space-y-3">
               {/* 벌통 위치 */}
               <div className="bg-[#22C55E]/5 rounded-xl p-4 border border-[#22C55E]/20">
@@ -374,26 +391,44 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
                   <MapPin className="w-4 h-4 text-[#22C55E]" />
                   <span className="text-sm font-bold text-[#0A0E27]">벌통 위치</span>
                 </div>
-                <p className="text-xs text-gray-700 mb-2">하우스 <span className="font-bold text-[#22C55E]">중앙부</span> 배치, 직풍 회피</p>
-                <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-500 flex items-start gap-1.5">
-                  <Info className="w-3 h-3 shrink-0 mt-0.5 text-[#3B82F6]" />
-                  <span>중앙 배치 시 비행 거리가 균등해져 수정 효율 20% 향상. 직풍 노출 시 벌 스트레스 증가로 활동성 저하</span>
-                </div>
+                <p className="text-xs text-gray-700 mb-2">
+                  {managementGuide?.pollinationManagement?.placement || "하우스 중앙부 배치, 직풍 회피"}
+                </p>
+                {managementGuide?.pollinationManagement?.additionalTips?.length ? (
+                  <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-600 flex items-start gap-1.5">
+                    <Info className="w-3 h-3 shrink-0 mt-0.5 text-[#3B82F6]" />
+                    <span>{managementGuide.pollinationManagement.additionalTips[0]}</span>
+                  </div>
+                ) : (
+                  <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-600 flex items-start gap-1.5">
+                    <Info className="w-3 h-3 shrink-0 mt-0.5 text-[#3B82F6]" />
+                    <span>중앙 배치 시 비행 거리가 균등해져 수정 효율 20% 향상. 직풍 노출 시 벌 스트레스 증가로 활동성 저하</span>
+                  </div>
+                )}
               </div>
-              
+
               {/* 교체 주기 */}
               <div className="bg-[#22C55E]/5 rounded-xl p-4 border border-[#22C55E]/20">
                 <div className="flex items-center gap-2 mb-2">
                   <RefreshCw className="w-4 h-4 text-[#22C55E]" />
                   <span className="text-sm font-bold text-[#0A0E27]">교체 주기</span>
                 </div>
-                <p className="text-xs text-gray-700 mb-2">현재 {input.replacementWeeks || 3}주 → <span className="font-bold text-[#22C55E]">{Math.max(2, (input.replacementWeeks || 3) - 0.5)}주</span> 단축 권장</p>
-                <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-500 flex items-start gap-1.5">
-                  <Info className="w-3 h-3 shrink-0 mt-0.5 text-[#3B82F6]" />
-                  <span>고온·고습 환경에서 벌 수명 단축. 활동성 저하된 벌 조기 교체로 수정률 유지</span>
-                </div>
+                <p className="text-xs text-gray-700 mb-2">
+                  {managementGuide?.pollinationManagement?.replacementCycle || `현재 ${input.replacementWeeks || 3}주 → ${Math.max(2, (input.replacementWeeks || 3) - 0.5)}주 단축 권장`}
+                </p>
+                {managementGuide?.pollinationManagement?.additionalTips?.[1] ? (
+                  <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-600 flex items-start gap-1.5">
+                    <Info className="w-3 h-3 shrink-0 mt-0.5 text-[#3B82F6]" />
+                    <span>{managementGuide.pollinationManagement.additionalTips[1]}</span>
+                  </div>
+                ) : (
+                  <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-600 flex items-start gap-1.5">
+                    <Info className="w-3 h-3 shrink-0 mt-0.5 text-[#3B82F6]" />
+                    <span>고온·고습 환경에서 벌 수명 단축. 활동성 저하된 벌 조기 교체로 수정률 유지</span>
+                  </div>
+                )}
               </div>
-              
+
               {/* 밀도 보정 */}
               <div className="bg-[#22C55E]/5 rounded-xl p-4 border border-[#22C55E]/20">
                 <div className="flex items-center gap-2 mb-2">
@@ -401,7 +436,7 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
                   <span className="text-sm font-bold text-[#0A0E27]">밀도 보정</span>
                 </div>
                 <p className="text-xs text-gray-700 mb-2">현재 동당 {boxesPerHouse}박스 → <span className="font-bold text-[#22C55E]">동당 {boxesPerHouse + 1}박스</span> 권장</p>
-                <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-500 flex items-start gap-1.5">
+                <div className="bg-white/80 rounded-lg p-2 text-[10px] text-gray-600 flex items-start gap-1.5">
                   <Info className="w-3 h-3 shrink-0 mt-0.5 text-[#3B82F6]" />
                   <span>100평당 최소 1박스 필요. 현재 {densityPer100.toFixed(1)}박스로 {isDensityLow ? "밀도 부족" : "적정 수준"}. 추가 배치 시 미수정 과일 감소</span>
                 </div>
@@ -434,13 +469,13 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
             {/* 시장 가격 */}
             <div className="bg-white/5 rounded-xl p-4 mb-4 border border-white/10">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-white/60">{cropName} 현재 시세</span>
-                <span className="text-[10px] text-white/40 flex items-center gap-1">
+                <span className="text-xs text-white/75">{cropName} 현재 시세</span>
+                <span className="text-[10px] text-white/75 flex items-center gap-1">
                   <Clock className="w-3 h-3" /> {priceUpdateTime} 기준
                 </span>
               </div>
-              <p className="text-2xl font-bold text-[#FFD55F]">{marketPrice.toLocaleString()}원<span className="text-sm font-normal text-white/60">/kg</span></p>
-              <p className="text-[10px] text-white/40 mt-1 flex items-center gap-1">
+              <p className="text-2xl font-bold text-[#FFD55F]">{marketPrice.toLocaleString()}원<span className="text-sm font-normal text-white/75">/kg</span></p>
+              <p className="text-[10px] text-white/75 mt-1 flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" /> 시세 변동에 따라 매출 차이가 발생할 수 있습니다
               </p>
             </div>
@@ -448,11 +483,11 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
             {/* 통계 그리드 */}
             <div className="grid grid-cols-3 gap-2 mb-4">
               <div className="bg-white/5 rounded-lg p-3 text-center">
-                <p className="text-[10px] text-white/50 mb-1">연간 생산량</p>
+                <p className="text-[10px] text-white/70 mb-1">연간 생산량</p>
                 <p className="text-lg font-bold">{(input.annualKg || 5000).toLocaleString()}<span className="text-xs font-normal">kg</span></p>
               </div>
               <div className="bg-white/5 rounded-lg p-3 text-center">
-                <p className="text-[10px] text-white/50 mb-1">현재 착과율</p>
+                <p className="text-[10px] text-white/70 mb-1">현재 착과율</p>
                 <p className="text-lg font-bold text-white/80">{revenueAnalysis.currentRate}%</p>
               </div>
               <div className="bg-[#22C55E]/20 rounded-lg p-3 text-center border border-[#22C55E]/30">
@@ -463,13 +498,13 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
             
             {/* 계산 */}
             <div className="bg-white/5 rounded-xl p-4 mb-4 space-y-2 text-xs">
-              <p className="text-white/60">
+              <p className="text-white/75">
                 현재 생산: {(input.annualKg || 5000).toLocaleString()} × {revenueAnalysis.currentRate}% = <span className="font-bold text-white">{Math.round((input.annualKg || 5000) * revenueAnalysis.currentRate / 100).toLocaleString()}kg</span>
               </p>
-              <p className="text-white/60">
+              <p className="text-white/75">
                 개선 후: {(input.annualKg || 5000).toLocaleString()} × {revenueAnalysis.improvedRate}% = <span className="font-bold text-[#22C55E]">{Math.round((input.annualKg || 5000) * revenueAnalysis.improvedRate / 100).toLocaleString()}kg</span>
               </p>
-              <p className="text-white/60">
+              <p className="text-white/75">
                 추가 생산량: <span className="font-bold text-[#22C55E]">+{Math.round(revenueAnalysis.additionalYield).toLocaleString()}kg</span>
               </p>
             </div>
@@ -477,24 +512,36 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
             {/* 수익 요약 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-white/5 rounded-xl p-3">
-                <p className="text-[10px] text-white/50 mb-1">추가 매출</p>
+                <p className="text-[10px] text-white/70 mb-1">추가 매출</p>
                 <p className="text-xl font-bold text-[#22C55E]">+{formatCurrency(revenueAnalysis.additionalRevenue)}원</p>
               </div>
               <div className="bg-white/5 rounded-xl p-3">
-                <p className="text-[10px] text-white/50 mb-1">추가 비용</p>
-                <p className="text-lg font-bold text-white/80">약 200~300만원</p>
+                <p className="text-[10px] text-white/70 mb-1">추가 비용</p>
+                <p className="text-lg font-bold text-white/80">
+                  {expectedRevenue?.additionalCost
+                    ? `약 ${formatCurrency(expectedRevenue.additionalCost.min)}~${formatCurrency(expectedRevenue.additionalCost.max)}원`
+                    : "약 200~300만원"}
+                </p>
               </div>
             </div>
-            
+
             {/* ROI */}
             <div className="bg-[#22C55E]/10 rounded-xl p-4 flex items-center justify-between border border-[#22C55E]/30">
               <div>
-                <p className="text-[10px] text-white/50 mb-1">기대 순이익</p>
-                <p className="text-xl font-bold">+450~550만원</p>
+                <p className="text-[10px] text-white/70 mb-1">기대 순이익</p>
+                <p className="text-xl font-bold">
+                  {expectedRevenue?.netGainRange
+                    ? `+${formatCurrency(expectedRevenue.netGainRange.min)}~${formatCurrency(expectedRevenue.netGainRange.max)}원`
+                    : "+450~550만원"}
+                </p>
               </div>
               <div className="text-right">
-                <p className="text-[10px] text-white/50 mb-1">기대 ROI</p>
-                <p className="text-3xl font-bold text-[#22C55E]">150~200%</p>
+                <p className="text-[10px] text-white/70 mb-1">기대 ROI</p>
+                <p className="text-3xl font-bold text-[#22C55E]">
+                  {expectedRevenue?.roiPercentRange
+                    ? `${expectedRevenue.roiPercentRange.min}~${expectedRevenue.roiPercentRange.max}%`
+                    : "150~200%"}
+                </p>
               </div>
             </div>
           </div>
@@ -509,16 +556,24 @@ export function ReportResult({ result, onNewReport }: ReportResultProps) {
                 <p className="text-base font-bold text-white mb-2">최종 결론</p>
                 <div className="space-y-1.5">
                   <p className="text-sm text-white/90">
-                    현재 <span className="font-bold text-white">{brandName} 수정벌</span>은 {cropName}({varietyName})에 적합합니다.
+                    현재 <span className="font-bold text-white">{brandName} 수정벌</span>은 {cropName}({varietyName})에 {finalConclusion?.suitability || "적합"}합니다.
                   </p>
                   <p className="text-sm text-white/80">
                     온·습도 조정 및 박스 밀도 보정 시
                   </p>
                   <p className="text-lg font-bold text-white">
-                    착과율 <span className="text-[#FFD55F]">최대 +10~15%p</span>
+                    착과율 <span className="text-[#FFD55F]">
+                      {finalConclusion?.expectedImprovementRate
+                        ? `최대 +${finalConclusion.expectedImprovementRate.min}~${finalConclusion.expectedImprovementRate.max}%p`
+                        : "최대 +10~15%p"}
+                    </span>
                   </p>
                   <p className="text-lg font-bold text-white">
-                    연간 기대 수익 <span className="text-[#FFD55F]">약 +400~600만원</span> 증가
+                    연간 기대 수익 <span className="text-[#FFD55F]">
+                      {finalConclusion?.expectedAnnualRevenueIncrease
+                        ? `약 +${formatCurrency(finalConclusion.expectedAnnualRevenueIncrease.min)}~${formatCurrency(finalConclusion.expectedAnnualRevenueIncrease.max)}원`
+                        : "약 +400~600만원"}
+                    </span> 증가
                   </p>
                 </div>
               </div>
