@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    title: 'webee',
+    statusBarStyle: 'default',
+  },
   metadataBase: new URL('https://webeelab.com/'),
   openGraph: {
     title: "webee - 수정벌 전문 플랫폼",
