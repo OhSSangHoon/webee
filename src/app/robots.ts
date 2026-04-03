@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://webee-ten.vercel.app'
+  const baseUrl = 'https://webeelab.com'
 
   return {
     rules: [
@@ -15,6 +15,9 @@ export default function robots(): MetadataRoute.Robots {
           '/_next/',
           '/404',
           '/500',
+          '/mypage',
+          '/myprofile',
+          '/cropInfo',
         ],
       },
       {
