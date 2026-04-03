@@ -19,21 +19,26 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://webee-ten.vercel.app/'),
+  manifest: '/manifest.json',
+  appleWebApp: {
+    title: 'webee',
+    statusBarStyle: 'default',
+  },
+  metadataBase: new URL('https://webeelab.com/'),
   openGraph: {
     title: "webee - 수정벌 전문 플랫폼",
     description: "수정벌과 관련된 모든 정보! AI 질병진단, 맞춤 수정벌 추천, 거래 연결까지",
-    url: 'https://webee-ten.vercel.app',
+    url: 'https://webeelab.com',
     siteName: 'webee',
     locale: 'ko_KR',
     type: 'website',
-    images: ['/LOGO.png'],
+    images: [{ url: '/logo.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: "webee - 수정벌 전문 플랫폼",
     description: "수정벌과 관련된 모든 정보! AI 질병진단, 맞춤 수정벌 추천, 거래 연결까지",
-    images: ['/LOGO.png'],
+    images: ['/logo.png'],
   },
   robots: {
     index: true,
@@ -60,7 +65,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://dapi.kakao.com" />
         <link rel="dns-prefetch" href="https://mts.daumcdn.net" />
         <link rel="preload" href="/font/PretendardVariable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/webee.svg" as="image" type="image/svg+xml" crossOrigin="anonymous" />
+        <link rel="preload" href="/logo.png" as="image" type="image/png" crossOrigin="anonymous" />
       </head>
       <body className="antialiased min-h-screen">
         <HydrationProvider>
